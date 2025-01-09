@@ -14,7 +14,7 @@ Now that we’ve set when this will run, we can start to add in the rest of the 
 3.	The DQL query itself will look through the data for the **last hour** for the “**CARD_ERROR**” events that get created – it will then return the contextual information that let’s use take some action, for example the **Order ID** and the **type of error**.
 
 ```
-fetch bizevents, from:now()-1h
+fetch bizevents, from:now()-24h
 | filter type == "CARD_ERROR"
 | parse details, "JSON:errors"
 | fields orderId, {errors[errorCode], alias:`Error code`}, {errors[errorType], alias:`Error type`}, {errors[errorMessage], alias:`Error message`}
@@ -37,7 +37,7 @@ const yourName = "Test user";
 const dqlStepName = "execute_dql_query_1"; 
 //Get the result of the previous step running DQL 
 const r = await 
-fetch(`/platform/automation/v1/executions/${execution_id}/tasks/${dqlStepNam e}/result`); 
+fetch(`/platform/automation/v1/executions/${execution_id}/tasks/${dqlStepName}/result`); 
 //Get the content being returned in a variable called "body" 
 const body = await r.json(); 
 //Extract the list of orders affected by errors - "records" is the name of the list of results returned 
@@ -46,7 +46,8 @@ const orders = body["records"];
 var niceOutput = ":warning: [" + yourName + "] Orders failing to update credit card: \n"; 
 orders.forEach((order) =>  niceOutput = niceOutput + "\n" + ":credit_card: [*Order ID*]: " + order['orderId'] + ", :1234: [*Error code*]: " + 
 order['Error code'] + ", :hourglass_flowing_sand: [*Error type*]: " + order['Error type'] + ", :email: [*Error message*]: " + order['Error message'] + "\n"); 
-“return niceOutput ; “   
+return niceOutput;
+}   
 ```
 
 3.	Near the top is a section titled “**Enter your details here!**” which has 2 values.
