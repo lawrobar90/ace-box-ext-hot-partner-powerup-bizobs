@@ -11,7 +11,7 @@ Now that we’ve set when this will run, we can start to add in the rest of the 
 
 1.	*Click* the purple “**+**” icon underneath your trigger and you’ll be presented with the options you see on the screen to add new logical “**tasks.**”
 2.	First **“task”** will be to get the **Order IDs** of Customers with an issue getting their Credit Card – so we’ll *choose* the “Execute DQL Query” action which is going to look through the data for these users.
-3.	The DQL query itself will look through the data for the **last hour** for the “**CARD_ERROR**” events that get created – it will then return the contextual information that let’s use take some action, for example the **Order ID** and the **type of error**.
+3.	The DQL query itself will look through the data for the **last hour** for the “**CARD_ERROR**” events that get created – it will then return the contextual information that let’s us take some action, for example the **Order ID** and the **type of error**.
 
 ```
 fetch bizevents, from:now()-24h
@@ -42,7 +42,7 @@ fetch(`/platform/automation/v1/executions/${execution_id}/tasks/${dqlStepName}/r
 const body = await r.json(); 
 //Extract the list of orders affected by errors - "records" is the name of the list of results returned 
 const orders = body["records"]; 
-//Loop through the orders and format nicely to send to Slack 
+//Loop through the orders and format nicely to send to Mattermost 
 var niceOutput = ":warning: [" + yourName + "] Orders failing to update credit card: \n"; 
 orders.forEach((order) =>  niceOutput = niceOutput + "\n" + ":credit_card: [*Order ID*]: " + order['orderId'] + ", :1234: [*Error code*]: " + 
 order['Error code'] + ", :hourglass_flowing_sand: [*Error type*]: " + order['Error type'] + ", :email: [*Error message*]: " + order['Error message'] + "\n"); 
@@ -52,7 +52,7 @@ return niceOutput;
 
 3.	Near the top is a section titled “**Enter your details here!**” which has 2 values.
      - Enter “**your name**”. (either your actual name or something slightly humorous) *This will be used at the start of the message we send to Mattermost – in a real scenario, this could be a point of contact should anyone have questions about the message.*
-     - *Enter* name of the “**task**” (or step) of the DWL we just added.  *If you didn’t change the name of that step leave it as-is, otherwise change it to the name that you have used.*
+     - *Enter* name of the “**task**” (or step) of the DQL we just added.  *If you didn’t change the name of that step leave it as-is, otherwise change it to the name that you have used.*
 
 At a high-level what this **code** is *doing* is firstly *getting* the **results** of the **DQL** from the previous step, then creating a **nicely formatted message for Mattermost** where each Order is listed out on a new line (and includes emojis!).
 
@@ -65,10 +65,12 @@ The last step now is to *send* the **message** we’ve just created into the Mat
 3.	*Choose* to “**Add**” a new webhook, and *give* it a **title** 
 4.	*Set* the channel to “**Town Square**”
 5.	*Hit* “**Save**,” and make a *copy* of the **URL** that it provides.
-6.	*Click* the purple “**+**” to add a new “**task**”
-7.	*Choose* the “**HTTP**" task at the top
-8.	*Change* the request type to “**POST**” and in the “**URL**” box enter the URL that was just generated in Mattermost.
-9.	For the **body** of the request, *enter* the **value below** so that it will send in the message we created in the JavaScript step:
+6.	In Dynatrace, head to the "**Settings Classic**" app and navigate to "**Preferences**" > "**Limit outbound connections.**"
+7.	Choose the option to "**Add item**" and add in the "**domain**" part of the URL from Mattermost. For example from "https://mattermost.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.dynatrace.training/hooks/xxxxxxxxxxxxxxxxxxxxxxxxxx" take "mattermost.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.dynatrace.training"
+8.	Back in your Workflow, *Click* the purple “**+**” to add a new “**task**”
+9.	*Choose* the “**HTTP**" task at the top
+10.	*Change* the request type to “**POST**” and in the “**URL**” box enter the URL that was just generated in Mattermost.
+11.	For the **body** of the request, *enter* the **value below** so that it will send in the message we created in the JavaScript step:
 
 ```
 {
