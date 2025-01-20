@@ -37,7 +37,7 @@ Asset purchase
 4.	For "**Value**", *copy* and *paste*:
 
 ```
-/broker-service/v1/trade/long/buy
+/v1/trade/long/buy
 ```
 
 ##### Configure metadata (provider)
@@ -88,98 +88,107 @@ amount
 fetch bizevents 
 | filter event.type=="asset-purchase"
 ```
+### 1.3 OpenPipeline Pipeline Configuration
+1. *Open* "**OpenPipeline**" 
+2. *Click* on "**Business events**" menu group
+3. *Click* on "**Pipelines**"
+4. *Create* a **new pipeline**
+5. *Rename* the pipeline:
 
-### 1.3 Processing Rule Configuration
-1.	*Open* "**Settings**"
-2.	*Click* on "**Business Analytics**" menu group
-3.	*Click* on “**Processing**”
-4.	*Click* on "**Add rule**"
-5.	For "**Rule name**", *copy* and *paste*:
+```
+Asset purchase
+``` 
+
+### 1.4 OpenPipeline Processing Rule Configuration
+1.	*Open* "**OpenPipeline**"
+2.	*Click* on "**Business events**" menu group
+3.	*Click* on "**Pipelines**"
+4.	*Open* the "**Asset purchase**" pipeline
+5.	*Open* the "**Processing**" tab
+6.	From the processor dropdown menu, *Select* "**DQL**" 
+7.	*Name* the new processor, *copy* and *paste*:
 
 ```
 Calculate revenue
 ```
 
-6.	For "**Matcher (DQL)**", *copy* and *paste*:
+8.	For "**Matching condition**", leave set to **true**
+9.	For "**DQL processor definition**", *copy* and *paste*:
 
 ```
-event.type=="asset-purchase"
+fieldsAdd trading_volume = price*amount 
 ```
+**At the top right of the screen, click "*Save*"**
 
-##### Fields 1.1
-1.	Under "**Transformation fields**", *click* on "**Add item**"
-2.	For "**Type**", *select* "**double**"
-3.	For "**Name**", *copy* and *paste*:
-
-```
-price
-```
-
-##### Fields 1.2
-1.	Under "**Transformation fields**", *click* on "**Add item**"
-2.	For "**Type**", *select* "**double**"
-3.	For "**Name**", *copy* and *paste*:
+### 1.5 OpenPipeline Metric Extraction Configuration
+1.	*Open* "**OpenPipeline**"
+2.	*Click* on "**Business events**" menu group
+3.	*Open* "**Asset purchase**" pipeline
+4.	*Click* on "**Metric extraction**"
+5.	*Create* a "**new processor**" that's a "**Value metric**"
+6.	For "**Name**", *copy* and *paste*:
 
 ```
-amount
+Calculate revenue
 ```
 
-##### **Processor definition**
-1.	For "**Processor definition**", *copy* and *paste*:
-
-```
-FIELDS_ADD(trading_volume:price*amount)
-```
-
-**At the bottom of the screen, *click* "Save changes"**
-
-### 1.4 Bucket Assignment Rule Configuration
-1.	*Open* "**Settings**"
-2.	*Click* on "**Business Analytics**" menu group
-3.	*Click* on "**Bucket assignment**"
-4.	*Click* on "**Add rule**"
-5.	For "**Rule name**", *copy* and *paste*:
-
-```
-Asset Purchase
-```
-
-6.	For "**Bucket**", *select* "**Business events (35 days) (default_bizevents)**"
-7.	For "**Matcher (DQL)**", *copy* and *paste*:
-
-```
-event.type=="asset-purchase"
-```
-
-**At the bottom of the screen, *click* "Save changes"**
-
-### 1.5 Metric Extraction Rule Configuration
-1.	Open "**Settings**"
-2.	*Click* on "**Business Analytics**" menu group
-3.	*Click* on "**Metric extraction**"
-4.	*Click* on "**Add business event metric**"
-5.	For "**Key**", *copy* and *paste*:
-
-```
-bizevents.easytrade.trading_volume
-```
-
-6.	For "**Matcher (DQL)**", *copy* and *paste*:
-
-```
-event.type=="asset-purchase"
-```
-
-7.	For "**Measure**", *select* "**Attribute value**"
-8.	For "**Attribute**", *copy* and *paste*:
+7.	For "**Matching condition**", *leave* as **true**
+8.	In "**Field extraction**", *copy* and *paste*:
 
 ```
 trading_volume
 ```
 
-**At the bottom of the screen, *click* "Save changes"**
+9. For "**Metric key**", *copy* and *paste*:
 
-### 1.6 Queries
+```
+easytrade.trading_volume 
+```
+
+**At the top right of the screen, click "*Save*"**
+
+### 1.6 OpenPipeline Bucket Assignment Rule Configuration
+1.	*Open* "**OpenPipeline**"
+2.	*Click* on "**Business events**" menu group
+3.	*Click* on "**Pipelines**"
+4.	*Open* "**Asset purchase**" pipeline
+5.	*Click* on "**Storage**"
+6.	*Create* a new processor in "**Bucket assignment**"
+7.	For "**Name**", *copy* and *paste*:
+
+```
+Asset Purchase
+```
+
+8. For "**Matcher**", leave set to "**true**"
+9. For "**Storage**", *Select* "**Business Events**"
+
+**At the top right of the screen, click "*Save*"**
+
+### 1.7 OpenPipeline Dynamic Routing
+
+1. *Open* "**OpenPipeline**"
+2. *Click* on "**Business events**" menu group
+3. *Click* on "**Dynamic routing**"
+4. *Create* a *new Dynamic route*
+5. For "**Name**", *copy* and *paste*: 
+
+```
+Asset Purchase 
+```
+
+6. For "**Matching condition**", *copy* and *paste*:
+
+```
+event.type=="asset-purchase" 
+```
+
+7. *Select* "**Asset purchase**" pipeline
+8. *Click* "**Add**" 
+
+**At the top right of the screen, click "*Save*"**
+
+### 1.8 Queries
 ##### Validate new attribute
 1.	From the menu, *open* "**Notebooks**"
 2.	*Click* on the "**+**" to add a new section
