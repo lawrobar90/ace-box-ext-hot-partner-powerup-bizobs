@@ -63,15 +63,6 @@
       changed_when:
         - auth_response_raw.status == 200
 
-    - name: Debug OAuth Response
-      debug:
-        var: auth_response_raw
-
-    - name: Validate Token Creation
-      fail:
-        msg: "OAuth token was not created. Response: {{ auth_response_raw }}"
-      when: auth_response_raw.json.access_token is not defined
-
     - name: Set OAuth Access Token
       set_fact:
         dt_oauth_access_token: "{{ auth_response_raw.json.access_token }}"
@@ -93,10 +84,6 @@
   loop:
     - dt_app_id: "dynatrace.biz.flow"
       dt_app_version: "1.20.3"
-
-- name: Print env variables
-  debug:
-    var: ansible_env
 
 - include_role:
     name: monaco-v2
@@ -133,15 +120,15 @@
     dt_operator_release: "v1.3.2"
     log_monitoring: "notfluentbit"
 
-##- name: Pause for 5 Minute
-##  ansible.builtin.pause:
-##    minutes: 5
-
 - include_role:
     name: app-easytrade
 
 - include_role:
     name: mattermost
+
+- name: Pause for 1 Minute
+  ansible.builtin.pause:
+    minutes: 1
 
 - include_role:
     name: dashboard
