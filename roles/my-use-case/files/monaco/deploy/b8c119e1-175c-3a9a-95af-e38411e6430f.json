@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "mode": "MONITORING_OFF",
+  "property": "KUBERNETES_NAMESPACE",
+  "operator": "EQUALS",
+  "value": "ace"
+}
