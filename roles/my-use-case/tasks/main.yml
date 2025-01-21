@@ -126,9 +126,5 @@
 - include_role:
     name: mattermost
 
-- name: Pause for 1 Minute
-  ansible.builtin.pause:
-    minutes: 1
-
 - include_role:
     name: dashboard
