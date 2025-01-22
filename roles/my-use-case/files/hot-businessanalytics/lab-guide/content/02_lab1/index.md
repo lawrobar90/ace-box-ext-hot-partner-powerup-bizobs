@@ -72,7 +72,7 @@ price
 3. For "**Field name**" and "**Path**", *copy* and *paste*: 
    
 ```
-amount 
+amount
 ```
 
 **At the bottom of the screen, click "Save changes"**
