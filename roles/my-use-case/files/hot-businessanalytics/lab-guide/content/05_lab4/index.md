@@ -62,13 +62,13 @@ The last step now is to *send* the **message** we’ve just created into the Mat
 
 1.	Open up the **ACE-box dashboard** and *select* the “**Links**” tab – there is a “**Mattermost**” row here and this will give you the URL and **credentials** to be able to *login*.
 2.	Once you’ve logged in, *click* the **icon** with four square in the **top-left** of the interface and choose **Integrations** > **Incoming Webhooks**. 
-3.	*Choose* to “**Add**” a new webhook, and *give* it a **title** 
+3.	*Choose* to “**Add Incoming Webhook**” a new webhook, and *give* it a **title** 
 4.	*Set* the channel to “**Town Square**”
 5.	*Hit* “**Save**,” and make a *copy* of the **URL** that it provides.
 6.	In Dynatrace, head to the "**Settings Classic**" app and navigate to "**Preferences**" > "**Limit outbound connections.**"
 7.	Choose the option to "**Add item**" and add in the "**domain**" part of the URL from Mattermost. For example from "https://mattermost.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.dynatrace.training/hooks/xxxxxxxxxxxxxxxxxxxxxxxxxx" take "mattermost.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.dynatrace.training"
 8.	Back in your Workflow, *Click* the purple “**+**” to add a new “**task**”
-9.	*Choose* the “**HTTP**" task at the top
+9.	*Choose* the “**HTTP Request**" task
 10.	*Change* the request type to “**POST**” and in the “**URL**” box enter the URL that was just generated in Mattermost.
 11.	For the **body** of the request, *enter* the **value below** so that it will send in the message we created in the JavaScript step:
 
