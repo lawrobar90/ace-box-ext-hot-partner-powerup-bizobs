@@ -57,7 +57,7 @@ orderId
 ```
 3.	*Change* **Mapping event** to:
 ```
-com.easytrade.order-credit-card-status.created
+com.easytrade.update-credit-card-status.created
 ```
 4.	*Change* **Mapping Attribute** to:
 ```
