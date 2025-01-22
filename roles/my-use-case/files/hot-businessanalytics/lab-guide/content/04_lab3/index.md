@@ -7,11 +7,13 @@ This lab will help you understand what business analytics is trying to achieve f
 3.	*Click* '**+ Business Flow**'
 4.	*Select* '**Configuration**' and *give* the Business Flow an **identifiable name**
 5.	*Click* on **Step 1**, and *rename* the step to:
-  ```
+```
 Order Credit Card
 ```
 8.	*Drop down* **Events**, *select*:
-  ```com.easytrade.order-credit-card```
+```
+com.easytrade.order-credit-card
+```
 
 ### 3.2 Adding Subsequent Steps
 1.	Under the **first step**, *click* '**+ Add Step**'
