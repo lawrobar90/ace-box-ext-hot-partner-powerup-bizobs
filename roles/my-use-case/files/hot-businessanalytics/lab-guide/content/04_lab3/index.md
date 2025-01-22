@@ -64,4 +64,4 @@ com.easytrade.update-credit-card-status.created
 revenue
 ```
 
-*Click* **Valie & Save** and then **View Flow**
+*Click* **Validate & Save** and then **View Flow**
