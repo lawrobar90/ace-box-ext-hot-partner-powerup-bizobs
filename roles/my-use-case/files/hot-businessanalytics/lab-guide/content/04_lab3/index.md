@@ -18,9 +18,17 @@ com.easytrade.order-credit-card
 ### 3.2 Adding Subsequent Steps
 1.	Under the **first step**, *click* '**+ Add Step**'
 2.	*Rename* this step to
-   ```Credit Card manufactured```
-4.	*Drop down* **Events**, *select* '**com.easytrade.update-credit-card-status.created**'
-5.	*Add* a **second Event**, *select* '**com.easytrade.update-credit-card-status.error**', and *tick* '**Business Exception**'
+   ```
+  	Credit Card manufactured
+```
+4.	*Drop down* **Events**, *select*:
+   ```
+com.easytrade.update-credit-card-status.created
+```
+6.	*Add* a **second Event** into **Business Exceptions**:
+```
+com.easytrade.update-credit-card-status.error
+```
 
 ### 3.3 Adding Final Steps
 1.	Under the **second step**, *click* '**+ Add Step**'
