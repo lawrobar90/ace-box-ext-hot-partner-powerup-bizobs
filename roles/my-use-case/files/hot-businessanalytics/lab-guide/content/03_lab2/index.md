@@ -54,7 +54,7 @@ This lab will show you how to configure event ingestion.
 
 ```
 fetch bizevents 
-| filter event.provider == "com.dynatrace.perform"
+| filter event.provider == "Perform_2025"
 ```
 
 **Four events should be there**
