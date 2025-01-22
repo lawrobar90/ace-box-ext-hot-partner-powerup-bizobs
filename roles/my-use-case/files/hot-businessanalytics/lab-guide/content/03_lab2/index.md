@@ -6,7 +6,10 @@ This lab will show you how to configure event ingestion.
  
 1. **Limit outbound connections**
 
-   *.live.dynatrace.com
+```
+*.live.dynatrace.com
+```
+   
 
 2. ***Download* the workflow template from DTU and import it to the Environment**
 
