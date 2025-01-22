@@ -64,4 +64,4 @@ com.easytrade.update-credit-card-status.created
 revenue
 ```
 
-**View the Business Flow in the instructor's environment**
+*Click* **Valie & Save** and then **View Flow**
