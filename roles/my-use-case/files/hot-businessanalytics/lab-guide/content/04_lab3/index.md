@@ -32,15 +32,36 @@ com.easytrade.update-credit-card-status.error
 
 ### 3.3 Adding Final Steps
 1.	Under the **second step**, *click* '**+ Add Step**'
-2.	*Rename* this step to '**Credit Card shipped**'
-3.	*Drop down* **Events**, *select* '**com.easytrade.update-credit-card-status.shipped**'
-4.	Under the **third step**, *click* '**+ Add Step**'
-5.	*Rename* this step to '**Credit Card delivered**'
-6.	*Drop down* **Events**, *select* '**com.easytrade.update-credit-card-status.delivered**'
+2.	*Rename* this step to
+```
+Credit Card shipped
+```
+4.	*Drop down* **Events**, *select*
+```
+com.easytrade.update-credit-card-status.shipped
+```
+6.	Under the **third step**, *click* '**+ Add Step**'
+7.	*Rename* this step to
+```
+Credit Card delivered
+```
+9.	*Drop down* **Events**, *select*
+```
+com.easytrade.update-credit-card-status.delivered
+```
 
 ### 3.4 Adding Configuration and KPI’s
-1.	At the top, *click* '**Settings**'
-2.	*Change* **Select event** to '**com.easytrade.order-credit-card**'
-3.	*Change* *correrlation ID* to '**orderId**'
+1.	At the top right, in Global Settings change **Correlation ID** to:
+```
+orderId
+```
+3.	*Change* **Mapping event** to:
+```
+com.easytrade.order-credit-card-status.created
+```
+4.	*Change* **Mapping Attribute** to:
+```
+revenue
+```
 
 **View the Business Flow in the instructor's environment**
