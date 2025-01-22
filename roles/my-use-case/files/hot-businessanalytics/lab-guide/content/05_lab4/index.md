@@ -3,7 +3,7 @@ In this hands-on, we’ll be setting up this process using some existing buildin
 
 ### 4.1 Choosing when your Workflow will run
 1.	Using the “**App drawer**” in the top-left of the screen (or the search) – *find* the **“Workflow”** app and *open* it.
-2.	*Choose* “**Create a Workflow**” in the top-right and you should see the view shown on the screen.
+2.	*Choose* “**+ Workflow**” in the top-right and you should see the view shown on the screen.
 3.	The first thing to do is *choose* **when this Workflow will run** – for the purpose of this exercise we will *choose* the “**On demand**” trigger at the bottom, so it will *only* be executed when you hit “**Run**".
 
 ### 4.2 Querying the failed Order IDs
