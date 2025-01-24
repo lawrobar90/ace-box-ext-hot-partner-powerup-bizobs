@@ -1,4 +1,4 @@
-## Verify Set-Up
+## Verify setup
 
 Before we begin, let's verify that you can access the application. 
 

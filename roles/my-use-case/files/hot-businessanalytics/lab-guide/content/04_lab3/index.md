@@ -1,4 +1,5 @@
-## Lab 3: Creating a Business Flow
+## Lab 3: how to visualize business insights
+
 This lab will help you understand what business analytics is trying to achieve for an end goal.
 
 ### 3.1 Creating your Business Flow
