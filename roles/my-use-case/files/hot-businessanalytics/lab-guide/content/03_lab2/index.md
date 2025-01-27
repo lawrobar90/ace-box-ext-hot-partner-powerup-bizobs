@@ -41,7 +41,7 @@ This lab will show you how to configure event ingestion.
     - Edit the environment ID 
             <PASTE ENV ID HERE>
 
-    - Paste the token in the “Authorization” field
+    - Paste the token in the “Authorization” field - Make sure to keep "API-Token" and just replace the token
             <PASTE TOKEN HERE> 
 
 6. **Run the workflow** 
