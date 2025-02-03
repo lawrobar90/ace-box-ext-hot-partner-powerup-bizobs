@@ -191,7 +191,7 @@ event.type=="asset-purchase"
 ##### Validate new attribute
 1.	From the menu, *open* "**Notebooks**"
 2.	*Click* on the "**+**" to add a new section
-3.	*Click* on "**Query Grail**"
+3.	*Click* on "**DQL**"
 4.	*Copy* and *paste* the **query**:
 
 ```
@@ -203,7 +203,7 @@ fetch bizevents
 ##### Validate metric
 
 1.	*Click* on the "**+**" to add a new section
-2.	*Click* on "**Query Grail**"
+2.	*Click* on "**DQL**"
 3.	*Copy* and *paste* the **query**:
 
 ```
