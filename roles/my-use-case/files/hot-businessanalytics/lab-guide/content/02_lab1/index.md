@@ -5,7 +5,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 ### 1.1 OneAgent rule Configuration
 
 ##### Configure
-1.	*Open* "**Settings**"
+1.	*Open* "**Settings Classic**"
 2.	*Open* "**Business Analytics**" menu group
 3.	*Click* on "**OneAgent**"
 4.	*Click* on "**Add new capture rule**"
@@ -72,7 +72,7 @@ amount
 1.	*Open* "**Notebooks**"
 2.	*Create* a **new notebook**
 3.	*Click* on the "**+**" to add a **new section**
-4.	*Click* on "**Query Grail**"
+4.	*Click* on "**DQL**"
 5.	Copy and *paste* the *query*:
 
 ```
