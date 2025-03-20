@@ -4,13 +4,14 @@ This lab will show you how to configure event ingestion.
 
 ### 2.1 Allow outbound connections
 
-1.	*Open* "**Settings Classic**" 
-1.	*Open* the "**Preferences**" menu group
-1.	*Click* on "**Limit outbound connections**"
-1.	*Click* on "**Add item**"
+1. *Open* "**Settings Classic**" 
+1. *Open* the "**Preferences**" menu group
+1. *Click* on "**Limit outbound connections**"
+1. *Click* on "**Add item**"
 1. For **Allow outbound connections**, paste the following rule:
-
-        *.live.dynatrace.com
+      ```
+       *.live.dynatrace.com
+      ```
 1. At the bottom of the screen, click "*Save changes*"
 
 
@@ -47,11 +48,11 @@ This lab will show you how to configure event ingestion.
 
 1.	***Run* the following query:**
 
-```
-fetch bizevents 
-| filter event.provider == "Perform_2025"
-| fields event.type, amount, price
-```
+      ```
+      fetch bizevents 
+      | filter event.provider == "Perform_2025"
+      | fields event.type, amount, price
+      ```
 
 You should see these 3 event types:
 - api-ingest.json
