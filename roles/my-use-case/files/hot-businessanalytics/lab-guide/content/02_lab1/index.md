@@ -76,8 +76,7 @@ amount
 5.	Copy and *paste* the *query*:
 
 ```
-
-fetch bizevents 
+fetch bizevents
 | filter event.type=="asset-purchase"
 ```
 
@@ -95,42 +94,37 @@ Asset purchase
 
 ### 1.4 OpenPipeline Processing Rule Configuration
 
-1.	*Open* "**OpenPipeline**"
-2.	*Click* on "**Business events**" menu group
-3.	*Click* on "**Pipelines**"
-4.	*Open* the "**Asset purchase**" pipeline
-5.	*Open* the "**Processing**" tab
-6.	From the processor dropdown menu, *Select* "**DQL**" 
-7.	*Name* the new processor, *copy* and *paste*:
+1.	*Access* the "**Processing**" tab
+2.	From the processor dropdown menu, *Select* "**DQL**" 
+3.	*Name* the new processor, *copy* and *paste*:
 
 ```
 Calculate revenue
 ```
 
-8.	For "**Matching condition**", leave set to **true**
-9.	For "**DQL processor definition**", *copy* and *paste*:
+4.	For "**Matching condition**", leave set to **true**
+5.	For "**DQL processor definition**", *copy* and *paste*:
 
 ```
-fieldsAdd trading_volume = price*amount 
+fieldsAdd trading_volume = price*amount
 ```
 
 **At the top right of the screen, click "*Save*"**
 
 ### 1.5 OpenPipeline Metric Extraction Configuration
 
-1.	*Open* "**OpenPipeline**"
-2.	*Click* on "**Business events**" menu group
-3.	*Open* "**Asset purchase**" pipeline
-4.	*Click* on "**Metric extraction**"
-5.	*Create* a "**new processor**" that's a "**Value metric**"
-6.	For "**Name**", *copy* and *paste*:
+
+1.	*Open* the "**Asset purchase**" pipeline again
+2.	*Access* the "**Metric extraction**" tab
+3.	*Create* a "**new processor**" that's a "**Value metric**"
+4.	For "**Name**", *copy* and *paste*:
 
 ```
 Calculate revenue
 ```
 
-7.	For "**Matching condition**", *leave* as **true**
-8.	In "**Field extraction**", *copy* and *paste*:
+5.	For "**Matching condition**", *leave* as **true**
+6.	In "**Field extraction**", *copy* and *paste*:
 
 ```
 trading_volume
@@ -139,52 +133,47 @@ trading_volume
 9. For "**Metric key**", *copy* and *paste*:
 
 ```
-easytrade.trading_volume 
+easytrade.trading_volume
 ```
 
 **At the top right of the screen, click "*Save*"**
 
 ### 1.6 OpenPipeline Bucket Assignment Rule Configuration
 
-1.	*Open* "**OpenPipeline**"
-2.	*Click* on "**Business events**" menu group
-3.	*Click* on "**Pipelines**"
-4.	*Open* "**Asset purchase**" pipeline
-5.	*Click* on "**Storage**"
-6.	*Create* a new processor in "**Bucket assignment**"
-7.	For "**Name**", *copy* and *paste*:
+1.	*Open* the "**Asset purchase**" pipeline again
+2.	*Click* on "**Storage**"
+3.	*Create* a new processor in "**Bucket assignment**"
+4.	For "**Name**", *copy* and *paste*:
 
 ```
 Asset Purchase
 ```
 
-8. For "**Matcher**", leave set to "**true**"
-9. For "**Storage**", *Select* "**Business Events**"
+5. For "**Matcher**", leave set to "**true**"
+6. For "**Storage**", *Select* "**Business Events**"
 
 **At the top right of the screen, click "*Save*"**
 
 ### 1.7 OpenPipeline Dynamic Routing
 
-1. *Open* "**OpenPipeline**"
-2. *Click* on "**Business events**" menu group
-3. *Click* on "**Dynamic routing**"
-4. *Create* a *new Dynamic route*
-5. For "**Name**", *copy* and *paste*: 
+1. *Access* the "**Dynamic routing**" tab
+2. *Create* a *new Dynamic route*
+3. For "**Name**", *copy* and *paste*: 
 
 ```
-Asset Purchase 
+Asset Purchase
 ```
 
-6. For "**Matching condition**", *copy* and *paste*:
+4. For "**Matching condition**", *copy* and *paste*:
 
 ```
-event.type=="asset-purchase" 
+event.type=="asset-purchase"
 ```
 
-7. *Select* "**Asset purchase**" pipeline
-8. *Click* "**Add**" 
+5. For "**Pipeline**", *select* "**Asset purchase**"
+6. *Click* "**Add**" 
 
-**At the top right of the screen, click "*Save*"**
+**Just above the table, click "*Save*"**
 
 ### 1.8 Queries
 
@@ -195,8 +184,9 @@ event.type=="asset-purchase"
 4.	*Copy* and *paste* the **query**:
 
 ```
-fetch bizevents 
-| filter event.type == "asset-purchase"
+fetch bizevents
+| filter event.type == "asset-purchase
+| filter isNotNull(trading_volume)
 | fields price, amount, trading_volume
 ```
 
