@@ -4,15 +4,15 @@ In this hands-on, we’ll be setting up this process using some existing buildin
 
 ### 4.1 Choosing when your Workflow will run
 1.	Using the “**App drawer**” in the top-left of the screen (or the search) – *find* the **“Workflow”** app and *open* it.
-2.	*Choose* “**+ Workflow**” in the top-right and you should see the view shown on the screen.
-3.	The first thing to do is *choose* **when this Workflow will run** – for the purpose of this exercise we will *choose* the “**On demand**” trigger at the bottom, so it will *only* be executed when you hit “**Run**".
+1.	*Choose* “**+ Workflow**” in the top-right and you should see the view shown on the screen.
+1.	The first thing to do is *choose* **when this Workflow will run** – for the purpose of this exercise we will *choose* the “**On demand**” trigger at the bottom, so it will *only* be executed when you hit “**Run**".
 
 ### 4.2 Querying the failed Order IDs
 Now that we’ve set when this will run, we can start to add in the rest of the logic!
 
 1.	*Click* the purple “**+**” icon underneath your trigger and you’ll be presented with the options you see on the screen to add new logical “**tasks.**”
-2.	First **“task”** will be to get the **Order IDs** of Customers with an issue getting their Credit Card – so we’ll *choose* the “Execute DQL Query” action which is going to look through the data for these users.
-3.	The DQL query itself will look through the data for the **last hour** for the “**CARD_ERROR**” events that get created – it will then return the contextual information that let’s us take some action, for example the **Order ID** and the **type of error**.
+1.	First **“task”** will be to get the **Order IDs** of Customers with an issue getting their Credit Card – so we’ll *choose* the “Execute DQL Query” action which is going to look through the data for these users.
+1.	The DQL query itself will look through the data for the **last hour** for the “**CARD_ERROR**” events that get created – it will then return the contextual information that let’s us take some action, for example the **Order ID** and the **type of error**.
 
 ```
 fetch bizevents, from:now()-24h
@@ -26,7 +26,7 @@ fetch bizevents, from:now()-24h
 Our previous step will return the **“raw” data** of the errors that users are facing, but because we want to send this in a **Mattermost channel** – we’ll apply some formatting to make it look nice!
 
 1.	Use the purple “**+**” again to *add* another “**task**” and this time *choose* “**Run Javascript**.”
-2.	*Copy* over the **JavaScript** from the lab guide into the “**input**” section that’s opened up on the **right-hand side**. 
+1.	*Copy* over the **JavaScript** from the lab guide into the “**input**” section that’s opened up on the **right-hand side**. 
 
 ```JavaScript
 // optional import of sdk modules 
@@ -67,20 +67,21 @@ The last step now is to *send* the **message** we’ve just created into the Mat
 4.	*Set* the channel to “**Town Square**”
 5.	*Hit* “**Save**,” and make a *copy* of the **URL** that it provides.
 6.	In Dynatrace, head to the "**Settings Classic**" app and navigate to "**Preferences**" > "**Limit outbound connections.**"
-7.	Choose the option to "**Add item**" and add in the "**domain**" part of the URL from Mattermost. For example from "https://mattermost.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.dynatrace.training/hooks/xxxxxxxxxxxxxxxxxxxxxxxxxx" take "mattermost.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.dynatrace.training"
+7.	Choose the option to "**Add item**" and add in the "**domain**" part of the URL from Mattermost.
+   - The end value should only have "mattermost.xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.dynatrace.training"
 8.	Back in your Workflow, *Click* the purple “**+**” to add a new “**task**”
 9.	*Choose* the “**HTTP Request**" task
-10.	*Change* the request type to “**POST**” and in the “**URL**” box enter the URL that was just generated in Mattermost.
-11.	For the **body** of the request, *enter* the **value below** so that it will send in the message we created in the JavaScript step:
+10.	*Change* the request type to "**POST**"
+11. For the "**URL**" box enter the URL that was just generated in Mattermost.
+12.	For the **payload** of the request, *enter* the **value below** so that it will send in the message we created in the JavaScript step:
 
 ```
 {
   "text": "{{result("run_javascript_1") }}"
 }
 ```
-
-10.	"**Save**" your progress at the top of the screen
-11.	Under “**Settings**” at the top, *enable* “**Workflow admin**.”
+13.	"**Save**" your progress at the top of the screen
+14.	Under “**Settings**” at the top, *enable* “**Workflow admin**.”
 
 ### 4.5 Run the Workflow
 1.	*Hit* the “**Run**” button at the top of the screen and your Workflow should run successfully! Keep an eye on the **Mattermost channel** for the “**name**” that you entered in the JavaScript step which will indicate that your message was properly received.
