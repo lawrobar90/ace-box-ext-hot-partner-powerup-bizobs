@@ -176,7 +176,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 
       ```
       fetch bizevents
-      | filter event.type == "asset-purchase
+      | filter event.type == "asset-purchase"
       | filter isNotNull(trading_volume)
       | fields price, amount, trading_volume
       ```
@@ -188,7 +188,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	*Copy* and *paste* the **query**:
 
       ```
-      timeseries avg(bizevents.easytrade.trading_volume)
+      timeseries avg(easytrade.trading_volume)
       ```
 
 1.	*Click* on "**Run query**"
