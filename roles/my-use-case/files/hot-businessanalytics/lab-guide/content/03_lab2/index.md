@@ -51,7 +51,7 @@ This lab will show you how to configure event ingestion.
 
       ```
       fetch bizevents 
-      | filter event.provider == "online-website"
+      | filter event.provider == "com.dynatrace.perform"
       | fields event.type, amount, price
       ```
 
