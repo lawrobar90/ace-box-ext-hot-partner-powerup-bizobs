@@ -3,23 +3,23 @@
 This lab will help you understand what business analytics is trying to achieve for an end goal.
 
 ### 3.1 Creating your Business Flow
-1.	*Open* the **Business Flow** app
-1.	*Click* '**+ Business Flow**'
-1. *Click* on the pencil icon next to "Configuration"
-1. For "Name", copy and paste:
+1. *Open* the **Business Flow** app
+1. *Click* '**+ New Flow**'
+1. *Click* on the title to change its name to:
       ```
       Credit Card order
       ```
-1. Click on "Save"
 1. At the right of the screen, see the title "Step 1" and click on it
-1.	*Rename* the step to:
+1. *Rename* the step to:
       ```
       Order Credit Card
       ```
-1.	For the **Events** dropdown, *select*:
+1. Click "Add Event"
+1. For the **Events** dropdown, *select*:
       ```
       com.easytrade.order-credit-card
       ```
+1. Click "Save changes"
 
 ### 3.2 Adding Subsequent Steps
 1. At the center of the screen, hover over the "Order Credit Card" step
