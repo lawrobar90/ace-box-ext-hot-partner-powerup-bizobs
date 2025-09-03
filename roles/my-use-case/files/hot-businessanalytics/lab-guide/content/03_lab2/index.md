@@ -40,6 +40,7 @@ This lab will show you how to configure event ingestion.
 1. Do the following for each of the three actions: "json", "cloudevent" and "cloudevent_batch"
     - For the "URL" value, edit where you see `<PASTE ENV ID HERE>` and paste your Dynatrace Environment ID 
     - For the "authorization" header value, edit where you see `<PASTE TOKEN HERE>` and paste your token (make sure you keep "Api-Token " before it)
+1. Click "Deploy"
 1. Click "Run"
 2. Click "Save & Run"
 3. Click "Allow & Run"
