@@ -12,7 +12,7 @@ Now that we’ve set when this will run, we can start to add in the rest of the 
 
 1.	*Click* the purple “**+**” icon underneath your trigger and you’ll be presented with the options you see on the screen to add new logical “**tasks.**”
 1.	First **“task”** will be to get the **Order IDs** of Customers with an issue getting their Credit Card – so we’ll *choose* the “Execute DQL Query” action which is going to look through the data for these users.
-1.	The DQL query itself will look through the data for the **last hour** for the “**CARD_ERROR**” events that get created – it will then return the contextual information that let’s us take some action, for example the **Order ID** and the **type of error**.
+1.	The DQL query itself will look through the data for the “**CARD_ERROR**” events that get created – it will then return the contextual information that let’s us take some action, for example the **Order ID** and the **type of error**.
 
 ```
 fetch bizevents, from:now()-24h
