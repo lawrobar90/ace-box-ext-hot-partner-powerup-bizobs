@@ -51,7 +51,7 @@ This lab will show you how to configure event ingestion.
 
       ```
       fetch bizevents 
-      | filter event.provider == "Perform_2025"
+      | filter event.provider == "online-website"
       | fields event.type, amount, price
       ```
 
