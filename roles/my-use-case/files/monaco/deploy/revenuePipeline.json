@@ -91,8 +91,8 @@
             "editable": true,
             "id": "processor_Add_Revenue_3043",
             "description": "Add Revenue",
-            "matcher": "matchesphrase(event.category, \"/v1/orders/\")\nand event.provider == \"www.easytrade.com\"",
-            "sampleData": "{\n      \"timestamp\": \"2024-12-30T09:31:53.723000000Z\",\n      \"details\": \"{\\\"shippingId\\\":\\\"81d04680-efc1-42ff-bfa0-3517d11b826c\\\"}\",\n      \"dt.entity.host\": \"HOST-69484F97FCD0172C\",\n      \"dt.entity.host_group\": \"HOST_GROUP-5A6C652D2B4086FC\",\n      \"dt.entity.process_group\": \"PROCESS_GROUP-F66EC5BB835FA075\",\n      \"dt.entity.process_group_instance\": \"PROCESS_GROUP_INSTANCE-3AD5576F3639A044\",\n      \"dt.host_group.id\": \"ace-box\",\n      \"dt.openpipeline.pipelines\": [\n        \"bizevents:default\"\n      ],\n      \"dt.openpipeline.source\": \"oneagent\",\n      \"event.category\": \"/v1/orders/b32a9245-a8ac-4c26-97a1-f8ea6549280a/status\",\n      \"event.id\": \"6BS1TZmgStVYpw_wN6-Lc\",\n      \"event.kind\": \"BIZ_EVENT\",\n      \"event.provider\": \"www.easytrade.com\",\n      \"event.type\": \"com.easytrade.update-credit-card-status.shipped\",\n      \"orderId\": \"b32a9245-a8ac-4c26-97a1-f8ea6549280a\",\n      \"span_id\": \"53672bf66bf9d02c\",\n      \"trace_id\": \"2120183dca17497b56d134ca7070edbf\",\n      \"trace_sampled\": \"true\",\n      \"traceparent\": \"00-2120183dca17497b56d134ca7070edbf-53672bf66bf9d02c-01\",\n      \"type\": \"CARD_SHIPPED\"\n    }",
+            "matcher": "matchesphrase(event.category, \"/api/step\")\nand event.provider == \"www.partner-powerup-bizobs.com\"",
+            "sampleData": "{\n      \"timestamp\": \"2024-12-30T09:31:53.723000000Z\",\n      \"details\": \"{\\\"shippingId\\\":\\\"81d04680-efc1-42ff-bfa0-3517d11b826c\\\"}\",\n      \"dt.entity.host\": \"HOST-69484F97FCD0172C\",\n      \"dt.entity.host_group\": \"HOST_GROUP-5A6C652D2B4086FC\",\n      \"dt.entity.process_group\": \"PROCESS_GROUP-F66EC5BB835FA075\",\n      \"dt.entity.process_group_instance\": \"PROCESS_GROUP_INSTANCE-3AD5576F3639A044\",\n      \"dt.host_group.id\": \"ace-box\",\n      \"dt.openpipeline.pipelines\": [\n        \"bizevents:default\"\n      ],\n      \"dt.openpipeline.source\": \"oneagent\",\n      \"event.category\": \"/api/step1/b32a9245-a8ac-4c26-97a1-f8ea6549280a\",\n      \"event.id\": \"6BS1TZmgStVYpw_wN6-Lc\",\n      \"event.kind\": \"BIZ_EVENT\",\n      \"event.provider\": \"www.partner-powerup-bizobs.com\",\n      \"event.type\": \"com.partner-powerup-bizobs.step-completed\",\n      \"orderId\": \"b32a9245-a8ac-4c26-97a1-f8ea6549280a\",\n      \"span_id\": \"53672bf66bf9d02c\",\n      \"trace_id\": \"2120183dca17497b56d134ca7070edbf\",\n      \"trace_sampled\": \"true\",\n      \"traceparent\": \"00-2120183dca17497b56d134ca7070edbf-53672bf66bf9d02c-01\",\n      \"type\": \"STEP_COMPLETED\"\n    }",
             "dqlScript": "fieldsAdd revenue = round(random()*1000)"
           }
         ]
@@ -141,7 +141,7 @@
         "editable": true,
         "builtin": false,
         "pipelineId": "pipeline_Revenue_Pipeline_4953",
-        "matcher": "matchesphrase(event.category, \"/v1/orders/\")\nand event.provider == \"www.easytrade.com\"",
+        "matcher": "matchesphrase(event.category, \"/api/step\")\nand event.provider == \"www.partner-powerup-bizobs.com\"",
         "note": "BizEvent Revenue"
       }
     ]

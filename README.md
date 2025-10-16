@@ -1,8 +1,16 @@
-# ace-box-ext-template
+# Partner PowerUp BizObs - ACE-Box Extension
 
 ## Description
 
-The `ace-box-ext-template` provides a template structure and examples of how to create a custom [ACE-Box](https://github.com/Dynatrace/ace-box) use case.
+This ACE-Box extension replaces the EasyTrade application with the **Partner PowerUp BizObs** application - a comprehensive customer journey analytics simulation tool. The application runs directly on EC2 instances without containerization, providing business analytics capabilities across multiple industries.
+
+### Key Features
+- **Customer Journey Simulation**: Multi-step journey analytics with configurable templates
+- **Industry Templates**: Pre-built scenarios for retail, banking, eCommerce, and healthcare
+- **Dynamic Microservices**: 6-step service architecture (Step1Service - Step6Service)  
+- **Real-time Analytics**: Business metrics, KPIs, and journey completion tracking
+- **Dynatrace Integration**: Custom business events and monitoring integration
+- **EC2 Native Deployment**: Direct deployment with systemd services and nginx proxy
 
 ## Version and compatibility
 

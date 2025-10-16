@@ -1,0 +1,47 @@
+{
+  "enabled": true,
+  "eventType": "com.partner-powerup-bizobs.step4-completed",
+  "eventProvider": {
+    "source": "constant",
+    "value": "www.partner-powerup-bizobs.com"
+  },
+  "rule": [
+    {
+      "matcher": "REQUEST_PATH",
+      "operator": "EQUALS",
+      "value": "/api/step4"
+    }
+  ],
+  "event": [
+    {
+      "attribute": "stepId",
+      "source": "requestPath",
+      "parameter": 2
+    },
+    {
+      "attribute": "customerId", 
+      "source": "requestBody",
+      "jsonPath": "$.customerId"
+    },
+    {
+      "attribute": "journeyId",
+      "source": "requestBody", 
+      "jsonPath": "$.journeyId"
+    },
+    {
+      "attribute": "industry",
+      "source": "requestBody",
+      "jsonPath": "$.industry"
+    },
+    {
+      "attribute": "timestamp",
+      "source": "requestBody",
+      "jsonPath": "$.timestamp"
+    },
+    {
+      "attribute": "processingTime",
+      "source": "responseBody",
+      "jsonPath": "$.processingTime"
+    }
+  ]
+}

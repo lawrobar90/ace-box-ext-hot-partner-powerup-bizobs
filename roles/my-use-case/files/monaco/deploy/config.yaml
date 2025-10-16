@@ -8,50 +8,70 @@ configs:
         schema: builtin:container.monitoring-rule
         schemaVersion: 0.0.1
         scope: environment
-  - id: statuscreated
+  - id: step1service
     config:
-      name: "EasyTrade \\[credit\\-card\\-order\\-service | Java\\] \\- POST /v1/orders/\\{id\\}/status:created"
-      template: statuscreated.json
+      name: "Partner PowerUp BizObs \\[step1-service | Node.js\\] \\- POST /api/step1"
+      template: step1service.json
       skip: false
     type:
       settings:
         schema: builtin:bizevents.http.incoming
         scope: environment
 
-  - id: statusdelivered
+  - id: step2service
     config:
-      name: "EasyTrade \\[credit\\-card\\-order\\-service | Java\\] \\- POST /v1/orders/\\{id\\}/status:delivered"
-      template: statusdelivered.json
+      name: "Partner PowerUp BizObs \\[step2-service | Node.js\\] \\- POST /api/step2"
+      template: step2service.json
       skip: false
     type:
       settings:
         schema: builtin:bizevents.http.incoming
         scope: environment
 
-  - id: statuserror
+  - id: step3service
     config:
-      name: "EasyTrade \\[credit\\-card\\-order\\-service | Java\\] \\- POST /v1/orders/\\{id\\}/status:error"
-      template: statuserror.json
+      name: "Partner PowerUp BizObs \\[step3-service | Node.js\\] \\- POST /api/step3"
+      template: step3service.json
       skip: false
     type:
       settings:
         schema: builtin:bizevents.http.incoming
         scope: environment
 
-  - id: statusshipped
+  - id: step4service
     config:
-      name: "EasyTrade \\[credit\\-card\\-order\\-service | Java\\] \\- POST /v1/orders/\\{id\\}/status:shipped"
-      template: statusshipped.json
+      name: "Partner PowerUp BizObs \\[step4-service | Node.js\\] \\- POST /api/step4"
+      template: step4service.json
       skip: false
     type:
       settings:
         schema: builtin:bizevents.http.incoming
         scope: environment
 
-  - id: v1Orders
+  - id: step5service
     config:
-      name: "EasyTrade \\[credit\\-card\\-order\\-service | Java\\] \\- POST /v1/orders"
-      template: v1Orders.json
+      name: "Partner PowerUp BizObs \\[step5-service | Node.js\\] \\- POST /api/step5"
+      template: step5service.json
+      skip: false
+    type:
+      settings:
+        schema: builtin:bizevents.http.incoming
+        scope: environment
+
+  - id: step6service
+    config:
+      name: "Partner PowerUp BizObs \\[step6-service | Node.js\\] \\- POST /api/step6"
+      template: step6service.json
+      skip: false
+    type:
+      settings:
+        schema: builtin:bizevents.http.incoming
+        scope: environment
+
+  - id: customerjourney
+    config:
+      name: "Partner PowerUp BizObs \\[customer-journey | Node.js\\] \\- POST /api/journey/start"
+      template: customerjourney.json
       skip: false
     type:
       settings:

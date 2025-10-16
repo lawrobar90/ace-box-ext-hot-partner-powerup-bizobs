@@ -111,17 +111,8 @@
       DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint }}"
 
 - include_role:
-    name: k3s
-
-- include_role:
-    name: dt-operator
-  vars:
-    operator_mode: "classicFullStack"  
-    dt_operator_release: "v1.3.2"
-    log_monitoring: "notfluentbit"
-
-- include_role:
-    name: app-easytrade
+    name: app-partner-powerup-bizobs
+    tasks_from: "{{ role_path_abs }}/files/app-partner-powerup-bizobs/tasks/main.yml"
 
 - include_role:
     name: mattermost

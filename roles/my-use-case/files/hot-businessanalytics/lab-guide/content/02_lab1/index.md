@@ -21,7 +21,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	For "**Operator**", *select* "**equals**"
 1.	For "**Value**", *copy* and *paste*:
       ```
-      /v1/trade/long/buy
+      /api/step1
       ```
 
 ##### Configure metadata (provider)
@@ -120,13 +120,13 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	In "**Field extraction**", *copy* and *paste*:
 
       ```
-      trading_volume
+      step_completion
       ```
 
 1. For "**Metric key**", *copy* and *paste*:
 
       ```
-      easytrade.trading_volume
+      bizobs.step_completion
       ```
 
 **At the top right of the screen, click "*Save*"**
@@ -188,7 +188,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	*Copy* and *paste* the **query**:
 
       ```
-      timeseries avg(easytrade.trading_volume)
+      timeseries avg(bizobs.step_completion)
       ```
 
 1.	*Click* on "**Run query**"

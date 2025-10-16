@@ -1,0 +1,57 @@
+{
+  "enabled": true,
+  "eventType": "com.partner-powerup-bizobs.customer-journey-started",
+  "eventProvider": {
+    "source": "constant",
+    "value": "www.partner-powerup-bizobs.com"
+  },
+  "rule": [
+    {
+      "matcher": "REQUEST_PATH",
+      "operator": "EQUALS",
+      "value": "/api/journey/start"
+    }
+  ],
+  "event": [
+    {
+      "attribute": "journeyId",
+      "source": "responseBody", 
+      "jsonPath": "$.journeyId"
+    },
+    {
+      "attribute": "customerId", 
+      "source": "requestBody",
+      "jsonPath": "$.customerId"
+    },
+    {
+      "attribute": "industry",
+      "source": "requestBody",
+      "jsonPath": "$.industry"
+    },
+    {
+      "attribute": "template",
+      "source": "requestBody",
+      "jsonPath": "$.template"
+    },
+    {
+      "attribute": "concurrentUsers",
+      "source": "requestBody",
+      "jsonPath": "$.concurrentUsers"
+    },
+    {
+      "attribute": "interval",
+      "source": "requestBody",
+      "jsonPath": "$.interval"
+    },
+    {
+      "attribute": "errorRate",
+      "source": "requestBody",
+      "jsonPath": "$.errorRate"
+    },
+    {
+      "attribute": "timestamp",
+      "source": "requestBody",
+      "jsonPath": "$.timestamp"
+    }
+  ]
+}
