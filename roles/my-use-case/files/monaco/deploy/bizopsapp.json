@@ -1,0 +1,31 @@
+{
+  "enabled": true,
+  "eventType": {
+    "source": "requestBody",
+    "value": "data.stepIndex"
+  },
+  "eventProvider": {
+    "source": "requestBody",
+    "value": "data.companyName"
+  },
+  "rule": [
+    {
+      "matcher": "REQUEST_PATH",
+      "operator": "STARTS_WITH",
+      "value": "/"
+    }
+  ],
+  "event": [
+    {
+      "attribute": "rsBody",
+      "source": "responseBody", 
+      "jsonPath": "*"
+    },
+    {
+      "attribute": "rsBody", 
+      "source": "requestBody",
+      "jsonPath": "*"
+    },
+
+  ]
+}
