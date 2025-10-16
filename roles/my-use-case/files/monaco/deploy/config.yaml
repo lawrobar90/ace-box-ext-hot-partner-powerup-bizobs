@@ -9,10 +9,10 @@ configs:
         schemaVersion: 0.0.1
         scope: environment
   
-  - id: customerjourney
+  - id: bizopsapp
     config:
       name: "Partner PowerUp BizObs \\[customer-journey | Node.js\\] \\- POST /api/journey/start"
-      template: customerjourney.json
+      template: bizopsapp.json
       skip: false
     type:
       settings:
