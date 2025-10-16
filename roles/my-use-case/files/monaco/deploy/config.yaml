@@ -39,11 +39,11 @@ configs:
         schema: builtin:oneagent.features
         scope: environment
 
-  - id: openpipeline-revenue-addition
+  - id: capture-rules
     type:
       openpipeline:
         kind: bizevents
     config:
       name: Revenue
-      template: revenuePipeline.json
+      template: capturerules.json
       skip: false
