@@ -8,66 +8,7 @@ configs:
         schema: builtin:container.monitoring-rule
         schemaVersion: 0.0.1
         scope: environment
-  - id: step1service
-    config:
-      name: "Partner PowerUp BizObs \\[step1-service | Node.js\\] \\- POST /api/step1"
-      template: step1service.json
-      skip: false
-    type:
-      settings:
-        schema: builtin:bizevents.http.incoming
-        scope: environment
-
-  - id: step2service
-    config:
-      name: "Partner PowerUp BizObs \\[step2-service | Node.js\\] \\- POST /api/step2"
-      template: step2service.json
-      skip: false
-    type:
-      settings:
-        schema: builtin:bizevents.http.incoming
-        scope: environment
-
-  - id: step3service
-    config:
-      name: "Partner PowerUp BizObs \\[step3-service | Node.js\\] \\- POST /api/step3"
-      template: step3service.json
-      skip: false
-    type:
-      settings:
-        schema: builtin:bizevents.http.incoming
-        scope: environment
-
-  - id: step4service
-    config:
-      name: "Partner PowerUp BizObs \\[step4-service | Node.js\\] \\- POST /api/step4"
-      template: step4service.json
-      skip: false
-    type:
-      settings:
-        schema: builtin:bizevents.http.incoming
-        scope: environment
-
-  - id: step5service
-    config:
-      name: "Partner PowerUp BizObs \\[step5-service | Node.js\\] \\- POST /api/step5"
-      template: step5service.json
-      skip: false
-    type:
-      settings:
-        schema: builtin:bizevents.http.incoming
-        scope: environment
-
-  - id: step6service
-    config:
-      name: "Partner PowerUp BizObs \\[step6-service | Node.js\\] \\- POST /api/step6"
-      template: step6service.json
-      skip: false
-    type:
-      settings:
-        schema: builtin:bizevents.http.incoming
-        scope: environment
-
+  
   - id: customerjourney
     config:
       name: "Partner PowerUp BizObs \\[customer-journey | Node.js\\] \\- POST /api/journey/start"
