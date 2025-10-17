@@ -16,9 +16,9 @@ Now that we’ve set when this will run, we can start to add in the rest of the 
 
 ```
 fetch bizevents, from:now()-24h
-| filter type == "CARD_ERROR"
-| parse details, "JSON:errors"
-| fields orderId, {errors[errorCode], alias:`Error code`}, {errors[errorType], alias:`Error type`}, {errors[errorMessage], alias:`Error message`}
+| filter data.hasError == true
+| parse rsBody, "JSON:errors"
+| fields data.customerId, {errors[stepName], alias:`Step Name`}, {errors[errorType], alias:`Error type`}, {errors[error], alias:`Error message`}
 ```
 
 ### 4.3 Formatting the data to send
@@ -29,26 +29,28 @@ Our previous step will return the **“raw” data** of the errors that users ar
 1.	*Copy* over the **JavaScript** from the lab guide into the “**input**” section that’s opened up on the **right-hand side**. 
 
 ```JavaScript
-// optional import of sdk modules 
-import { execution } from '@dynatrace-sdk/automation-utils'; 
-export default async function ({ execution_id }) { 
-//Enter your details here! 
-//------------------------ 
+// optional import of sdk modules
+import { execution } from '@dynatrace-sdk/automation-utils';
+export default async function ({ execution_id }) {
+//Enter your details here!
+//------------------------
 const yourName = "Test user";
-const dqlStepName = "execute_dql_query_1"; 
-//Get the result of the previous step running DQL 
-const r = await 
-fetch(`/platform/automation/v1/executions/${execution_id}/tasks/${dqlStepName}/result`); 
-//Get the content being returned in a variable called "body" 
-const body = await r.json(); 
-//Extract the list of orders affected by errors - "records" is the name of the list of results returned 
-const orders = body["records"]; 
-//Loop through the orders and format nicely to send to Mattermost 
-var niceOutput = ":warning: [" + yourName + "] Orders failing to update credit card: \n"; 
-orders.forEach((order) =>  niceOutput = niceOutput + "\n" + ":credit_card: [*Order ID*]: " + order['orderId'] + ", :1234: [*Error code*]: " + 
-order['Error code'] + ", :hourglass_flowing_sand: [*Error type*]: " + order['Error type'] + ", :email: [*Error message*]: " + order['Error message'] + "\n"); 
+const dqlStepName = "get_errors_per_customer";
+//Get the result of the previous step running DQL
+const r = await
+fetch(`/platform/automation/v1/executions/${execution_id}/tasks/${dqlStepName}/result`);
+//Get the content being returned in a variable called "body"
+const body = await r.json();
+//Extract the list of orders affected by errors - "records" is the name of the list of results returned
+const orders = body["records"];
+//Loop through the orders and format nicely to send to Mattermost
+//SW New start
+var niceOutput = ":warning: [" + yourName + "] The following Customers had the following problems: \n";
+orders.forEach((order) =>  niceOutput = niceOutput + "\n" + "[*Customer ID*]: " + order['data.customerId'] + ", :1234: [*Step Name*]: " +
+order['Step Name'] + ", :hourglass_flowing_sand: [*Error type*]: " + order['Error type'] + ", :email: [*Error message*]: " + order['Error message'] + "\n");
+//SW New end
 return niceOutput;
-}   
+}
 ```
 
 3.	Near the top is a section titled “**Enter your details here!**” which has 2 values.
