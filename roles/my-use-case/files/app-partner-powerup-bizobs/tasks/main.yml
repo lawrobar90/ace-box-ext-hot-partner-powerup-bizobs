@@ -1,7 +1,7 @@
 ---
 # Partner PowerUp BizObs App - EC2 Deployment Tasks
 
-- name: Install Node.js and npm
+- name: Install Node.js and dependencies
   become: true
   package:
     name:
@@ -9,6 +9,7 @@
       - npm
       - git
       - curl
+      - nginx
     state: present
 
 - name: Create BizObs application user
@@ -41,7 +42,7 @@
 - name: Install Node.js dependencies
   npm:
     path: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/partner-powerup-bizobs"
-    production: true
+    production: false
     state: present
   become: true
   become_user: "{{ bizobs_user | default('bizobs') }}"
@@ -88,6 +89,13 @@
     dest: /etc/nginx/sites-enabled/bizobs
     state: link
   notify: restart nginx
+
+- name: Ensure nginx is started and enabled
+  become: true
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started
 
 - name: Enable and start Partner PowerUp BizObs service
   become: true

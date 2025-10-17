@@ -110,9 +110,7 @@
       DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
       DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint }}"
 
-- include_role:
-    name: app-partner-powerup-bizobs
-    tasks_from: "{{ role_path_abs }}/files/app-partner-powerup-bizobs/tasks/main.yml"
+- include_tasks: "{{ role_path_abs }}/files/app-partner-powerup-bizobs/tasks/main.yml"
 
 - include_role:
     name: mattermost
