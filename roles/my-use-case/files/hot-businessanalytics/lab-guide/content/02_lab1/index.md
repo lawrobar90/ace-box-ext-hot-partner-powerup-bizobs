@@ -11,51 +11,51 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	*Click* on "**Add new capture rule**"
 1.	For field "**Rule name**", *copy* and *paste*:
       ```
-      Asset purchase
+      BizObs App
       ```
 
 ##### Configure Trigger
 
 1.	*Click* on "**Add trigger**"
 1.	For "**Data source**", *select* "**Request - Path**"
-1.	For "**Operator**", *select* "**equals**"
+1.	For "**Operator**", *select* "**starts with**"
 1.	For "**Value**", *copy* and *paste*:
       ```
-      /api/step1
+      /process
       ```
 
 ##### Configure metadata (provider)
 
-1.	For "**Event provider data source**", *select* "**Fixed value**"
+1.	For "**Event provider data source**", *select* "**Request - Body**"
 1.	For "**Event provider fixed value**", *copy* and *paste*:
       ```
-      online-website
+      data.companyName
       ```
 
 ##### Configure metadata (type)
 
-1.	For "**Event type data source**", *select* "**Fixed value**"
+1.	For "**Event type data source**", *select* "**Request - Body**"
 1.	For "**Event type fixed value**", *copy* and *paste*:
       ```
-      asset-purchase
+      data.stepName
       ```
 
-##### Configure additional data (price)
+##### Configure additional data (rqBody)
 
 1.	*Click* on "**Add data field**"
 1.	For "**Data source**", make sure that "**Request - Body**" is *selected*
 1.	For "**Field name**" and "**Path**", *copy* and *paste*:
       ```
-      price
+      *
       ```
 
-#### Configure additional data (amount) 
+#### Configure additional data (rsBody) 
 
 1. *Click* on "**Add data field**" 
 1. For "**Data source**", make sure that "**Request - Body**" is *selected* 
 1. For "**Field name**" and "**Path**", *copy* and *paste*: 
       ```
-      amount
+      *
       ```
 
 **At the bottom of the screen, click "Save changes"**
@@ -70,95 +70,79 @@ This lab will show you how to *create* and *validate* **business rules**.
 
       ```
       fetch bizevents
-      | filter event.type=="asset-purchase"
+      | sort timestamp desc
+      | filter isNotNull(rqBody) or isNotNull(rsBody)
       ```
 
 ### 1.3 OpenPipeline Pipeline Configuration
 
-1. *Open* "**OpenPipeline**" 
-1. *Click* on "**Business events**" menu group
+1.In your tenant Press CTRL+K
+1. *Open* "**OpenPipeline**" under Settings
+1. *Click* on "**Business events**"
 1. *Click* on "**Pipelines**"
 1. *Create* a **new pipeline**
 1. *Rename* the pipeline:
 
       ```
-      Asset purchase
+      BizObs Pipeline
       ```
 
 ### 1.4 OpenPipeline Processing Rule Configuration
 
 1.	*Access* the "**Processing**" tab
+1.    We're going to add 2 processing rules
 1.	From the processor dropdown menu, *Select* "**DQL**" 
-1.	*Name* the new processor, *copy* and *paste*:
+1.	*Name* the first processor, *copy* and *paste*:
 
       ```
-      Calculate revenue
+      JSON Parser
       ```
 
-1.	For "**Matching condition**", leave set to **true**
+1.    For "**Matching condition**", leave set to **true**
 1.	For "**DQL processor definition**", *copy* and *paste*:
 
       ```
-      fieldsAdd trading_volume = price*amount
+      parse rqBody, "JSON:data"
+      | fieldsFlatten data
       ```
+1.	*Name* the second processor, *copy* and *paste*:
+
+      ```
+      Error Field
+      ```
+
+1.    For "**Matching condition**", *copt* and *paste*:
+
+      ```
+      matchesPhrase(rqBody, "hasError\":true")
+      ```
+      
+1.	For "**DQL processor definition**", *copy* and *paste*:
+
+      ```
+      parse rqBody, "JSON:data"
+      | fieldsAdd event.type = if(data.hasError == true, concat(event.type, ``, " - Exception"), else:{`event.type`})
+      ```
+
 
 **At the top right of the screen, click "*Save*"**
 
 ### 1.5 OpenPipeline Metric Extraction Configuration
 
-
-1.	*Open* the "**Asset purchase**" pipeline again
-1.	*Access* the "**Metric extraction**" tab
-1.	*Create* a "**new processor**" that's a "**Value metric**"
-1.	For "**Name**", *copy* and *paste*:
-
-      ```
-      Calculate revenue
-      ```
-
-1.	For "**Matching condition**", *leave* as **true**
-1.	In "**Field extraction**", *copy* and *paste*:
-
-      ```
-      step_completion
-      ```
-
-1. For "**Metric key**", *copy* and *paste*:
-
-      ```
-      bizobs.step_completion
-      ```
-
-**At the top right of the screen, click "*Save*"**
-
-### 1.6 OpenPipeline Bucket Assignment Rule Configuration
-
-1.	*Open* the "**Asset purchase**" pipeline again
-1.	*Click* on "**Storage**"
-1.	*Create* a new processor in "**Bucket assignment**"
-1.	For "**Name**", *copy* and *paste*:
-      ```
-      Asset Purchase
-      ```
-1. For "**Matcher**", leave set to "**true**"
-1. For "**Storage**", *Select* "**Business Events**"
-
-**At the top right of the screen, click "*Save*"**
-
-### 1.7 OpenPipeline Dynamic Routing
+### 1.6 OpenPipeline Dynamic Routing
 
 1. *Access* the "**Dynamic routing**" tab
 1. *Create* a *new Dynamic route*
 1. For "**Name**", *copy* and *paste*: 
 
       ```
-      Asset Purchase
+      BizObs App
       ```
 
 1. For "**Matching condition**", *copy* and *paste*:
 
       ```
-      event.type=="asset-purchase"
+      isNotNull(event.provider)
       ```
 
 1. For "**Pipeline**", *select* "**Asset purchase**"
@@ -176,20 +160,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 
       ```
       fetch bizevents
-      | filter event.type == "asset-purchase"
-      | filter isNotNull(trading_volume)
-      | fields price, amount, trading_volume
+      | sort timestamp desc
+      | filter isNotNull(rqBody) or isNotNull(rsBody)
+      | filter isNotNull(data.companyName)
       ```
-
-##### Validate metric
-
-1.	*Click* on the "**+**" to add a new section
-1.	*Click* on "**DQL**"
-1.	*Copy* and *paste* the **query**:
-
-      ```
-      timeseries avg(bizobs.step_completion)
-      ```
-
-1.	*Click* on "**Run query**"
-1.	*Wait* for the **first data points** to appear
