@@ -127,37 +127,6 @@
     name: dashboard
 
 # Partner PowerUp BizObs App - Download, Install Dependencies, Start
-- name: Download Partner PowerUp BizObs App Repository
-  ansible.builtin.git:
-    repo: "https://github.com/lawrobar90/Partner-PowerUp-BizObs-App.git"
-    dest: "/home/{{ ansible_user }}/partner-powerup-bizobs"
-    version: main
-    force: yes
-  become: true
-  become_user: "{{ ansible_user }}"
-
-- name: Install Dependencies
-  ansible.builtin.shell: npm install
-  args:
-    chdir: "/home/{{ ansible_user }}/partner-powerup-bizobs"
-  become: true
-  become_user: "{{ ansible_user }}"
-  register: install_result
-
-- name: Display install results
-  debug:
-    var: install_result.stdout_lines
-  when: install_result is defined
-
 - name: Start Application
   ansible.builtin.shell: /bin/sh ./start-server.sh
-  args:
-    chdir: "/home/{{ ansible_user }}/partner-powerup-bizobs"
   become: true
-  become_user: "{{ ansible_user }}"
-  register: start_result
-
-- name: Display start results
-  debug:
-    var: start_result.stdout_lines
-  when: start_result is defined
