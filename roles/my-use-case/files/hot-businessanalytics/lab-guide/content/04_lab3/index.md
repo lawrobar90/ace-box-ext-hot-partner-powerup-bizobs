@@ -2,6 +2,21 @@
 
 This lab will help you understand what business analytics is trying to achieve for an end goal.
 
+### 3.0 Pre-req Testing
+1.	*Open* "**Notebooks**"
+1.	*Create* a **new notebook**
+1.	*Click* on the "**+**" to add a **new section**
+1.	*Click* on "**DQL**"
+1.	Copy and *paste* the *query*:
+
+      ```
+      fetch bizevents
+      | sort timestamp desc
+      | filter isNotNull(rqBody) or isNotNull(rsBody)
+      | summarize count(), by:{data.stepName, data.stepIndex}
+      | sort data.stepIndex asc
+      ```
+
 ### 3.1 Creating your Business Flow
 1. *Open* the **Business Flow** app
 1. *Click* '**+ New Flow**'
