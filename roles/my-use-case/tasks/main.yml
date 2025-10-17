@@ -111,9 +111,6 @@
       DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint }}"
 
 - include_role:
-    name: k3s
-
-- include_role:
     name: dt-operator
   vars:
     operator_mode: "classicFullStack"  
