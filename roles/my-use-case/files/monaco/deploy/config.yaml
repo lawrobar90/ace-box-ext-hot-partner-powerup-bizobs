@@ -29,16 +29,6 @@ configs:
         schema: builtin:oneagent.features
         scope: environment
 
-  - id: holistic-api-service-naming
-    config:
-      name: "Holistic API Rules"
-      template: service-naming-rule.json
-      skip: false
-    type:
-      settings:
-        schema: builtin:service.naming
-        scope: environment
-
   - id: bizobstemplate
     type:
       openpipeline:
