@@ -113,6 +113,26 @@
 - include_role:
     name: dt-oneagent-classic
 
+# Install Helm for Kubernetes package management
+- name: Download Helm installer script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    dest: /tmp/get_helm.sh
+    mode: '0700'
+  become: true
+
+- name: Install Helm
+  ansible.builtin.shell: /tmp/get_helm.sh
+  become: true
+
+- name: Verify Helm installation
+  ansible.builtin.command: helm version --short
+  register: helm_version
+
+- name: Display Helm version
+  debug:
+    msg: "Helm installed successfully: {{ helm_version.stdout }}"
+
 - include_role:
     name: mattermost
 

@@ -1,206 +1,9 @@
-10/24/2025, 3:01:43 PM	2025-10-24 14:01:37 [INFO] Completed all module acebox userdata execution commands.
-10/24/2025, 3:01:38 PM	subprocess.CalledProcessError: Command 'ANSIBLE_COLLECTIONS_PATH=/home/dt_training/.ansible/collections ansible-playbook ace_box.ace_box.main_v2 --extra-vars '{"ace_box_user": "dt_training", "ace_config_file_path": "/home/dt_training/.ace/ace.config.yml", "use_case_ext_src": "https://GITHUB_USER:GITHUB_TOKEN@github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs.git", "use_case_ext_version": "main", "local": false}' --tags "use_case_ext"' returned non-zero exit status 2.
-10/24/2025, 3:01:38 PM	2025-10-24 14:01:37 [FATAL] ACE-Box usecase deployment has failed due to 'ace enable' completing with a non-zero exit code. See ACE-Box logs for additional information.
-10/24/2025, 3:01:38 PM	2025-10-24 14:01:37 [INFO] ACE-Box dashboard role not detected - skipping URL display
-10/24/2025, 3:01:38 PM	2025-10-24 14:00:21 [INFO] Cloning and initializing Ace-Box
-10/24/2025, 3:01:38 PM	2025-10-24 14:00:25 [INFO] Command 'sudo -u dt_training cp -RT /tmp/ace-box/user-skel/ /home/dt_training' completed successfully
-10/24/2025, 3:01:38 PM	2025-10-24 14:00:25 [INFO] Command 'chmod +x /home/dt_training/init.sh' completed successfully
-10/24/2025, 3:01:38 PM	2025-10-24 14:00:25 [INFO] Command 'rm -rf /tmp/ace-box' completed successfully
-10/24/2025, 3:01:38 PM	2025-10-24 14:01:04 [INFO] Command '/home/dt_training/init.sh' completed successfully
-10/24/2025, 3:01:38 PM	2025-10-24 14:01:04 [INFO] Creating ace prepare command with all extra-vars
-10/24/2025, 3:01:38 PM	2025-10-24 14:01:04 [INFO] Starting ace prepare
-10/24/2025, 3:01:38 PM	2025-10-24 14:01:09 [INFO] Command 'cd /home/dt_training' completed successfully
-10/24/2025, 3:01:38 PM	2025-10-24 14:01:09 [INFO] Running ace enable with external use-case github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs.git
-10/24/2025, 3:01:38 PM	WARNING:root:Warning: --ansible-workdir is deprecated and will be removed in a future version.
-10/24/2025, 3:01:38 PM	[WARNING]: provided hosts list is empty, only localhost is available. Note that
-10/24/2025, 3:01:38 PM	the implicit localhost does not match 'all'
-10/24/2025, 3:01:38 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
- in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/24/2025, 3:01:38 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/24/2025, 3:01:38 PM	v2/tasks/main.yml, line: 30. This feature will be removed in version 2.18. 
-10/24/2025, 3:01:38 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/24/2025, 3:01:38 PM	ansible.cfg.
-10/24/2025, 3:01:38 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
- in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/24/2025, 3:01:38 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/24/2025, 3:01:38 PM	v2/tasks/main.yml, line: 43. This feature will be removed in version 2.18. 
-10/24/2025, 3:01:38 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/24/2025, 3:01:38 PM	ansible.cfg.
-10/24/2025, 3:01:38 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
- in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/24/2025, 3:01:38 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/24/2025, 3:01:38 PM	v2/tasks/main.yml, line: 56. This feature will be removed in version 2.18. 
-10/24/2025, 3:01:38 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/24/2025, 3:01:38 PM	ansible.cfg.
-10/24/2025, 3:01:38 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
- in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/24/2025, 3:01:38 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/24/2025, 3:01:38 PM	v2/tasks/main.yml, line: 69. This feature will be removed in version 2.18. 
-10/24/2025, 3:01:38 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/24/2025, 3:01:38 PM	"ansible.cfg.
+10/24/2025, 4:04:41 PM	"fatal: [localhost]: FAILED! => {""changed"": false, ""msg"": ""Failed to find required executable \""helm\"" in paths: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin""}
 "
-10/24/2025, 3:01:38 PM	"PLAY [Main V2] *****************************************************************
+10/24/2025, 4:04:41 PM	PLAY RECAP *********************************************************************
+10/24/2025, 4:04:41 PM	"localhost                  : ok=68   changed=17   unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
 "
-10/24/2025, 3:01:38 PM	TASK [Gathering Facts] *********************************************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.use-case-ext : Determine use_case_repo_path] *************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.use-case-ext : Create repos directory] *******************
-10/24/2025, 3:01:38 PM	"changed: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.use-case-ext : Clone external use case] ******************
-10/24/2025, 3:01:38 PM	"changed: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.use-case-ext : Synchronize Use Case role] ****************
-10/24/2025, 3:01:38 PM	"changed: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.use-case-ext : Synchronize roles] ************************
-10/24/2025, 3:01:38 PM	"changed: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.use-case-ext : Synchronize var override] *****************
-10/24/2025, 3:01:38 PM	"changed: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.use-case-ext : Source var override] **********************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [include_role : {{ use_case_ext_src | ace_box.ace_box.useCaseExtSrcToName }}] ***
-10/24/2025, 3:01:38 PM	"included: ace-box-ext-hot-partner-powerup-bizobs for localhost
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : set_fact] *******
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [include_role : dt-access-token] ******************************************
-10/24/2025, 3:01:38 PM	"included: dt-access-token for localhost
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [include_role : config-v2] ************************************************
-10/24/2025, 3:01:38 PM	"included: config-v2 for localhost
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/24/2025, 3:01:38 PM	"changed: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [include_role : config-v2] ************************************************
-10/24/2025, 3:01:38 PM	"included: config-v2 for localhost
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/24/2025, 3:01:38 PM	"changed: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Validate required variables for OAuth] ***
-10/24/2025, 3:01:38 PM	"skipping: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Debug OAuth Configuration] ***
-10/24/2025, 3:01:38 PM	"}
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Request a DT OAuth Access Token] ***
-10/24/2025, 3:01:38 PM	"changed: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Set OAuth Access Token] ***
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [Install Biz Flow App] ****************************************************
-10/24/2025, 3:01:38 PM	"included: dt-platform for localhost => (item={'dt_app_id': 'dynatrace.biz.flow', 'dt_app_version': '1.20.3'})
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.dt-platform : Request a DT OAuth access token] ***********
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.dt-platform : set_fact] **********************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.dt-platform : Install app dynatrace.biz.flow] ************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [include_role : monaco-v2] ************************************************
-10/24/2025, 3:01:38 PM	"included: monaco-v2 for localhost
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Download] ***************************
-10/24/2025, 3:01:38 PM	"changed: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [include_role : monaco-v2] ************************************************
-10/24/2025, 3:01:38 PM	"included: monaco-v2 for localhost
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.monaco-v2 : include_tasks] *******************************
-10/24/2025, 3:01:38 PM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/monaco-v2/tasks/ensure-access-token.yml for localhost
-"
-10/24/2025, 3:01:38 PM	TASK [include_role : dt-access-token] ******************************************
-10/24/2025, 3:01:38 PM	"included: dt-access-token for localhost
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [include_role : config-v2] ************************************************
-10/24/2025, 3:01:38 PM	"included: config-v2 for localhost
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/24/2025, 3:01:38 PM	"changed: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [include_role : config-v2] ************************************************
-10/24/2025, 3:01:38 PM	"included: config-v2 for localhost
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/24/2025, 3:01:38 PM	"changed: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/24/2025, 3:01:38 PM	"ok: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/24/2025, 3:01:38 PM	"skipping: [localhost]
-"
-10/24/2025, 3:01:38 PM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Apply Configuration for Project] ****
-10/24/2025, 3:01:38 PM	"fatal: [localhost]: FAILED! => {""changed"": true, ""cmd"": ""/usr/local/bin/monacov2 deploy /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/ace-box-ext-hot-partner-powerup-bizobs/files/monaco/manifest.yml "", ""delta"": ""0:00:15.624609"", ""end"": ""2025-10-24 14:01:37.203891"", ""msg"": ""non-zero return code"", ""rc"": 1, ""start"": ""2025-10-24 14:01:21.579282"", ""stderr"": """", ""stderr_lines"": [], ""stdout"": ""2025-10-24T14:01:21Z\tinfo\tMonaco version 2.16.2\n2025-10-24T14:01:21Z\tinfo\tLoading manifest \""/home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/ace-box-ext-hot-partner-powerup-bizobs/files/monaco/manifest.yml\"". Restrictions: groups=[], environments=[]\n2025-10-24T14:01:21Z\tinfo\tProjects to be deployed (1):\n2025-10-24T14:01:21Z\tinfo\t  - deploy\n2025-10-24T14:01:21Z\tinfo\tEnvironments to deploy to (1):\n2025-10-24T14:01:21Z\tinfo\t  - perform\n2025-10-24T14:01:21Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:22Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:23Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:24Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:25Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:26Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:27Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:28Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:29Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:30Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:31Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:32Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:33Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:34Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:35Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:36Z\twarn\tCould not cache settings values for schema builtin:naming.services: failed to list settings of schema \""builtin:naming.services\"": GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects failed after 15 retries: API request HTTP GET https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects?fields=objectId%2Cvalue%2CexternalId%2CschemaVersion%2CschemaId%2Cscope%2CmodificationInfo&pageSize=500&schemaIds=builtin%3Anaming.services failed with status code 404: {\""error\"":{\""code\"":404,\""message\"":\""Configuration schema builtin:naming.services does not exist.\""}}\n2025-10-24T14:01:36Z\tinfo\tDeploying configurations to environment \""perform\""...\n2025-10-24T14:01:36Z\tinfo\tDeploying 5 independent configuration sets in parallel...\n2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_JAVA_BIZEVENTS_HTTP_INCOMING][gid=1]\tDeploying config\n2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_NODEJS_BIZEVENTS_HTTP_INCOMING][gid=2]\tDeploying config\n2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_DOTNET_BIZEVENTS_HTTP_INCOMING][gid=0]\tDeploying config\n2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:naming.services:holistic-api-service-naming][gid=3]\tDeploying config\n2025-10-24T14:01:36Z\tinfo\t[coord=deploy:openpipeline:bizobstemplate][gid=4]\tDeploying config\n2025-10-24T14:01:36Z\terror\t[coord=deploy:builtin:naming.services:holistic-api-service-naming][gid=3]\tDeployment failed - Dynatrace API rejected HTTP request / JSON data: API request HTTP GET https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/schemas/builtin:naming.services failed with status code 404: {\""error\"":{\""code\"":404,\""message\"":\""SchemaId 'builtin:naming.services' not found\""}}\n2025-10-24T14:01:37Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_DOTNET_BIZEVENTS_HTTP_INCOMING][gid=0]\tDeployment successful\n2025-10-24T14:01:37Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_JAVA_BIZEVENTS_HTTP_INCOMING][gid=1]\tDeployment successful\n2025-10-24T14:01:37Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_NODEJS_BIZEVENTS_HTTP_INCOMING][gid=2]\tDeployment successful\n2025-10-24T14:01:37Z\tinfo\t[coord=deploy:openpipeline:bizobstemplate][gid=4]\tDeployment successful\n2025-10-24T14:01:37Z\terror\tDeployment failed for environment \""perform\"": 1 deployment errors occurred\n2025-10-24T14:01:37Z\terror\tError: Deployment failed - check logs for details: Errors encountered for 1 environment(s):\n\t\""perform\"": 1 deployment errors occurred\n2025-10-24T14:01:37Z\terror\terror logs written to .logs/20251024-140121-errors.log\n2025-10-24T14:01:37Z\tinfo\tA newer version (2.26.1) of Monaco is available! You can download the latest release from here: https://github.com/Dynatrace/dynatrace-configuration-as-code/releases/latest"", ""stdout_lines"": [""2025-10-24T14:01:21Z\tinfo\tMonaco version 2.16.2"", ""2025-10-24T14:01:21Z\tinfo\tLoading manifest \""/home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/ace-box-ext-hot-partner-powerup-bizobs/files/monaco/manifest.yml\"". Restrictions: groups=[], environments=[]"", ""2025-10-24T14:01:21Z\tinfo\tProjects to be deployed (1):"", ""2025-10-24T14:01:21Z\tinfo\t  - deploy"", ""2025-10-24T14:01:21Z\tinfo\tEnvironments to deploy to (1):"", ""2025-10-24T14:01:21Z\tinfo\t  - perform"", ""2025-10-24T14:01:21Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:22Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:23Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:24Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:25Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:26Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:27Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:28Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:29Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:30Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:31Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:32Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:33Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:34Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:35Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:36Z\twarn\tCould not cache settings values for schema builtin:naming.services: failed to list settings of schema \""builtin:naming.services\"": GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects failed after 15 retries: API request HTTP GET https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects?fields=objectId%2Cvalue%2CexternalId%2CschemaVersion%2CschemaId%2Cscope%2CmodificationInfo&pageSize=500&schemaIds=builtin%3Anaming.services failed with status code 404: {\""error\"":{\""code\"":404,\""message\"":\""Configuration schema builtin:naming.services does not exist.\""}}"", ""2025-10-24T14:01:36Z\tinfo\tDeploying configurations to environment \""perform\""..."", ""2025-10-24T14:01:36Z\tinfo\tDeploying 5 independent configuration sets in parallel..."", ""2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_JAVA_BIZEVENTS_HTTP_INCOMING][gid=1]\tDeploying config"", ""2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_NODEJS_BIZEVENTS_HTTP_INCOMING][gid=2]\tDeploying config"", ""2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_DOTNET_BIZEVENTS_HTTP_INCOMING][gid=0]\tDeploying config"", ""2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:naming.services:holistic-api-service-naming][gid=3]\tDeploying config"", ""2025-10-24T14:01:36Z\tinfo\t[coord=deploy:openpipeline:bizobstemplate][gid=4]\tDeploying config"", ""2025-10-24T14:01:36Z\terror\t[coord=deploy:builtin:naming.services:holistic-api-service-naming][gid=3]\tDeployment failed - Dynatrace API rejected HTTP request / JSON data: API request HTTP GET https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/schemas/builtin:naming.services failed with status code 404: {\""error\"":{\""code\"":404,\""message\"":\""SchemaId 'builtin:naming.services' not found\""}}"", ""2025-10-24T14:01:37Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_DOTNET_BIZEVENTS_HTTP_INCOMING][gid=0]\tDeployment successful"", ""2025-10-24T14:01:37Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_JAVA_BIZEVENTS_HTTP_INCOMING][gid=1]\tDeployment successful"", ""2025-10-24T14:01:37Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_NODEJS_BIZEVENTS_HTTP_INCOMING][gid=2]\tDeployment successful"", ""2025-10-24T14:01:37Z\tinfo\t[coord=deploy:openpipeline:bizobstemplate][gid=4]\tDeployment successful"", ""2025-10-24T14:01:37Z\terror\tDeployment failed for environment \""perform\"": 1 deployment errors occurred"", ""2025-10-24T14:01:37Z\terror\tError: Deployment failed - check logs for details: Errors encountered for 1 environment(s):"", ""\t\""perform\"": 1 deployment errors occurred"", ""2025-10-24T14:01:37Z\terror\terror logs written to .logs/20251024-140121-errors.log"", ""2025-10-24T14:01:37Z\tinfo\tA newer version (2.26.1) of Monaco is available! You can download the latest release from here: https://github.com/Dynatrace/dynatrace-configuration-as-code/releases/latest""]}
-"
-10/24/2025, 3:01:38 PM	PLAY RECAP *********************************************************************
-10/24/2025, 3:01:38 PM	"localhost                  : ok=49   changed=11   unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
-"
-10/24/2025, 3:01:38 PM	"Traceback (most recent call last):
+10/24/2025, 4:04:41 PM	"Traceback (most recent call last):
   File ""/usr/local/bin/ace"", line 555, in <module>
     ace(auto_envvar_prefix='ACE')
   File ""/usr/lib/python3/dist-packages/click/core.py"", line 1128, in __call__
@@ -217,12 +20,266 @@
     subprocess.run((
   File ""/usr/lib/python3.10/subprocess.py"", line 526, in run
     raise CalledProcessError(retcode, process.args,"
-10/24/2025, 3:01:37 PM	"fatal: [localhost]: FAILED! => {""changed"": true, ""cmd"": ""/usr/local/bin/monacov2 deploy /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/ace-box-ext-hot-partner-powerup-bizobs/files/monaco/manifest.yml "", ""delta"": ""0:00:15.624609"", ""end"": ""2025-10-24 14:01:37.203891"", ""msg"": ""non-zero return code"", ""rc"": 1, ""start"": ""2025-10-24 14:01:21.579282"", ""stderr"": """", ""stderr_lines"": [], ""stdout"": ""2025-10-24T14:01:21Z\tinfo\tMonaco version 2.16.2\n2025-10-24T14:01:21Z\tinfo\tLoading manifest \""/home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/ace-box-ext-hot-partner-powerup-bizobs/files/monaco/manifest.yml\"". Restrictions: groups=[], environments=[]\n2025-10-24T14:01:21Z\tinfo\tProjects to be deployed (1):\n2025-10-24T14:01:21Z\tinfo\t  - deploy\n2025-10-24T14:01:21Z\tinfo\tEnvironments to deploy to (1):\n2025-10-24T14:01:21Z\tinfo\t  - perform\n2025-10-24T14:01:21Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:22Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:23Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:24Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:25Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:26Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:27Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:28Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:29Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:30Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:31Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:32Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:33Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:34Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:35Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)\n2025-10-24T14:01:36Z\twarn\tCould not cache settings values for schema builtin:naming.services: failed to list settings of schema \""builtin:naming.services\"": GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects failed after 15 retries: API request HTTP GET https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects?fields=objectId%2Cvalue%2CexternalId%2CschemaVersion%2CschemaId%2Cscope%2CmodificationInfo&pageSize=500&schemaIds=builtin%3Anaming.services failed with status code 404: {\""error\"":{\""code\"":404,\""message\"":\""Configuration schema builtin:naming.services does not exist.\""}}\n2025-10-24T14:01:36Z\tinfo\tDeploying configurations to environment \""perform\""...\n2025-10-24T14:01:36Z\tinfo\tDeploying 5 independent configuration sets in parallel...\n2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_JAVA_BIZEVENTS_HTTP_INCOMING][gid=1]\tDeploying config\n2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_NODEJS_BIZEVENTS_HTTP_INCOMING][gid=2]\tDeploying config\n2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_DOTNET_BIZEVENTS_HTTP_INCOMING][gid=0]\tDeploying config\n2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:naming.services:holistic-api-service-naming][gid=3]\tDeploying config\n2025-10-24T14:01:36Z\tinfo\t[coord=deploy:openpipeline:bizobstemplate][gid=4]\tDeploying config\n2025-10-24T14:01:36Z\terror\t[coord=deploy:builtin:naming.services:holistic-api-service-naming][gid=3]\tDeployment failed - Dynatrace API rejected HTTP request / JSON data: API request HTTP GET https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/schemas/builtin:naming.services failed with status code 404: {\""error\"":{\""code\"":404,\""message\"":\""SchemaId 'builtin:naming.services' not found\""}}\n2025-10-24T14:01:37Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_DOTNET_BIZEVENTS_HTTP_INCOMING][gid=0]\tDeployment successful\n2025-10-24T14:01:37Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_JAVA_BIZEVENTS_HTTP_INCOMING][gid=1]\tDeployment successful\n2025-10-24T14:01:37Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_NODEJS_BIZEVENTS_HTTP_INCOMING][gid=2]\tDeployment successful\n2025-10-24T14:01:37Z\tinfo\t[coord=deploy:openpipeline:bizobstemplate][gid=4]\tDeployment successful\n2025-10-24T14:01:37Z\terror\tDeployment failed for environment \""perform\"": 1 deployment errors occurred\n2025-10-24T14:01:37Z\terror\tError: Deployment failed - check logs for details: Errors encountered for 1 environment(s):\n\t\""perform\"": 1 deployment errors occurred\n2025-10-24T14:01:37Z\terror\terror logs written to .logs/20251024-140121-errors.log\n2025-10-24T14:01:37Z\tinfo\tA newer version (2.26.1) of Monaco is available! You can download the latest release from here: https://github.com/Dynatrace/dynatrace-configuration-as-code/releases/latest"", ""stdout_lines"": [""2025-10-24T14:01:21Z\tinfo\tMonaco version 2.16.2"", ""2025-10-24T14:01:21Z\tinfo\tLoading manifest \""/home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/ace-box-ext-hot-partner-powerup-bizobs/files/monaco/manifest.yml\"". Restrictions: groups=[], environments=[]"", ""2025-10-24T14:01:21Z\tinfo\tProjects to be deployed (1):"", ""2025-10-24T14:01:21Z\tinfo\t  - deploy"", ""2025-10-24T14:01:21Z\tinfo\tEnvironments to deploy to (1):"", ""2025-10-24T14:01:21Z\tinfo\t  - perform"", ""2025-10-24T14:01:21Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:22Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:23Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:24Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:25Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:26Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:27Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:28Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:29Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:30Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:31Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:32Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:33Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:34Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:35Z\twarn\tRetrying failed GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects (HTTP 404)"", ""2025-10-24T14:01:36Z\twarn\tCould not cache settings values for schema builtin:naming.services: failed to list settings of schema \""builtin:naming.services\"": GET request https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects failed after 15 retries: API request HTTP GET https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/objects?fields=objectId%2Cvalue%2CexternalId%2CschemaVersion%2CschemaId%2Cscope%2CmodificationInfo&pageSize=500&schemaIds=builtin%3Anaming.services failed with status code 404: {\""error\"":{\""code\"":404,\""message\"":\""Configuration schema builtin:naming.services does not exist.\""}}"", ""2025-10-24T14:01:36Z\tinfo\tDeploying configurations to environment \""perform\""..."", ""2025-10-24T14:01:36Z\tinfo\tDeploying 5 independent configuration sets in parallel..."", ""2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_JAVA_BIZEVENTS_HTTP_INCOMING][gid=1]\tDeploying config"", ""2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_NODEJS_BIZEVENTS_HTTP_INCOMING][gid=2]\tDeploying config"", ""2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_DOTNET_BIZEVENTS_HTTP_INCOMING][gid=0]\tDeploying config"", ""2025-10-24T14:01:36Z\tinfo\t[coord=deploy:builtin:naming.services:holistic-api-service-naming][gid=3]\tDeploying config"", ""2025-10-24T14:01:36Z\tinfo\t[coord=deploy:openpipeline:bizobstemplate][gid=4]\tDeploying config"", ""2025-10-24T14:01:36Z\terror\t[coord=deploy:builtin:naming.services:holistic-api-service-naming][gid=3]\tDeployment failed - Dynatrace API rejected HTTP request / JSON data: API request HTTP GET https://pie61582.apps.dynatrace.com/platform/classic/environment-api/v2/settings/schemas/builtin:naming.services failed with status code 404: {\""error\"":{\""code\"":404,\""message\"":\""SchemaId 'builtin:naming.services' not found\""}}"", ""2025-10-24T14:01:37Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_DOTNET_BIZEVENTS_HTTP_INCOMING][gid=0]\tDeployment successful"", ""2025-10-24T14:01:37Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_JAVA_BIZEVENTS_HTTP_INCOMING][gid=1]\tDeployment successful"", ""2025-10-24T14:01:37Z\tinfo\t[coord=deploy:builtin:oneagent.features:SENSOR_NODEJS_BIZEVENTS_HTTP_INCOMING][gid=2]\tDeployment successful"", ""2025-10-24T14:01:37Z\tinfo\t[coord=deploy:openpipeline:bizobstemplate][gid=4]\tDeployment successful"", ""2025-10-24T14:01:37Z\terror\tDeployment failed for environment \""perform\"": 1 deployment errors occurred"", ""2025-10-24T14:01:37Z\terror\tError: Deployment failed - check logs for details: Errors encountered for 1 environment(s):"", ""\t\""perform\"": 1 deployment errors occurred"", ""2025-10-24T14:01:37Z\terror\terror logs written to .logs/20251024-140121-errors.log"", ""2025-10-24T14:01:37Z\tinfo\tA newer version (2.26.1) of Monaco is available! You can download the latest release from here: https://github.com/Dynatrace/dynatrace-configuration-as-code/releases/latest""]}
+10/24/2025, 4:04:41 PM	subprocess.CalledProcessError: Command 'ANSIBLE_COLLECTIONS_PATH=/home/dt_training/.ansible/collections ansible-playbook ace_box.ace_box.main_v2 --extra-vars '{"ace_box_user": "dt_training", "ace_config_file_path": "/home/dt_training/.ace/ace.config.yml", "use_case_ext_src": "https://GITHUB_USER:GITHUB_TOKEN@github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs.git", "use_case_ext_version": "main", "local": false}' --tags "use_case_ext"' returned non-zero exit status 2.
+10/24/2025, 4:04:41 PM	2025-10-24 15:04:40 [FATAL] ACE-Box usecase deployment has failed due to 'ace enable' completing with a non-zero exit code. See ACE-Box logs for additional information.
+10/24/2025, 4:04:41 PM	2025-10-24 15:04:40 [INFO] ACE-Box dashboard role not detected - skipping URL display
+10/24/2025, 4:04:41 PM	2025-10-24 15:03:23 [INFO] Cloning and initializing Ace-Box
+10/24/2025, 4:04:41 PM	2025-10-24 15:03:27 [INFO] Command 'sudo -u dt_training cp -RT /tmp/ace-box/user-skel/ /home/dt_training' completed successfully
+10/24/2025, 4:04:41 PM	2025-10-24 15:03:27 [INFO] Command 'chmod +x /home/dt_training/init.sh' completed successfully
+10/24/2025, 4:04:41 PM	2025-10-24 15:03:27 [INFO] Command 'rm -rf /tmp/ace-box' completed successfully
+10/24/2025, 4:04:41 PM	2025-10-24 15:03:41 [INFO] Command '/home/dt_training/init.sh' completed successfully
+10/24/2025, 4:04:41 PM	2025-10-24 15:03:41 [INFO] Creating ace prepare command with all extra-vars
+10/24/2025, 4:04:41 PM	2025-10-24 15:03:41 [INFO] Starting ace prepare
+10/24/2025, 4:04:41 PM	2025-10-24 15:03:45 [INFO] Command 'cd /home/dt_training' completed successfully
+10/24/2025, 4:04:41 PM	2025-10-24 15:03:45 [INFO] Running ace enable with external use-case github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs.git
+10/24/2025, 4:04:41 PM	WARNING:root:Warning: --ansible-workdir is deprecated and will be removed in a future version.
+10/24/2025, 4:04:41 PM	[WARNING]: provided hosts list is empty, only localhost is available. Note that
+10/24/2025, 4:04:41 PM	the implicit localhost does not match 'all'
+10/24/2025, 4:04:41 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+ in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
+10/24/2025, 4:04:41 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/24/2025, 4:04:41 PM	v2/tasks/main.yml, line: 30. This feature will be removed in version 2.18. 
+10/24/2025, 4:04:41 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/24/2025, 4:04:41 PM	ansible.cfg.
+10/24/2025, 4:04:41 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+ in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
+10/24/2025, 4:04:41 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/24/2025, 4:04:41 PM	v2/tasks/main.yml, line: 43. This feature will be removed in version 2.18. 
+10/24/2025, 4:04:41 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/24/2025, 4:04:41 PM	ansible.cfg.
+10/24/2025, 4:04:41 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+ in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
+10/24/2025, 4:04:41 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/24/2025, 4:04:41 PM	v2/tasks/main.yml, line: 56. This feature will be removed in version 2.18. 
+10/24/2025, 4:04:41 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/24/2025, 4:04:41 PM	ansible.cfg.
+10/24/2025, 4:04:41 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+ in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
+10/24/2025, 4:04:41 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/24/2025, 4:04:41 PM	v2/tasks/main.yml, line: 69. This feature will be removed in version 2.18. 
+10/24/2025, 4:04:41 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/24/2025, 4:04:41 PM	"ansible.cfg.
 "
-10/24/2025, 3:01:37 PM	PLAY RECAP *********************************************************************
-10/24/2025, 3:01:37 PM	"localhost                  : ok=49   changed=11   unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+10/24/2025, 4:04:41 PM	"PLAY [Main V2] *****************************************************************
 "
-10/24/2025, 3:01:37 PM	"Traceback (most recent call last):
+10/24/2025, 4:04:41 PM	TASK [Gathering Facts] *********************************************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.use-case-ext : Determine use_case_repo_path] *************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.use-case-ext : Create repos directory] *******************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.use-case-ext : Clone external use case] ******************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.use-case-ext : Synchronize Use Case role] ****************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.use-case-ext : Synchronize roles] ************************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.use-case-ext : Synchronize var override] *****************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.use-case-ext : Source var override] **********************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : {{ use_case_ext_src | ace_box.ace_box.useCaseExtSrcToName }}] ***
+10/24/2025, 4:04:41 PM	"included: ace-box-ext-hot-partner-powerup-bizobs for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : set_fact] *******
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : dt-access-token] ******************************************
+10/24/2025, 4:04:41 PM	"included: dt-access-token for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : config-v2] ************************************************
+10/24/2025, 4:04:41 PM	"included: config-v2 for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : config-v2] ************************************************
+10/24/2025, 4:04:41 PM	"included: config-v2 for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Validate required variables for OAuth] ***
+10/24/2025, 4:04:41 PM	"skipping: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Debug OAuth Configuration] ***
+10/24/2025, 4:04:41 PM	"}
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Request a DT OAuth Access Token] ***
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Set OAuth Access Token] ***
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [Install Biz Flow App] ****************************************************
+10/24/2025, 4:04:41 PM	"included: dt-platform for localhost => (item={'dt_app_id': 'dynatrace.biz.flow', 'dt_app_version': '1.20.3'})
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-platform : Request a DT OAuth access token] ***********
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-platform : set_fact] **********************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-platform : Install app dynatrace.biz.flow] ************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : monaco-v2] ************************************************
+10/24/2025, 4:04:41 PM	"included: monaco-v2 for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Download] ***************************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : monaco-v2] ************************************************
+10/24/2025, 4:04:41 PM	"included: monaco-v2 for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.monaco-v2 : include_tasks] *******************************
+10/24/2025, 4:04:41 PM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/monaco-v2/tasks/ensure-access-token.yml for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : dt-access-token] ******************************************
+10/24/2025, 4:04:41 PM	"included: dt-access-token for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : config-v2] ************************************************
+10/24/2025, 4:04:41 PM	"included: config-v2 for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : config-v2] ************************************************
+10/24/2025, 4:04:41 PM	"included: config-v2 for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/24/2025, 4:04:41 PM	"skipping: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Apply Configuration for Project] ****
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : dt-oneagent-classic] **************************************
+10/24/2025, 4:04:41 PM	"included: dt-oneagent-classic for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : dt-access-token] ******************************************
+10/24/2025, 4:04:41 PM	"included: dt-access-token for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : config-v2] ************************************************
+10/24/2025, 4:04:41 PM	"included: config-v2 for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : config-v2] ************************************************
+10/24/2025, 4:04:41 PM	"included: config-v2 for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-oneagent-classic : file] ******************************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-oneagent-classic : set_fact] **************************
+10/24/2025, 4:04:41 PM	"ok: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-oneagent-classic : Download OneAgent installer] *******
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.dt-oneagent-classic : Install OneAgent] ******************
+10/24/2025, 4:04:41 PM	"changed: [localhost]
+"
+10/24/2025, 4:04:41 PM	TASK [include_role : mattermost] ***********************************************
+10/24/2025, 4:04:41 PM	"included: mattermost for localhost
+"
+10/24/2025, 4:04:41 PM	TASK [ace_box.ace_box.mattermost : Add Mattermost chart repo] ******************
+10/24/2025, 4:04:40 PM	TASK [ace_box.ace_box.mattermost : Add Mattermost chart repo] ******************
+10/24/2025, 4:04:40 PM	"fatal: [localhost]: FAILED! => {""changed"": false, ""msg"": ""Failed to find required executable \""helm\"" in paths: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin""}
+"
+10/24/2025, 4:04:40 PM	PLAY RECAP *********************************************************************
+10/24/2025, 4:04:40 PM	"localhost                  : ok=68   changed=17   unreachable=0    failed=1    skipped=2    rescued=0    ignored=0   
+"
+10/24/2025, 4:04:40 PM	"Traceback (most recent call last):
   File ""/usr/local/bin/ace"", line 555, in <module>
     ace(auto_envvar_prefix='ACE')
   File ""/usr/lib/python3/dist-packages/click/core.py"", line 1128, in __call__
@@ -239,197 +296,253 @@
     subprocess.run((
   File ""/usr/lib/python3.10/subprocess.py"", line 526, in run
     raise CalledProcessError(retcode, process.args,"
-10/24/2025, 3:01:37 PM	2025-10-24 14:01:37 [FATAL] ACE-Box usecase deployment has failed due to 'ace enable' completing with a non-zero exit code. See ACE-Box logs for additional information.
-10/24/2025, 3:01:26 PM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Apply Configuration for Project] ****
-10/24/2025, 3:01:21 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/24/2025, 3:01:21 PM	"changed: [localhost]
+10/24/2025, 4:04:40 PM	2025-10-24 15:04:40 [FATAL] ACE-Box usecase deployment has failed due to 'ace enable' completing with a non-zero exit code. See ACE-Box logs for additional information.
+10/24/2025, 4:04:40 PM	TASK [include_role : mattermost] ***********************************************
+10/24/2025, 4:04:40 PM	"included: mattermost for localhost
 "
-10/24/2025, 3:01:21 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/24/2025, 3:01:21 PM	"ok: [localhost]
+10/24/2025, 4:04:40 PM	"changed: [localhost]
 "
-10/24/2025, 3:01:21 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/24/2025, 3:01:21 PM	"ok: [localhost]
+10/24/2025, 4:04:06 PM	TASK [ace_box.ace_box.dt-oneagent-classic : Install OneAgent] ******************
+10/24/2025, 4:04:01 PM	TASK [ace_box.ace_box.dt-oneagent-classic : Download OneAgent installer] *******
+10/24/2025, 4:04:01 PM	"changed: [localhost]
 "
-10/24/2025, 3:01:21 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/24/2025, 3:01:21 PM	"ok: [localhost]
+10/24/2025, 4:04:00 PM	TASK [ace_box.ace_box.dt-oneagent-classic : file] ******************************
+10/24/2025, 4:04:00 PM	"changed: [localhost]
 "
-10/24/2025, 3:01:21 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/24/2025, 3:01:21 PM	"ok: [localhost]
+10/24/2025, 4:04:00 PM	TASK [ace_box.ace_box.dt-oneagent-classic : set_fact] **************************
+10/24/2025, 4:04:00 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:21 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/24/2025, 3:01:21 PM	"skipping: [localhost]
+10/24/2025, 4:03:59 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/24/2025, 4:03:59 PM	"changed: [localhost]
 "
-10/24/2025, 3:01:21 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/24/2025, 3:01:21 PM	"ok: [localhost]
+10/24/2025, 4:03:59 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:03:59 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:21 PM	TASK [include_role : config-v2] ************************************************
-10/24/2025, 3:01:21 PM	"included: config-v2 for localhost
+10/24/2025, 4:03:59 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/24/2025, 4:03:59 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:21 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/24/2025, 3:01:21 PM	"ok: [localhost]
+10/24/2025, 4:03:59 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/24/2025, 4:03:59 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:20 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/24/2025, 3:01:20 PM	"changed: [localhost]
+10/24/2025, 4:03:59 PM	TASK [include_role : config-v2] ************************************************
+10/24/2025, 4:03:59 PM	"included: config-v2 for localhost
 "
-10/24/2025, 3:01:20 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/24/2025, 3:01:20 PM	"ok: [localhost]
+10/24/2025, 4:03:59 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/24/2025, 4:03:59 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:20 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/24/2025, 3:01:20 PM	"ok: [localhost]
+10/24/2025, 4:03:59 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/24/2025, 4:03:59 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:20 PM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
-10/24/2025, 3:01:20 PM	"ok: [localhost]
+10/24/2025, 4:03:59 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/24/2025, 4:03:59 PM	"changed: [localhost]
 "
-10/24/2025, 3:01:20 PM	TASK [include_role : config-v2] ************************************************
-10/24/2025, 3:01:20 PM	"included: config-v2 for localhost
+10/24/2025, 4:03:59 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:03:59 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:20 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/24/2025, 3:01:20 PM	"ok: [localhost]
+10/24/2025, 4:03:59 PM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
+10/24/2025, 4:03:59 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:20 PM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Download] ***************************
-10/24/2025, 3:01:20 PM	"changed: [localhost]
+10/24/2025, 4:03:59 PM	TASK [include_role : config-v2] ************************************************
+10/24/2025, 4:03:59 PM	"included: config-v2 for localhost
 "
-10/24/2025, 3:01:20 PM	TASK [include_role : monaco-v2] ************************************************
-10/24/2025, 3:01:20 PM	"included: monaco-v2 for localhost
+10/24/2025, 4:03:58 PM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Apply Configuration for Project] ****
+10/24/2025, 4:03:58 PM	"changed: [localhost]
 "
-10/24/2025, 3:01:20 PM	TASK [ace_box.ace_box.monaco-v2 : include_tasks] *******************************
-10/24/2025, 3:01:20 PM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/monaco-v2/tasks/ensure-access-token.yml for localhost
+10/24/2025, 4:03:58 PM	TASK [include_role : dt-oneagent-classic] **************************************
+10/24/2025, 4:03:58 PM	"included: dt-oneagent-classic for localhost
 "
-10/24/2025, 3:01:20 PM	TASK [include_role : dt-access-token] ******************************************
-10/24/2025, 3:01:20 PM	"included: dt-access-token for localhost
+10/24/2025, 4:03:58 PM	TASK [include_role : dt-access-token] ******************************************
+10/24/2025, 4:03:58 PM	"included: dt-access-token for localhost
 "
-10/24/2025, 3:01:19 PM	TASK [ace_box.ace_box.dt-platform : Install app dynatrace.biz.flow] ************
-10/24/2025, 3:01:19 PM	"ok: [localhost]
+10/24/2025, 4:03:58 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:03:58 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:19 PM	TASK [include_role : monaco-v2] ************************************************
-10/24/2025, 3:01:19 PM	"included: monaco-v2 for localhost
+10/24/2025, 4:03:58 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/24/2025, 4:03:58 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:18 PM	TASK [ace_box.ace_box.dt-platform : Request a DT OAuth access token] ***********
-10/24/2025, 3:01:18 PM	"ok: [localhost]
+10/24/2025, 4:03:58 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/24/2025, 4:03:58 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:18 PM	TASK [ace_box.ace_box.dt-platform : set_fact] **********************************
-10/24/2025, 3:01:18 PM	"ok: [localhost]
+10/24/2025, 4:03:58 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/24/2025, 4:03:58 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:18 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Request a DT OAuth Access Token] ***
-10/24/2025, 3:01:18 PM	"changed: [localhost]
+10/24/2025, 4:03:58 PM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/24/2025, 4:03:58 PM	"skipping: [localhost]
 "
-10/24/2025, 3:01:18 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Set OAuth Access Token] ***
-10/24/2025, 3:01:18 PM	"ok: [localhost]
+10/24/2025, 4:03:57 PM	TASK [include_role : config-v2] ************************************************
+10/24/2025, 4:03:57 PM	"included: config-v2 for localhost
 "
-10/24/2025, 3:01:18 PM	TASK [Install Biz Flow App] ****************************************************
-10/24/2025, 3:01:18 PM	"included: dt-platform for localhost => (item={'dt_app_id': 'dynatrace.biz.flow', 'dt_app_version': '1.20.3'})
+10/24/2025, 4:03:57 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/24/2025, 4:03:57 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:18 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Debug OAuth Configuration] ***
-10/24/2025, 3:01:18 PM	"}
+10/24/2025, 4:03:57 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/24/2025, 4:03:57 PM	"changed: [localhost]
 "
-10/24/2025, 3:01:17 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/24/2025, 3:01:17 PM	"changed: [localhost]
+10/24/2025, 4:03:57 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/24/2025, 4:03:57 PM	"changed: [localhost]
 "
-10/24/2025, 3:01:17 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/24/2025, 3:01:17 PM	"ok: [localhost]
+10/24/2025, 4:03:57 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:03:57 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:17 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Validate required variables for OAuth] ***
-10/24/2025, 3:01:17 PM	"skipping: [localhost]
+10/24/2025, 4:03:57 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/24/2025, 4:03:57 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:17 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/24/2025, 3:01:17 PM	"changed: [localhost]
+10/24/2025, 4:03:57 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/24/2025, 4:03:57 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:17 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/24/2025, 3:01:17 PM	"ok: [localhost]
+10/24/2025, 4:03:57 PM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
+10/24/2025, 4:03:57 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:17 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/24/2025, 3:01:17 PM	"ok: [localhost]
+10/24/2025, 4:03:57 PM	TASK [include_role : config-v2] ************************************************
+10/24/2025, 4:03:57 PM	"included: config-v2 for localhost
 "
-10/24/2025, 3:01:17 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/24/2025, 3:01:17 PM	"ok: [localhost]
+10/24/2025, 4:03:57 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/24/2025, 4:03:57 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:17 PM	TASK [include_role : config-v2] ************************************************
-10/24/2025, 3:01:17 PM	"included: config-v2 for localhost
+10/24/2025, 4:03:57 PM	TASK [include_role : monaco-v2] ************************************************
+10/24/2025, 4:03:57 PM	"included: monaco-v2 for localhost
 "
-10/24/2025, 3:01:17 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/24/2025, 3:01:17 PM	"ok: [localhost]
+10/24/2025, 4:03:57 PM	TASK [ace_box.ace_box.monaco-v2 : include_tasks] *******************************
+10/24/2025, 4:03:57 PM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/monaco-v2/tasks/ensure-access-token.yml for localhost
 "
-10/24/2025, 3:01:17 PM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
-10/24/2025, 3:01:17 PM	"ok: [localhost]
+10/24/2025, 4:03:57 PM	TASK [include_role : dt-access-token] ******************************************
+10/24/2025, 4:03:57 PM	"included: dt-access-token for localhost
 "
-10/24/2025, 3:01:17 PM	TASK [include_role : config-v2] ************************************************
-10/24/2025, 3:01:17 PM	"included: config-v2 for localhost
+10/24/2025, 4:03:56 PM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Download] ***************************
+10/24/2025, 4:03:56 PM	"changed: [localhost]
 "
-10/24/2025, 3:01:17 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/24/2025, 3:01:17 PM	"ok: [localhost]
+10/24/2025, 4:03:56 PM	TASK [include_role : monaco-v2] ************************************************
+10/24/2025, 4:03:56 PM	"included: monaco-v2 for localhost
 "
-10/24/2025, 3:01:16 PM	TASK [ace_box.ace_box.use-case-ext : Synchronize var override] *****************
-10/24/2025, 3:01:16 PM	"changed: [localhost]
+10/24/2025, 4:03:56 PM	TASK [ace_box.ace_box.dt-platform : Install app dynatrace.biz.flow] ************
+10/24/2025, 4:03:56 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:16 PM	TASK [ace_box.ace_box.use-case-ext : Source var override] **********************
-10/24/2025, 3:01:16 PM	"ok: [localhost]
+10/24/2025, 4:03:55 PM	TASK [ace_box.ace_box.dt-platform : Request a DT OAuth access token] ***********
+10/24/2025, 4:03:55 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:16 PM	TASK [include_role : {{ use_case_ext_src | ace_box.ace_box.useCaseExtSrcToName }}] ***
-10/24/2025, 3:01:16 PM	"included: ace-box-ext-hot-partner-powerup-bizobs for localhost
+10/24/2025, 4:03:55 PM	TASK [ace_box.ace_box.dt-platform : set_fact] **********************************
+10/24/2025, 4:03:55 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:16 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : set_fact] *******
-10/24/2025, 3:01:16 PM	"ok: [localhost]
+10/24/2025, 4:03:54 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Request a DT OAuth Access Token] ***
+10/24/2025, 4:03:54 PM	"changed: [localhost]
 "
-10/24/2025, 3:01:16 PM	TASK [include_role : dt-access-token] ******************************************
-10/24/2025, 3:01:16 PM	"included: dt-access-token for localhost
+10/24/2025, 4:03:54 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Set OAuth Access Token] ***
+10/24/2025, 4:03:54 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:16 PM	TASK [ace_box.ace_box.use-case-ext : Synchronize roles] ************************
-10/24/2025, 3:01:16 PM	"changed: [localhost]
+10/24/2025, 4:03:54 PM	TASK [Install Biz Flow App] ****************************************************
+10/24/2025, 4:03:54 PM	"included: dt-platform for localhost => (item={'dt_app_id': 'dynatrace.biz.flow', 'dt_app_version': '1.20.3'})
 "
-10/24/2025, 3:01:16 PM	TASK [ace_box.ace_box.use-case-ext : Synchronize Use Case role] ****************
-10/24/2025, 3:01:16 PM	"changed: [localhost]
+10/24/2025, 4:03:54 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:03:54 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:15 PM	"changed: [localhost]
+10/24/2025, 4:03:54 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Validate required variables for OAuth] ***
+10/24/2025, 4:03:54 PM	"skipping: [localhost]
 "
-10/24/2025, 3:01:15 PM	TASK [ace_box.ace_box.use-case-ext : Clone external use case] ******************
-10/24/2025, 3:01:11 PM	TASK [ace_box.ace_box.use-case-ext : Create repos directory] *******************
-10/24/2025, 3:01:11 PM	"changed: [localhost]
+10/24/2025, 4:03:54 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Debug OAuth Configuration] ***
+10/24/2025, 4:03:54 PM	"}
 "
-10/24/2025, 3:01:10 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/24/2025, 3:01:10 PM	"ok: [localhost]
+10/24/2025, 4:03:54 PM	TASK [include_role : config-v2] ************************************************
+10/24/2025, 4:03:54 PM	"included: config-v2 for localhost
 "
-10/24/2025, 3:01:10 PM	TASK [ace_box.ace_box.use-case-ext : Determine use_case_repo_path] *************
-10/24/2025, 3:01:10 PM	"ok: [localhost]
+10/24/2025, 4:03:54 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/24/2025, 4:03:54 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:10 PM	TASK [Gathering Facts] *********************************************************
-10/24/2025, 3:01:10 PM	"ok: [localhost]
+10/24/2025, 4:03:54 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/24/2025, 4:03:54 PM	"changed: [localhost]
 "
-10/24/2025, 3:01:09 PM	"ansible.cfg.
+10/24/2025, 4:03:54 PM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/24/2025, 4:03:54 PM	"changed: [localhost]
 "
-10/24/2025, 3:01:09 PM	"PLAY [Main V2] *****************************************************************
+10/24/2025, 4:03:54 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:03:54 PM	"ok: [localhost]
 "
-10/24/2025, 3:01:09 PM	WARNING:root:Warning: --ansible-workdir is deprecated and will be removed in a future version.
-10/24/2025, 3:01:09 PM	[WARNING]: provided hosts list is empty, only localhost is available. Note that
-10/24/2025, 3:01:09 PM	the implicit localhost does not match 'all'
-10/24/2025, 3:01:09 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+10/24/2025, 4:03:54 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/24/2025, 4:03:54 PM	"ok: [localhost]
+"
+10/24/2025, 4:03:54 PM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/24/2025, 4:03:54 PM	"ok: [localhost]
+"
+10/24/2025, 4:03:53 PM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
+10/24/2025, 4:03:53 PM	"ok: [localhost]
+"
+10/24/2025, 4:03:53 PM	TASK [include_role : config-v2] ************************************************
+10/24/2025, 4:03:53 PM	"included: config-v2 for localhost
+"
+10/24/2025, 4:03:53 PM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/24/2025, 4:03:53 PM	"ok: [localhost]
+"
+10/24/2025, 4:03:53 PM	TASK [ace_box.ace_box.use-case-ext : Synchronize var override] *****************
+10/24/2025, 4:03:53 PM	"changed: [localhost]
+"
+10/24/2025, 4:03:53 PM	TASK [ace_box.ace_box.use-case-ext : Source var override] **********************
+10/24/2025, 4:03:53 PM	"ok: [localhost]
+"
+10/24/2025, 4:03:53 PM	TASK [include_role : {{ use_case_ext_src | ace_box.ace_box.useCaseExtSrcToName }}] ***
+10/24/2025, 4:03:53 PM	"included: ace-box-ext-hot-partner-powerup-bizobs for localhost
+"
+10/24/2025, 4:03:53 PM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : set_fact] *******
+10/24/2025, 4:03:53 PM	"ok: [localhost]
+"
+10/24/2025, 4:03:53 PM	TASK [include_role : dt-access-token] ******************************************
+10/24/2025, 4:03:53 PM	"included: dt-access-token for localhost
+"
+10/24/2025, 4:03:53 PM	TASK [ace_box.ace_box.use-case-ext : Synchronize roles] ************************
+10/24/2025, 4:03:53 PM	"changed: [localhost]
+"
+10/24/2025, 4:03:52 PM	TASK [ace_box.ace_box.use-case-ext : Synchronize Use Case role] ****************
+10/24/2025, 4:03:52 PM	"changed: [localhost]
+"
+10/24/2025, 4:03:52 PM	"changed: [localhost]
+"
+10/24/2025, 4:03:52 PM	TASK [ace_box.ace_box.use-case-ext : Clone external use case] ******************
+10/24/2025, 4:03:47 PM	TASK [ace_box.ace_box.use-case-ext : Create repos directory] *******************
+10/24/2025, 4:03:47 PM	"changed: [localhost]
+"
+10/24/2025, 4:03:47 PM	TASK [ace_box.ace_box.use-case-ext : Determine use_case_repo_path] *************
+10/24/2025, 4:03:47 PM	"ok: [localhost]
+"
+10/24/2025, 4:03:47 PM	TASK [Gathering Facts] *********************************************************
+10/24/2025, 4:03:47 PM	"ok: [localhost]
+"
+10/24/2025, 4:03:47 PM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/24/2025, 4:03:47 PM	"ok: [localhost]
+"
+10/24/2025, 4:03:46 PM	WARNING:root:Warning: --ansible-workdir is deprecated and will be removed in a future version.
+10/24/2025, 4:03:46 PM	[WARNING]: provided hosts list is empty, only localhost is available. Note that
+10/24/2025, 4:03:46 PM	the implicit localhost does not match 'all'
+10/24/2025, 4:03:46 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
  in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/24/2025, 3:01:09 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/24/2025, 3:01:09 PM	v2/tasks/main.yml, line: 30. This feature will be removed in version 2.18. 
-10/24/2025, 3:01:09 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/24/2025, 3:01:09 PM	ansible.cfg.
-10/24/2025, 3:01:09 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+10/24/2025, 4:03:46 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/24/2025, 4:03:46 PM	v2/tasks/main.yml, line: 30. This feature will be removed in version 2.18. 
+10/24/2025, 4:03:46 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/24/2025, 4:03:46 PM	ansible.cfg.
+10/24/2025, 4:03:46 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
  in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/24/2025, 3:01:09 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/24/2025, 3:01:09 PM	v2/tasks/main.yml, line: 43. This feature will be removed in version 2.18. 
-10/24/2025, 3:01:09 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/24/2025, 3:01:09 PM	ansible.cfg.
-10/24/2025, 3:01:09 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+10/24/2025, 4:03:46 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/24/2025, 4:03:46 PM	v2/tasks/main.yml, line: 43. This feature will be removed in version 2.18. 
+10/24/2025, 4:03:46 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/24/2025, 4:03:46 PM	ansible.cfg.
+10/24/2025, 4:03:46 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
  in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/24/2025, 3:01:09 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/24/2025, 3:01:09 PM	v2/tasks/main.yml, line: 56. This feature will be removed in version 2.18. 
-10/24/2025, 3:01:09 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/24/2025, 3:01:09 PM	ansible.cfg.
-10/24/2025, 3:01:09 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+10/24/2025, 4:03:46 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/24/2025, 4:03:46 PM	v2/tasks/main.yml, line: 56. This feature will be removed in version 2.18. 
+10/24/2025, 4:03:46 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/24/2025, 4:03:46 PM	ansible.cfg.
+10/24/2025, 4:03:46 PM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
  in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/24/2025, 3:01:09 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/24/2025, 3:01:09 PM	v2/tasks/main.yml, line: 69. This feature will be removed in version 2.18. 
-10/24/2025, 3:01:09 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/24/2025, 3:01:09 PM	2025-10-24 14:01:04 [INFO] Starting ace prepare
-10/24/2025, 3:01:09 PM	2025-10-24 14:01:09 [INFO] Command 'cd /home/dt_training' completed successfully
-10/24/2025, 3:01:09 PM	2025-10-24 14:01:09 [INFO] Running ace enable with external use-case github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs.git
-10/24/2025, 3:01:05 PM	2025-10-24 14:01:04 [INFO] Command '/home/dt_training/init.sh' completed successfully
-10/24/2025, 3:01:05 PM	2025-10-24 14:01:04 [INFO] Creating ace prepare command with all extra-vars
-10/24/2025, 3:00:30 PM	2025-10-24 14:00:25 [INFO] Command 'rm -rf /tmp/ace-box' completed successfully
-10/24/2025, 3:00:25 PM	2025-10-24 14:00:21 [INFO] Cloning and initializing Ace-Box
-10/24/2025, 3:00:25 PM	2025-10-24 14:00:25 [INFO] Command 'sudo -u dt_training cp -RT /tmp/ace-box/user-skel/ /home/dt_training' completed successfully
-10/24/2025, 3:00:25 PM	2025-10-24 14:00:25 [INFO] Command 'chmod +x /home/dt_training/init.sh' completed successfully
+10/24/2025, 4:03:46 PM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/24/2025, 4:03:46 PM	v2/tasks/main.yml, line: 69. This feature will be removed in version 2.18. 
+10/24/2025, 4:03:46 PM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/24/2025, 4:03:46 PM	"ansible.cfg.
+"
+10/24/2025, 4:03:46 PM	"PLAY [Main V2] *****************************************************************
+"
+10/24/2025, 4:03:45 PM	2025-10-24 15:03:41 [INFO] Starting ace prepare
+10/24/2025, 4:03:45 PM	2025-10-24 15:03:45 [INFO] Command 'cd /home/dt_training' completed successfully
+10/24/2025, 4:03:45 PM	2025-10-24 15:03:45 [INFO] Running ace enable with external use-case github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs.git
+10/24/2025, 4:03:41 PM	2025-10-24 15:03:41 [INFO] Command '/home/dt_training/init.sh' completed successfully
+10/24/2025, 4:03:41 PM	2025-10-24 15:03:41 [INFO] Creating ace prepare command with all extra-vars
+10/24/2025, 4:03:32 PM	2025-10-24 15:03:27 [INFO] Command 'rm -rf /tmp/ace-box' completed successfully
+10/24/2025, 4:03:27 PM	2025-10-24 15:03:23 [INFO] Cloning and initializing Ace-Box
+10/24/2025, 4:03:27 PM	2025-10-24 15:03:27 [INFO] Command 'sudo -u dt_training cp -RT /tmp/ace-box/user-skel/ /home/dt_training' completed successfully
+10/24/2025, 4:03:27 PM	2025-10-24 15:03:27 [INFO] Command 'chmod +x /home/dt_training/init.sh' completed successfully
