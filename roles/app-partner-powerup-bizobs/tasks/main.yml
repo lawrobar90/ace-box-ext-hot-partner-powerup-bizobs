@@ -1,0 +1,141 @@
+---
+# Partner PowerUp BizObs App - EC2 Deployment Tasks
+
+- name: Install Node.js and dependencies
+  become: true
+  package:
+    name:
+      - nodejs
+      - npm
+      - git
+      - curl
+      - nginx
+    state: present
+
+- name: Create BizObs application user
+  become: true
+  user:
+    name: "{{ bizobs_user | default('bizobs') }}"
+    system: yes
+    shell: /bin/bash
+    home: "{{ bizobs_home | default('/opt/bizobs') }}"
+    create_home: yes
+
+- name: Create BizObs application directory
+  become: true
+  file:
+    path: "{{ bizobs_home | default('/opt/bizobs') }}"
+    state: directory
+    owner: "{{ bizobs_user | default('bizobs') }}"
+    group: "{{ bizobs_user | default('bizobs') }}"
+    mode: '0755'
+
+- name: Clone Partner PowerUp BizObs App from GitHub
+  git:
+    repo: "https://github.com/lawrobar90/Partner-PowerUp-BizObs-App.git"
+    dest: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App"
+    version: "{{ bizobs_git_branch | default('main') }}"
+    force: yes
+  become: true
+  become_user: "{{ bizobs_user | default('bizobs') }}"
+
+- name: Install Node.js dependencies
+  npm:
+    path: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/partner-powerup-bizobs"
+    production: false
+    state: present
+  become: true
+  become_user: "{{ bizobs_user | default('bizobs') }}"
+
+- name: Create systemd service file for BizObs
+  become: true
+  template:
+    src: partner-powerup-bizobs.service.j2
+    dest: /etc/systemd/system/partner-powerup-bizobs.service
+    mode: '0644'
+  notify: restart partner-powerup-bizobs
+
+- name: Create environment file for BizObs
+  become: true
+  template:
+    src: bizobs.env.j2
+    dest: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/partner-powerup-bizobs/.env"
+    owner: "{{ bizobs_user | default('bizobs') }}"
+    group: "{{ bizobs_user | default('bizobs') }}"
+    mode: '0600'
+  notify: restart partner-powerup-bizobs
+
+- name: Create BizObs logs directory
+  become: true
+  file:
+    path: /var/log/bizobs
+    state: directory
+    owner: "{{ bizobs_user | default('bizobs') }}"
+    group: "{{ bizobs_user | default('bizobs') }}"
+    mode: '0755'
+
+- name: Configure nginx for BizObs
+  become: true
+  template:
+    src: bizobs-nginx.conf.j2
+    dest: /etc/nginx/sites-available/bizobs
+    mode: '0644'
+  notify: restart nginx
+
+- name: Enable BizObs nginx site
+  become: true
+  file:
+    src: /etc/nginx/sites-available/bizobs
+    dest: /etc/nginx/sites-enabled/bizobs
+    state: link
+  notify: restart nginx
+
+- name: Ensure nginx is started and enabled
+  become: true
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started
+
+- name: Enable and start Partner PowerUp BizObs service
+  become: true
+  systemd:
+    name: partner-powerup-bizobs
+    enabled: yes
+    state: started
+    daemon_reload: yes
+
+- name: Wait for BizObs application to start
+  wait_for:
+    host: "127.0.0.1"
+    port: "{{ bizobs_port | default(4000) }}"
+    delay: 10
+    timeout: 120
+
+- name: Test BizObs health endpoint
+  uri:
+    url: "http://127.0.0.1:{{ bizobs_port | default(4000) }}/api/health"
+    method: GET
+    status_code: 200
+  register: bizobs_health_check
+  retries: 10
+  delay: 5
+
+- name: Display BizObs deployment status
+  debug:
+    msg: |
+      🎉 Partner PowerUp BizObs App deployed successfully!
+      
+      Application Details:
+      - Internal URL: http://127.0.0.1:{{ bizobs_port | default(4000) }}
+      - External URL: http://bizobs.{{ ingress_domain }}
+      - Health Status: {{ bizobs_health_check.json | default('Healthy') }}
+      - Service User: {{ bizobs_user | default('bizobs') }}
+      - Application Path: {{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/partner-powerup-bizobs
+      
+      Features Available:
+      - Customer Journey Simulation
+      - Dynamic Microservices (Step1Service - Step6Service)
+      - Industry-Specific Templates
+      - Real-time Business Analytics
+      - Dynatrace Integration

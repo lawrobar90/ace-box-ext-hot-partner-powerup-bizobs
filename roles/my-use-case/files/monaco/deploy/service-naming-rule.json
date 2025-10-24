@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "namingPattern": "{ProcessGroup:DetectedName}",
+  "conditions": [
+    {
+      "attribute": "PROCESS_GROUP_DETECTED_NAME",
+      "comparisonInfo": {
+        "type": "STRING",
+        "operator": "EXISTS",
+        "value": null,
+        "negate": false,
+        "caseSensitive": false
+      }
+    }
+  ]
+}

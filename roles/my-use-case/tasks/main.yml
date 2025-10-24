@@ -1,0 +1,181 @@
+- set_fact:
+    role_path_abs: "{{ role_path }}"
+
+- include_role:
+    name: dt-access-token
+  vars:
+    access_token_var_name: "monaco_cleanup_api_token"
+    access_token_scope:
+      [
+        "slo.read",
+        "slo.write",
+        "CaptureRequestData",
+        "credentialVault.read",
+        "credentialVault.write",
+        "DataExport",
+        "DataPrivacy",
+        "ExternalSyntheticIntegration",
+        "ReadConfig",
+        "WriteConfig",
+        "events.ingest",
+        "settings.read",
+        "settings.write",
+        "metrics.ingest",
+        "openTelemetryTrace.ingest",
+        "logs.ingest"
+      ]
+
+# Generate OAuth Token
+- block:
+    - name: Validate required variables for OAuth
+      fail:
+        msg: "Required variables (dt_oauth_client_id, dt_oauth_client_secret, dt_oauth_sso_endpoint, dt_environment_url_gen3) are missing."
+      when:
+        - extra_vars.dt_oauth_client_id is not defined
+        - extra_vars.dt_oauth_client_secret is not defined
+        - extra_vars.dt_oauth_sso_endpoint is not defined
+        - extra_vars.dt_environment_url_gen3 is not defined
+
+    - name: Debug OAuth Configuration
+      debug:
+        msg: |
+          DT_OAUTH_CLIENT_ID: {{ extra_vars.dt_oauth_client_id }}
+          DT_OAUTH_CLIENT_SECRET: {{ extra_vars.dt_oauth_client_secret }}
+          DT_OAUTH_SSO_ENDPOINT: {{ extra_vars.dt_oauth_sso_endpoint }}
+          Resource: {{ extra_vars.dt_oauth_account_urn }}
+
+    - name: Request a DT OAuth Access Token
+      ansible.builtin.uri:
+        url: "{{ extra_vars.dt_oauth_sso_endpoint }}"
+        method: POST
+        headers:
+          Content-Type: "application/x-www-form-urlencoded"
+        body_format: form-urlencoded
+        body:
+          grant_type: "client_credentials"
+          client_id: "{{ extra_vars.dt_oauth_client_id }}"
+          client_secret: "{{ extra_vars.dt_oauth_client_secret }}"
+          scope: "document:documents:read document:documents:write document:direct-shares:read document:direct-shares:write"
+          resource: "{{ extra_vars.dt_oauth_account_urn }}"
+      register: auth_response_raw
+      failed_when:
+        - auth_response_raw.status != 200
+      changed_when:
+        - auth_response_raw.status == 200
+
+    - name: Set OAuth Access Token
+      set_fact:
+        dt_oauth_access_token: "{{ auth_response_raw.json.access_token }}"
+
+# Install Biz Flow App
+- name: Install Biz Flow App
+  ignore_errors: true
+  include_role:
+    name: dt-platform
+    tasks_from: ensure-app
+  vars:
+    dt_app_id: "{{ item.dt_app_id }}"
+    dt_app_version: "{{ item.dt_app_version }}"
+    dt_environment_url_gen3: "{{ extra_vars.dt_environment_url_gen3 }}"
+    dt_oauth_sso_endpoint: "{{ extra_vars.dt_oauth_sso_endpoint }}"
+    dt_oauth_client_id: "{{ extra_vars.dt_oauth_client_id }}"
+    dt_oauth_client_secret: "{{ extra_vars.dt_oauth_client_secret }}"
+    dt_oauth_account_urn: "{{ extra_vars.dt_oauth_account_urn }}"
+  loop:
+    - dt_app_id: "dynatrace.biz.flow"
+      dt_app_version: "1.20.3"
+
+- include_role:
+    name: monaco-v2
+
+- include_role:
+    name: monaco-v2
+    tasks_from: apply-monaco
+    apply:
+      environment:
+        DT_API_TOKEN: "{{ dynatrace_api_token }}"
+        DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') }}"
+        DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id }}"
+        DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
+        DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint }}"
+        INGRESS_DOMAIN: "{{ ingress_domain }}"
+  vars:
+    monaco_projects_root: "{{ role_path_abs }}/files/monaco"
+    monaco_project: "" # selection of projects or all projects under the root path if set empty
+    monaco_manifest_path: "{{ role_path_abs }}/files/monaco/manifest.yml"
+    monaco_environment:
+      DT_API_TOKEN: "{{ dynatrace_api_token }}"
+      DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') }}"
+      DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id }}"
+      DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
+      DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint }}"
+
+- include_role:
+    name: dt-oneagent-classic
+
+- include_role:
+    name: mattermost
+
+- include_role:
+    name: dashboard
+
+# Partner PowerUp BizObs App - Start Application and Setup Ingress
+- name: Start Application
+  ansible.builtin.shell: /bin/sh ./start-server.sh
+  become: true
+
+- name: Wait for BizObs application to be ready
+  wait_for:
+    port: 4000
+    host: localhost
+    delay: 10
+    timeout: 60
+
+- name: Create BizObs proxy service using socat
+  ansible.builtin.shell: |
+    docker run -d --name bizobs-proxy --restart=unless-stopped \
+      --network=host \
+      alpine/socat TCP-LISTEN:8080,fork,reuseaddr TCP:localhost:4000
+  become: true
+  ignore_errors: true
+
+- name: Create BizObs Service
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: bizobs-service
+        namespace: default
+      spec:
+        type: ExternalName
+        externalName: "{{ ansible_default_ipv4.address }}"
+        ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 8080
+
+- name: Create BizObs Ingress
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: bizobs-ingress
+        namespace: default
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /
+          nginx.ingress.kubernetes.io/upstream-vhost: "{{ ansible_default_ipv4.address }}:8080"
+      spec:
+        ingressClassName: "{{ ingress_class }}"
+        rules:
+        - host: "bizobs.{{ ingress_domain }}"
+          http:
+            paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: bizobs-service
+                  port:
+                    number: 80

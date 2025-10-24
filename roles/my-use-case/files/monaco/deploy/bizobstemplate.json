@@ -1,0 +1,160 @@
+{
+  "id": "bizevents",
+  "editable": true,
+  "version": "1735564848410-c0c09683237fb299",
+  "customBasePath": "/platform/ingest/custom/bizevents",
+  "endpoints": [
+    {
+      "enabled": true,
+      "builtin": true,
+      "editable": false,
+      "basePath": "-",
+      "segment": "",
+      "displayName": "OneAgent",
+      "defaultBucket": null,
+      "processors": [],
+      "routing": {
+        "type": "dynamic"
+      }
+    },
+    {
+      "enabled": true,
+      "builtin": true,
+      "editable": false,
+      "basePath": "-",
+      "segment": "",
+      "displayName": "RUM Agent",
+      "defaultBucket": null,
+      "processors": [],
+      "routing": {
+        "type": "dynamic"
+      }
+    },
+    {
+      "enabled": true,
+      "builtin": true,
+      "editable": false,
+      "basePath": "/api/v2/bizevents/ingest",
+      "segment": "",
+      "displayName": "Business Events API",
+      "defaultBucket": null,
+      "processors": [],
+      "routing": {
+        "type": "dynamic"
+      }
+    },
+    {
+      "enabled": true,
+      "builtin": true,
+      "editable": false,
+      "basePath": "-",
+      "segment": "",
+      "displayName": "Data Extraction",
+      "defaultBucket": null,
+      "processors": [],
+      "routing": {
+        "type": "dynamic"
+      }
+    }
+  ],
+  "pipelines": [
+    {
+      "type": "default",
+      "enabled": true,
+      "editable": true,
+      "id": "pipeline_BizObs_Template_4953",
+      "builtin": false,
+      "displayName": "BizObs Template",
+      "storage": {
+        "editable": true,
+        "catchAllBucketName": "default_bizevents",
+        "processors": []
+      },
+      "securityContext": {
+        "editable": true,
+        "processors": []
+      },
+      "metricExtraction": {
+        "editable": true,
+        "processors": []
+      },
+      "dataExtraction": {
+        "editable": true,
+        "processors": []
+      },
+      "processing": {
+        "editable": true,
+        "processors": [
+          {
+            "type": "dql",
+            "enabled": true,
+            "editable": true,
+            "id": "processor_JSON_Parser_3043",
+            "description": "JSON Parser",
+            "matcher": "true",
+            "sampleData": "",
+            "dqlScript": "parse rqBody, \"JSON:json\" | fieldsFlatten json | parse json.additionalFields, \"JSON:additionalFields\" | fieldsFlatten json.additionalFields, prefix:\"additionalfields.\""
+          },
+          {
+            "type": "dql",
+            "enabled": true,
+            "editable": true,
+            "id": "processor_Error_Field_3043",
+            "description": "Error Field",
+            "matcher": "true",
+            "sampleData": "",
+            "dqlScript": "fieldsAdd  event.type = if(json.hasError == true, concat(event.type, ``, \" - Exception\"), else:{`event.type`})"
+          }
+        ]
+      }
+    },
+    
+    {
+      "type": "classic",
+      "enabled": true,
+      "editable": false,
+      "id": "default",
+      "builtin": true,
+      "displayName": "default",
+      "storage": {
+        "editable": false,
+        "catchAllBucketName": null,
+        "processors": []
+      },
+      "securityContext": {
+        "editable": false,
+        "processors": []
+      },
+      "metricExtraction": {
+        "editable": false,
+        "processors": []
+      },
+      "dataExtraction": {
+        "editable": false,
+        "processors": []
+      },
+      "processing": {
+        "editable": false,
+        "processors": []
+      },
+      "settingsSchema": "builtin:bizevents-processing-pipelines.rule"
+    }
+  ],
+  "routing": {
+    "editable": true,
+    "catchAllPipeline": {
+      "editable": false,
+      "pipelineId": "default"
+    },
+    "entries": [
+      {
+        "enabled": true,
+        "editable": true,
+        "builtin": false,
+        "pipelineId": "pipeline_BizObs_Template_4953",
+        "matcher": "isNotNull(event.provider) and not(matchesPhrase(event.provider,\"BizAnalytics\"))",
+        "note": "BizObs App"
+      }
+    ]
+  }
+}

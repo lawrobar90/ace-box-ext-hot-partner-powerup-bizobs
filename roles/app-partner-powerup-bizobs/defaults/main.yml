@@ -1,0 +1,47 @@
+---
+# Partner PowerUp BizObs - Default Variables
+
+# Application Configuration
+bizobs_user: "bizobs"
+bizobs_home: "/opt/bizobs"
+bizobs_port: 4000
+bizobs_host: "0.0.0.0"
+bizobs_git_branch: "main"
+
+# Domain and URL Configuration
+bizobs_domain: "bizobs.{{ ingress_domain }}"
+bizobs_base_url: "http://bizobs.{{ ingress_domain }}"
+
+# Application Behavior
+bizobs_auto_start: true
+bizobs_journey_interval: 30000
+bizobs_concurrent_users: 10
+bizobs_error_rate: 0.05
+
+# Logging and Performance
+bizobs_log_level: "info"
+bizobs_max_memory: "512"
+bizobs_gc_enabled: true
+
+# Security Configuration
+bizobs_cors_origins: "*"
+bizobs_rate_limit_window: 900000
+bizobs_rate_limit_max: 100
+
+# Business Simulation Configuration
+bizobs_industry_templates: "retail,banking,ecommerce,healthcare"
+bizobs_simulation_mode: "realistic"
+bizobs_data_persistence: false
+
+# Health Check Configuration
+bizobs_health_timeout: 5000
+bizobs_metrics_enabled: true
+
+# Dashboard Configuration
+bizobs_addDashboardLink: true
+bizobs_addDashboardPreview: true
+
+# Dynatrace Integration
+bizobs_dt_integration: true
+bizobs_dt_custom_metrics: true
+bizobs_dt_business_events: true

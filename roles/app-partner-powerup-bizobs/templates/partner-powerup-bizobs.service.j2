@@ -1,0 +1,40 @@
+[Unit]
+Description=Partner PowerUp BizObs Application
+Documentation=https://github.com/lawrobar90/Partner-PowerUp-BizObs-App
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User={{ bizobs_user | default('bizobs') }}
+Group={{ bizobs_user | default('bizobs') }}
+WorkingDirectory={{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/partner-powerup-bizobs
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=10
+KillMode=process
+TimeoutStopSec=5
+
+# Environment
+Environment=NODE_ENV=production
+Environment=PORT={{ bizobs_port | default(4000) }}
+EnvironmentFile={{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/partner-powerup-bizobs/.env
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths={{ bizobs_home | default('/opt/bizobs') }}
+ReadWritePaths=/var/log/bizobs
+
+# Logging
+StandardOutput=append:/var/log/bizobs/partner-powerup-bizobs.log
+StandardError=append:/var/log/bizobs/partner-powerup-bizobs-error.log
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+
+[Install]
+WantedBy=multi-user.target

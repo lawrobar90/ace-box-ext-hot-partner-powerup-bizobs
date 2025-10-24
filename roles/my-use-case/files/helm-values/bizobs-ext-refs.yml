@@ -1,0 +1,12 @@
+---
+# Custom external references for BizObs
+extRefs:
+  "Partner PowerUp BizObs":
+    url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}"
+    description: "Partner PowerUp Business Observability Customer Journey Simulator"
+  "BizObs API":
+    url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}/api"
+    description: "BizObs REST API Endpoints"
+  "BizObs Steps":
+    url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}/process"
+    description: "Customer Journey Process Steps"
