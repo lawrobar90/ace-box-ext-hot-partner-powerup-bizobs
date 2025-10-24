@@ -386,7 +386,60 @@ if [[ "$SKIP_K8S" == "false" ]]; then
         echo "⚠️  Ingress configuration not found, skipping external access setup"
     fi
 else
-    echo "⚠️  Kubernetes not available, skipping ingress deployment"
+    echo "⚠️  Kubernetes not available, attempting nginx-based ingress setup..."
+    
+    # Try to set up nginx ingress as fallback
+    if command -v nginx >/dev/null 2>&1; then
+        echo "📡 Setting up nginx ingress for external access..."
+        
+        # Detect ACE-Box domain from environment
+        INGRESS_DOMAIN=""
+        if [[ -f "$HOME/.ace/ace.config.yml" ]]; then
+            INGRESS_DOMAIN=$(grep -i "ingress_domain:" "$HOME/.ace/ace.config.yml" | sed 's/.*: *"//' | sed 's/".*//')
+        fi
+        
+        if [[ -n "$INGRESS_DOMAIN" ]]; then
+            echo "🌐 Detected ACE-Box domain: $INGRESS_DOMAIN"
+            
+            # Create nginx configuration for BizObs
+            sudo tee /etc/nginx/sites-available/bizobs > /dev/null <<EOF
+server {
+    listen 80;
+    server_name bizobs.$INGRESS_DOMAIN;
+    
+    location / {
+        proxy_pass http://localhost:8080;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_set_header Connection '';
+        proxy_http_version 1.1;
+        chunked_transfer_encoding off;
+        proxy_buffering off;
+        proxy_cache off;
+    }
+}
+EOF
+            
+            # Enable the site
+            sudo ln -sf /etc/nginx/sites-available/bizobs /etc/nginx/sites-enabled/
+            
+            # Test and reload nginx
+            if sudo nginx -t >/dev/null 2>&1; then
+                sudo systemctl reload nginx
+                echo "✅ Nginx ingress configured successfully"
+                echo "🌐 External URL: http://bizobs.$INGRESS_DOMAIN"
+                EXTERNAL_URL="http://bizobs.$INGRESS_DOMAIN"
+            else
+                echo "⚠️  Nginx configuration test failed"
+            fi
+        else
+            echo "⚠️  Could not detect ACE-Box domain, skipping nginx setup"
+        fi
+    else
+        echo "⚠️  Nginx not available, external access setup skipped"
+    fi
 fi
 
 # Set environment variables for optimal Dynatrace integration
