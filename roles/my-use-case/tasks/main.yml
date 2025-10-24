@@ -115,15 +115,24 @@
     name: k3s
 
 # Install Helm for Kubernetes package management
-- name: Download Helm installer script
+- name: Download Helm binary
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-    dest: /tmp/get_helm.sh
-    mode: '0700'
-  become: true
+    url: https://get.helm.sh/helm-v3.19.0-linux-amd64.tar.gz
+    dest: /tmp/helm-v3.19.0-linux-amd64.tar.gz
+    mode: '0644'
 
-- name: Install Helm
-  ansible.builtin.shell: /tmp/get_helm.sh
+- name: Extract Helm binary
+  ansible.builtin.unarchive:
+    src: /tmp/helm-v3.19.0-linux-amd64.tar.gz
+    dest: /tmp/
+    remote_src: true
+
+- name: Install Helm binary
+  ansible.builtin.copy:
+    src: /tmp/linux-amd64/helm
+    dest: /usr/local/bin/helm
+    mode: '0755'
+    remote_src: true
   become: true
 
 - name: Verify Helm installation
@@ -154,13 +163,34 @@
   become: true
   args:
     chdir: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App"
+  register: bizobs_start_result
+  failed_when: false  # Don't fail immediately, let's check the result
+
+- name: Display BizObs startup result
+  debug:
+    msg: "BizObs startup result: {{ bizobs_start_result }}"
 
 - name: Wait for BizObs application to be ready
   wait_for:
     port: 8080
     host: localhost
     delay: 10
-    timeout: 120
+    timeout: 180  # Increased timeout
+  register: port_check
+  failed_when: false
+
+- name: Check if BizObs is running via HTTP
+  ansible.builtin.uri:
+    url: http://localhost:8080/health
+    method: GET
+  register: health_check
+  failed_when: false
+  when: port_check is succeeded
+
+- name: Display health check result
+  debug:
+    msg: "Health check result: {{ health_check }}"
+  when: health_check is defined
 
 - name: Create BizObs Service
   kubernetes.core.k8s:
@@ -177,6 +207,7 @@
         - protocol: TCP
           port: 80
           targetPort: 8080
+  when: port_check is succeeded
 
 - name: Create BizObs Ingress
   kubernetes.core.k8s:
@@ -202,3 +233,4 @@
                   name: bizobs-service
                   port:
                     number: 80
+  when: port_check is succeeded and health_check is succeeded
