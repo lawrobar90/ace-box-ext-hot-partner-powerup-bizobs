@@ -131,14 +131,6 @@
     delay: 10
     timeout: 60
 
-- name: Create BizObs proxy service using socat
-  ansible.builtin.shell: |
-    docker run -d --name bizobs-proxy --restart=unless-stopped \
-      --network=host \
-      alpine/socat TCP-LISTEN:8080,fork,reuseaddr TCP:localhost:4000
-  become: true
-  ignore_errors: true
-
 - name: Create BizObs Service
   kubernetes.core.k8s:
     definition:
@@ -153,7 +145,7 @@
         ports:
         - protocol: TCP
           port: 80
-          targetPort: 8080
+          targetPort: 4000
 
 - name: Create BizObs Ingress
   kubernetes.core.k8s:
@@ -165,7 +157,7 @@
         namespace: default
         annotations:
           nginx.ingress.kubernetes.io/rewrite-target: /
-          nginx.ingress.kubernetes.io/upstream-vhost: "{{ ansible_default_ipv4.address }}:8080"
+          nginx.ingress.kubernetes.io/upstream-vhost: "{{ ansible_default_ipv4.address }}:4000"
       spec:
         ingressClassName: "{{ ingress_class }}"
         rules:
