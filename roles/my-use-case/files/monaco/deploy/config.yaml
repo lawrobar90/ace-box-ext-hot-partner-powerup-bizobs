@@ -1,15 +1,4 @@
 configs:
-  - id: b8c119e1-175c-3a9a-95af-e38411e6430f
-    config:
-      template: b8c119e1-175c-3a9a-95af-e38411e6430f.json
-      skip: false
-    type:
-      settings:
-        schema: builtin:container.monitoring-rule
-        schemaVersion: 0.0.1
-        scope: environment
-  
- 
   - id: SENSOR_DOTNET_BIZEVENTS_HTTP_INCOMING
     config:
       name: name
