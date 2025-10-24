@@ -110,9 +110,7 @@
       DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
       DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint }}"
 
-- include_role:
-    name: dt-oneagent-classic
-
+# Install Kubernetes infrastructure first
 - include_role:
     name: k3s
 
@@ -139,6 +137,10 @@
 - include_role:
     name: mattermost
 
+# Install OneAgent after Kubernetes is ready
+- include_role:
+    name: dt-oneagent-classic
+
 - include_role:
     name: dashboard
 
@@ -155,10 +157,10 @@
 
 - name: Wait for BizObs application to be ready
   wait_for:
-    port: 4000
+    port: 8080
     host: localhost
     delay: 10
-    timeout: 60
+    timeout: 120
 
 - name: Create BizObs Service
   kubernetes.core.k8s:
@@ -174,7 +176,7 @@
         ports:
         - protocol: TCP
           port: 80
-          targetPort: 4000
+          targetPort: 8080
 
 - name: Create BizObs Ingress
   kubernetes.core.k8s:
@@ -186,7 +188,7 @@
         namespace: default
         annotations:
           nginx.ingress.kubernetes.io/rewrite-target: /
-          nginx.ingress.kubernetes.io/upstream-vhost: "{{ ansible_default_ipv4.address }}:4000"
+          nginx.ingress.kubernetes.io/upstream-vhost: "{{ ansible_default_ipv4.address }}:8080"
       spec:
         ingressClassName: "{{ ingress_class }}"
         rules:
