@@ -19,10 +19,10 @@ configs:
         schema: builtin:oneagent.features
         scope: environment
 
-  - id: SENSOR_NODE_BIZEVENTS_HTTP_INCOMING
+  - id: SENSOR_NODEJS_BIZEVENTS_HTTP_INCOMING
     config:
       name: name
-      template: SENSOR_NODE_BIZEVENTS_HTTP_INCOMING.json
+      template: SENSOR_NODEJS_BIZEVENTS_HTTP_INCOMING.json
       skip: false
     type:
       settings:
