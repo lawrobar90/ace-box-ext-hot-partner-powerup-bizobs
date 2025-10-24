@@ -113,6 +113,9 @@
 - include_role:
     name: dt-oneagent-classic
 
+- include_role:
+    name: k3s
+
 # Install Helm for Kubernetes package management
 - name: Download Helm installer script
   ansible.builtin.get_url:
