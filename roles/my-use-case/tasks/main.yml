@@ -119,10 +119,16 @@
 - include_role:
     name: dashboard
 
+# Partner PowerUp BizObs App - Deploy and Configure Application
+- include_role:
+    name: app-partner-powerup-bizobs
+
 # Partner PowerUp BizObs App - Start Application and Setup Ingress
 - name: Start Application
-  ansible.builtin.shell: /bin/sh ./start-server.sh
+  ansible.builtin.shell: /bin/sh "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/start-server.sh"
   become: true
+  args:
+    chdir: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App"
 
 - name: Wait for BizObs application to be ready
   wait_for:
