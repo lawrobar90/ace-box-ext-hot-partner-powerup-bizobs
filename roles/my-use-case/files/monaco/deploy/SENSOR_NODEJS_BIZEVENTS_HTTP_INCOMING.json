@@ -1,5 +1,5 @@
 {
     "enabled": true,
     "instrumentation": true,
-    "key": "SENSOR_NODE_BIZEVENTS_HTTP_INCOMING"
+    "key": "SENSOR_NODEJS_BIZEVENTS_HTTP_INCOMING"
 }
