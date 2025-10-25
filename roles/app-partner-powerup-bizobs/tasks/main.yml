@@ -129,6 +129,15 @@
     create_home: yes
   failed_when: false
 
+- name: Create BizObs parent directory
+  become: true
+  file:
+    path: "{{ bizobs_home | default('/home/dt_training') }}"
+    state: directory
+    owner: "{{ bizobs_user | default('dt_training') }}"
+    group: "{{ bizobs_user | default('dt_training') }}"
+    mode: '0755'
+
 - name: Create BizObs application directory in user home
   become: true
   file:

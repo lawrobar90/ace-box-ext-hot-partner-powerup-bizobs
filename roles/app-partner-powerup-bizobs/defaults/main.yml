@@ -2,8 +2,8 @@
 # Partner PowerUp BizObs - Default Variables
 
 # Application Configuration
-bizobs_user: "bizobs"
-bizobs_home: "/opt/bizobs"
+bizobs_user: "dt_training"
+bizobs_home: "/home/dt_training"
 bizobs_port: 8080
 bizobs_host: "0.0.0.0"
 bizobs_git_branch: "main"
