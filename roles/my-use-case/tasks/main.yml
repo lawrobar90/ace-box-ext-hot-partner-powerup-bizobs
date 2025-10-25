@@ -52,7 +52,7 @@
     name: monaco-v2
     tasks_from: apply-monaco
   vars:
-    monaco_projects_root: "{{ role_path }}/files/monaco"
+    monaco_manifest_path: "{{ role_path }}/files/monaco/manifest.yml"
     monaco_project: ""
     monaco_environment:
       DT_API_TOKEN: "{{ dynatrace_api_token }}"
