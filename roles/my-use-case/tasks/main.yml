@@ -1,54 +1,184 @@
+#
+# Partner PowerUp BizObs - ACE-BOX External Use Case
+# Main deployment tasks for my-use-case role
+# 
+---
+- debug:
+    msg: "Hello from Partner PowerUp BizObs Use Case!"
+
+# Store role path for file references
 - set_fact:
     role_path_abs: "{{ role_path }}"
 
-# Configure passwordless sudo for ACE Box automated deployment - CRITICAL FIRST STEP
-- name: Configure passwordless sudo immediately (Method 1)
-  become: true
-  become_method: sudo
-  ansible.builtin.shell: |
-    echo 'dt_training ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/dt_training
-    chmod 440 /etc/sudoers.d/dt_training
-  failed_when: false
+# 
+# STEP 1: Authentication & Dynatrace Setup
+# dt-access-token is a curated role for Dynatrace API access
+# Required for Monaco configuration management
+#
+- include_role:
+    name: dt-access-token
+  vars:
+    access_token_var_name: "monaco_cleanup_api_token"
+    access_token_scope:
+      [
+        "slo.read",
+        "slo.write", 
+        "CaptureRequestData",
+        "credentialVault.read",
+        "credentialVault.write",
+        "DataExport",
+        "DataPrivacy",
+        "ExternalSyntheticIntegration",
+        "ReadConfig",
+        "WriteConfig",
+        "events.ingest",
+        "settings.read",
+        "settings.write",
+        "metrics.ingest",
+        "openTelemetryTrace.ingest",
+        "logs.ingest"
+      ]
+
+# Generate OAuth Token (exactly as in working implementation)
+- block:
+    - name: Request a DT OAuth Access Token
+      ansible.builtin.uri:
+        url: "{{ extra_vars.dt_oauth_sso_endpoint }}"
+        method: POST
+        headers:
+          Content-Type: "application/x-www-form-urlencoded"
+        body_format: form-urlencoded
+        body:
+          grant_type: "client_credentials"
+          client_id: "{{ extra_vars.dt_oauth_client_id }}"
+          client_secret: "{{ extra_vars.dt_oauth_client_secret }}"
+          scope: "document:documents:read document:documents:write document:direct-shares:read document:direct-shares:write"
+          resource: "{{ extra_vars.dt_oauth_account_urn }}"
+      register: auth_response_raw
+      failed_when: auth_response_raw.status != 200
+      when: 
+        - extra_vars.dt_oauth_client_id is defined
+        - extra_vars.dt_oauth_client_secret is defined
+        - extra_vars.dt_oauth_sso_endpoint is defined
+
+    - name: Set OAuth Access Token
+      set_fact:
+        dt_oauth_access_token: "{{ auth_response_raw.json.access_token }}"
+      when: auth_response_raw is defined and auth_response_raw.status == 200
+
+# Install Biz Flow App using dt-platform role
+- name: Install Biz Flow App
   ignore_errors: true
+  include_role:
+    name: dt-platform
+    tasks_from: ensure-app
+  vars:
+    dt_app_id: "dynatrace.biz.flow"
+    dt_app_version: "1.20.3"
+    dt_environment_url_gen3: "{{ extra_vars.dt_environment_url_gen3 }}"
+    dt_oauth_sso_endpoint: "{{ extra_vars.dt_oauth_sso_endpoint }}"
+    dt_oauth_client_id: "{{ extra_vars.dt_oauth_client_id }}"
+    dt_oauth_client_secret: "{{ extra_vars.dt_oauth_client_secret }}"
+    dt_oauth_account_urn: "{{ extra_vars.dt_oauth_account_urn }}"
+  when: 
+    - extra_vars.dt_environment_url_gen3 is defined
+    - extra_vars.dt_oauth_client_id is defined
 
-- name: Configure passwordless sudo immediately (Method 2 - Alternative)
-  ansible.builtin.shell: |
-    echo 'dt_training ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/dt_training
-    sudo chmod 440 /etc/sudoers.d/dt_training
-  failed_when: false
-  ignore_errors: true
+#
+# STEP 2: Infrastructure Setup
+# Kubernetes infrastructure is required for Mattermost and Dashboard
+#
+- include_role:
+    name: "microk8s"
 
-- name: Configure sudo group passwordless access
-  become: true
-  ansible.builtin.shell: |
-    echo '%sudo ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudo-group
-    chmod 440 /etc/sudoers.d/sudo-group
-  failed_when: false
-  ignore_errors: true
+#
+# STEP 3: Monaco Configuration (requires auth tokens)
+# Apply Monaco configuration for Dynatrace setup
+#
+- include_role:
+    name: "monaco-v2"
 
-- name: Add dt_training to sudo group
-  become: true
-  ansible.builtin.user:
-    name: dt_training
-    groups: sudo
-    append: yes
-  failed_when: false
-  ignore_errors: true
+- include_role:
+    name: monaco-v2
+    tasks_from: apply-monaco
+    apply:
+      environment:
+        DT_API_TOKEN: "{{ dynatrace_api_token }}"
+        DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') if extra_vars.dt_environment_url_gen3 is defined else '' }}"
+        DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id | default('') }}"
+        DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret | default('') }}"
+        DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint | default('') }}"
+        INGRESS_DOMAIN: "{{ ingress_domain }}"
+  vars:
+    monaco_projects_root: "{{ role_path_abs }}/files/monaco"
+    monaco_project: ""
+    monaco_manifest_path: "{{ role_path_abs }}/files/monaco/manifest.yml"
 
-- name: Force reload sudo configuration
-  ansible.builtin.shell: sudo -k
-  failed_when: false
-  ignore_errors: true
+#
+# STEP 4: Mattermost (requires Kubernetes)
+# Team collaboration platform
+#
+- include_role:
+    name: "mattermost"
 
-- name: Verify sudo configuration works
-  ansible.builtin.command: sudo -n whoami
-  register: sudo_test
-  changed_when: false
-  failed_when: false
+#
+# STEP 5: OneAgent (after Kubernetes is ready)
+# Dynatrace observability agent
+#
+- include_role:
+    name: "dt-oneagent-classic"
 
-- name: Display sudo status
-  debug:
+#
+# STEP 6: BizObs Application (runs on EC2, uses ingress for external access)
+# This is the main Partner PowerUp BizObs application
+#
+- include_role:
+    name: "app-partner-powerup-bizobs"
+
+#
+# STEP 7: Dashboard Setup (requires Kubernetes and BizObs to be running)
+# Configure dashboard with links to all services
+#
+- name: Configure Dashboard with BizObs links
+  block:
+    - set_fact:
+        include_dashboard_value_file: "{{ role_path_abs }}/templates/bizobs-dashboard.yml.j2"
+
+    - include_role:
+        name: dashboard
+        tasks_from: template-values-file
+
+    - include_role:
+        name: "dashboard"
+
+# Final status with all access URLs
+- debug:
     msg: |
+      🎉 Partner PowerUp BizObs deployed successfully!
+      
+      📊 DASHBOARD & COLLABORATION:
+      - Dashboard: {{ ingress_protocol | default('http') }}://dashboard.{{ ingress_domain }}/
+      - Mattermost: {{ ingress_protocol | default('http') }}://mattermost.{{ ingress_domain }}/
+      
+      🚀 BIZOBS APPLICATION:
+      - Main App: {{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/
+      - Health Check: {{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/health
+      - Admin Panel: {{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/api/admin/services/status
+      - Journey Simulation: {{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/api/journey-simulation/simulate-journey
+      - Load Generation: {{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/api/load-gen/start
+      
+      🔧 DYNATRACE INTEGRATION:
+      - Tenant: {{ extra_vars.dt_environment_url_gen3 if extra_vars.dt_environment_url_gen3 is defined else 'Configured via environment' }}
+      - OneAgent: Installed and monitoring
+      - Biz Flow App: Installed
+      - Monaco Config: Applied
+      
+      🎭 DEMO FEATURES READY:
+      - Customer Journey Simulation (Insurance, Retail, Tech, Banking)
+      - Multi-persona Load Generation (Karen, Raj, Alex, Sophia)  
+      - Dynatrace Integration with Business Events
+      - Real-time Observability Dashboard
+      - Service Mesh with Dynamic Service Creation
       Sudo configuration: {{ 'SUCCESS - Passwordless sudo configured' if sudo_test.stdout == 'root' else 'WARNING - May need manual intervention' }}
       Sudo test result: {{ sudo_test.stdout }}
       {% if sudo_test.stdout != 'root' %}

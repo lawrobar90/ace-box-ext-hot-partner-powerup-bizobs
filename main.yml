@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    # Single comprehensive role that handles everything
+    - role: my-use-case
