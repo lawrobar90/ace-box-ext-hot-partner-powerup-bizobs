@@ -313,8 +313,8 @@
         externalName: "{{ ansible_default_ipv4.address | default('127.0.0.1') }}"
         ports:
         - protocol: TCP
-          port: {{ bizobs_port | default(8080) }}
-          targetPort: {{ bizobs_port | default(8080) }}
+          port: "{{ bizobs_port | default(8080) }}"
+          targetPort: "{{ bizobs_port | default(8080) }}"
     state: present
   become: true
   failed_when: false
@@ -342,7 +342,7 @@
                 service:
                   name: bizobs-service
                   port:
-                    number: {{ bizobs_port | default(8080) }}
+                    number: "{{ bizobs_port | default(8080) }}"
     state: present
   become: true
   failed_when: false
