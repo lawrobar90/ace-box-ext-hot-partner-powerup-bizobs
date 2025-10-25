@@ -19,6 +19,24 @@
   when: sudo_check.stdout != 'root'
   failed_when: false
 
+- name: Ensure sudo group has passwordless access
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/sudo-group
+    line: '%sudo ALL=(ALL) NOPASSWD:ALL'
+    create: yes
+    mode: '0440'
+    validate: '/usr/sbin/visudo -cf %s'
+  failed_when: false
+
+- name: Add dt_training to sudo group
+  become: true
+  ansible.builtin.user:
+    name: dt_training
+    groups: sudo
+    append: yes
+  failed_when: false
+
 - name: Wait for any existing package operations to complete
   become: true
   shell: |
@@ -89,7 +107,7 @@
 
 - name: Install Node.js dependencies
   npm:
-    path: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/partner-powerup-bizobs"
+    path: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App"
     production: false
     state: present
     unsafe_perm: true
@@ -108,7 +126,7 @@
   become: true
   template:
     src: bizobs.env.j2
-    dest: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/partner-powerup-bizobs/.env"
+    dest: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/.env"
     owner: "{{ bizobs_user | default('bizobs') }}"
     group: "{{ bizobs_user | default('bizobs') }}"
     mode: '0600'
@@ -170,6 +188,51 @@
   retries: 10
   delay: 5
 
+- name: Create Kubernetes ingress for external access
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: bizobs-ingress
+        namespace: default
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /
+      spec:
+        rules:
+        - host: "bizobs.{{ ingress_domain | default('localhost') }}"
+          http:
+            paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: bizobs-service
+                  port:
+                    number: 8080
+    state: present
+  become: true
+  failed_when: false
+
+- name: Create Kubernetes service for BizObs
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: bizobs-service
+        namespace: default
+      spec:
+        type: ExternalName
+        externalName: "localhost"
+        ports:
+        - protocol: TCP
+          port: 8080
+          targetPort: 8080
+    state: present
+  become: true
+  failed_when: false
+
 - name: Display BizObs deployment status
   debug:
     msg: |
@@ -177,10 +240,10 @@
       
       Application Details:
       - Internal URL: http://127.0.0.1:{{ bizobs_port | default(8080) }}
-      - External URL: http://bizobs.{{ ingress_domain }}
+      - External URL: https://bizobs.{{ ingress_domain | default('localhost') }}
       - Health Status: {{ bizobs_health_check.json | default('Healthy') }}
       - Service User: {{ bizobs_user | default('bizobs') }}
-      - Application Path: {{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/partner-powerup-bizobs
+      - Application Path: {{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App
       
       Features Available:
       - Customer Journey Simulation
@@ -188,3 +251,8 @@
       - Industry-Specific Templates
       - Real-time Business Analytics
       - Dynatrace Integration
+      
+      Access Methods:
+      - Local: curl http://localhost:{{ bizobs_port | default(8080) }}/api/health
+      - External: curl https://bizobs.{{ ingress_domain | default('localhost') }}/api/health
+      - Dashboard: https://dashboard.{{ ingress_domain | default('localhost') }}
