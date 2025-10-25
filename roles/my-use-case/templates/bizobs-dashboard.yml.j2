@@ -14,22 +14,22 @@ useCases:
     previews:
     - section: Partner PowerUp BizObs
       description: Main Application
-      url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}"
+      url: "{{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}"
     - section: Partner PowerUp BizObs
       description: Health Check
-      url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}/health"
+      url: "{{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/health"
     - section: Partner PowerUp BizObs
       description: Admin Panel
-      url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}/api/admin/services/status"
+      url: "{{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/api/admin/services/status"
     - section: Partner PowerUp BizObs
       description: Journey Simulation
-      url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}/api/journey-simulation/simulate-journey"
+      url: "{{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/api/journey-simulation/simulate-journey"
     - section: Partner PowerUp BizObs
       description: Load Generation
-      url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}/api/load-gen/start"
+      url: "{{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/api/load-gen/start"
     guides:
     - description: "Partner PowerUp BizObs - Business Analytics Lab Guide"
-      url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}/lab-guide"
+      url: "{{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/lab-guide"
     - description: "Partner PowerUp BizObs GitHub Repository"
       url: "https://github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs"
     - description: "Partner PowerUp BizObs Application README"
@@ -46,26 +46,16 @@ useCases:
 extRefs:
   "Partner PowerUp BizObs":
     description: "Partner PowerUp Business Observability Customer Journey Simulator - Main Application"
-    url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}"
+    url: "{{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}"
   "BizObs API Documentation":
     description: "REST API endpoints for customer journey simulation and business analytics"
-    url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}/api"
+    url: "{{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/api"
   "BizObs Customer Journey Steps":
     description: "Interactive customer journey process steps simulation"
-    url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}/process"
+    url: "{{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/process"
   "BizObs Health & Metrics":
     description: "Application health check and performance metrics"
-    url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}/health"
+    url: "{{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/health"
   "BizObs Admin Panel":
     description: "Administrative interface for service status and configuration"
-    url: "{{ ingress_protocol }}://bizobs.{{ ingress_domain }}/api/admin/services/status"
-  "Dynatrace Tenant":
-    description: "Your Dynatrace environment for monitoring BizObs application"
-    url: "{{ tenant_url }}"
-    creds:
-      - description: "Dynatrace Environment URL"
-        type: "text"
-        value: "{{ tenant_url }}"
-      - description: "Tenant ID"
-        type: "text"
-        value: "{{ tenant_id }}"
+    url: "{{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/api/admin/services/status"

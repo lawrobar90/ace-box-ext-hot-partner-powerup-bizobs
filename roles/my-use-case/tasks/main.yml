@@ -180,6 +180,16 @@
 - include_role:
     name: app-partner-powerup-bizobs
 
+# Apply BizObs Dashboard Configuration
+- name: Add BizObs Dashboard Configuration
+  block:
+  - set_fact:
+      include_dashboard_value_file: "{{ role_path_abs }}/templates/bizobs-dashboard.yml.j2"
+
+  - include_role:
+      name: dashboard
+      tasks_from: template-values-file
+
 # Partner PowerUp BizObs App - Start Application and Setup Ingress
 - name: Start Application
   ansible.builtin.shell: /bin/sh "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/start-server.sh"
