@@ -1,9 +1,36 @@
 ---
 # Partner PowerUp BizObs App - EC2 Deployment Tasks
 
+- name: Wait for any existing package operations to complete
+  become: true
+  shell: |
+    while fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do
+      echo "Waiting for other package operations to complete..."
+      sleep 5
+    done
+  changed_when: false
+  failed_when: false
+
+- name: Clean up any stale package locks
+  become: true
+  shell: |
+    rm -f /var/lib/dpkg/lock-frontend
+    rm -f /var/lib/dpkg/lock
+    rm -f /var/cache/apt/archives/lock
+  failed_when: false
+  changed_when: false
+
+- name: Update package cache
+  become: true
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  retries: 3
+  delay: 10
+
 - name: Install Node.js and dependencies
   become: true
-  package:
+  apt:
     name:
       - nodejs
       - npm
@@ -11,6 +38,9 @@
       - curl
       - nginx
     state: present
+    update_cache: yes
+  retries: 3
+  delay: 10
 
 - name: Create BizObs application user
   become: true
