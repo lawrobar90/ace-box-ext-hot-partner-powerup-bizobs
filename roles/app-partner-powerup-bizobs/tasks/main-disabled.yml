@@ -1,0 +1,5 @@
+# This role is no longer needed - functionality moved to my-use-case
+# The my-use-case role now handles the app deployment without APT conflicts
+---
+- debug:
+    msg: "⚠️ This role is deprecated. App deployment now handled in my-use-case role."

@@ -1,10 +1,209 @@
 #
-# Partner PowerUp BizObs - ACE-BOX External Use Case
-# Main deployment tasks for my-use-case role
+# Partner PowerUp BizObs - ACE-BOX Use Case (Ultra-Simple Fixed Version)
+# Fixes APT lock issues by removing manual Node.js installation
 # 
 ---
 - debug:
-    msg: "Hello from Partner PowerUp BizObs Use Case!"
+    msg: "🚀 Starting Ultra-Simple Partner PowerUp BizObs deployment..."
+
+# Store role path for file references
+- set_fact:
+    role_path_abs: "{{ role_path }}"
+
+# Set application variables
+- set_fact:
+    bizobs_repo_url: "https://github.com/lawrobar90/Partner-PowerUp-BizObs-App.git"
+    bizobs_app_dir: "/home/{{ ace_box_user | default('dt_training') }}/Partner-PowerUp-BizObs-App"
+    bizobs_domain: "bizobs.{{ ingress_domain }}"
+
+#
+# STEP 1: Authentication & Dynatrace Setup
+#
+- include_role:
+    name: dt-access-token
+  vars:
+    access_token_var_name: "monaco_cleanup_api_token"
+    access_token_scope:
+      [
+        "slo.read", "slo.write", "CaptureRequestData", "credentialVault.read", 
+        "credentialVault.write", "DataExport", "DataPrivacy", "ExternalSyntheticIntegration",
+        "ReadConfig", "WriteConfig", "events.ingest", "settings.read", "settings.write",
+        "metrics.ingest", "openTelemetryTrace.ingest", "logs.ingest"
+      ]
+
+#
+# STEP 2: Infrastructure Setup (ACE-BOX curated roles handle Node.js!)
+#
+- include_role:
+    name: "microk8s"
+
+- include_role:
+    name: "nodejs"
+
+# 
+# STEP 3: Application Deployment (No manual apt installs!)
+#
+- name: Clone Partner PowerUp BizObs repository
+  ansible.builtin.git:
+    repo: "{{ bizobs_repo_url }}"
+    dest: "{{ bizobs_app_dir }}"
+    version: "main"
+    force: yes
+  become_user: "{{ ace_box_user | default('dt_training') }}"
+
+- name: Install application dependencies
+  ansible.builtin.command:
+    cmd: npm install --production
+    chdir: "{{ bizobs_app_dir }}"
+  become_user: "{{ ace_box_user | default('dt_training') }}"
+
+- name: Copy ACE-BOX optimized startup script
+  ansible.builtin.copy:
+    src: "{{ role_path_abs }}/../../start-server-ace-optimized.sh"
+    dest: "{{ bizobs_app_dir }}/start-server.sh"
+    mode: '0755'
+
+- name: Start BizObs application (ACE-BOX optimized)
+  ansible.builtin.shell: /bin/sh ./start-server.sh
+  become: true
+  args:
+    chdir: "{{ bizobs_app_dir }}"
+  async: 30
+  poll: 0
+
+- name: Wait for application startup
+  ansible.builtin.wait_for:
+    port: 8080
+    host: localhost
+    delay: 5
+    timeout: 45
+
+#
+# STEP 4: Observability & Monitoring
+#
+- include_role:
+    name: "dt-oneagent-classic"
+
+- include_role:
+    name: "monaco-v2"
+
+- include_role:
+    name: monaco-v2
+    tasks_from: apply-monaco
+    apply:
+      environment:
+        DT_API_TOKEN: "{{ dynatrace_api_token }}"
+        DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') if extra_vars.dt_environment_url_gen3 is defined else '' }}"
+        DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id | default('') }}"
+        DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret | default('') }}"
+        DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint | default('') }}"
+        INGRESS_DOMAIN: "{{ ingress_domain }}"
+  vars:
+    monaco_projects_root: "{{ role_path_abs }}/files/monaco"
+    monaco_project: ""
+    monaco_manifest_path: "{{ role_path_abs }}/files/monaco/manifest.yml"
+
+#
+# STEP 5: Team Collaboration
+#
+- include_role:
+    name: "mattermost"
+
+#
+# STEP 6: Dashboard Setup
+#
+- name: Configure Dashboard with BizObs links
+  block:
+    - set_fact:
+        include_dashboard_value_file: "{{ role_path_abs }}/templates/bizobs-dashboard.yml.j2"
+
+    - include_role:
+        name: dashboard
+        tasks_from: template-values-file
+
+    - include_role:
+        name: "dashboard"
+
+#
+# STEP 7: External Access (Kubernetes ingress)
+#
+- name: Create BizObs Kubernetes service
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: bizobs-service
+        namespace: default
+        labels:
+          app: bizobs
+          component: partner-powerup
+      spec:
+        type: ExternalName
+        externalName: localhost
+        ports:
+        - port: 8080
+          targetPort: 8080
+          name: http
+
+- name: Create BizObs ingress for external access
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: bizobs-ingress
+        namespace: default
+        labels:
+          app: bizobs
+          component: partner-powerup
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+      spec:
+        ingressClassName: "{{ ingress_class | default('nginx') }}"
+        rules:
+        - host: "{{ bizobs_domain }}"
+          http:
+            paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: bizobs-service
+                  port:
+                    number: 8080
+
+# Final verification and success message
+- name: Verify application health
+  ansible.builtin.uri:
+    url: "http://localhost:8080/health"
+    method: GET
+    status_code: 200
+  register: health_check
+  retries: 3
+  delay: 5
+
+- debug:
+    msg: |
+      ✅ Partner PowerUp BizObs deployed successfully!
+      
+      🔗 Access URLs:
+      - BizObs App: {{ ingress_protocol | default('http') }}://{{ bizobs_domain }}/
+      - Dashboard: {{ ingress_protocol | default('http') }}://dashboard.{{ ingress_domain }}/
+      - Mattermost: {{ ingress_protocol | default('http') }}://mattermost.{{ ingress_domain }}/
+      
+      🎯 Health Check: {{ health_check.status }} - {{ health_check.msg | default('OK') }}
+      
+      🎭 Demo Features Ready:
+      - Customer Journey Simulation (Insurance, Retail, Tech, Banking)
+      - Multi-persona Load Generation (Karen, Raj, Alex, Sophia)
+      - Dynatrace Integration with Business Events
+      - Real-time Observability Dashboard
+      - Dynamic Service Mesh Creation
+      
+      🚀 Fixed: No more APT lock issues!
 
 # Store role path for file references
 - set_fact:
