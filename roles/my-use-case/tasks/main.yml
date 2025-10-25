@@ -30,7 +30,9 @@
   rescue:
     - name: Verify Node.js is available despite YARN failure
       ansible.builtin.shell: |
-        source ~/.nvm/nvm.sh && node --version
+        . ~/.nvm/nvm.sh && node --version
+      args:
+        executable: /bin/bash
       become_user: "{{ ace_box_user | default('dt_training') }}"
       register: node_version_result
       
