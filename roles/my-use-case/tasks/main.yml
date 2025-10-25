@@ -173,9 +173,6 @@
 - include_role:
     name: dt-oneagent-classic
 
-- include_role:
-    name: dashboard
-
 # Partner PowerUp BizObs App - Deploy and Configure Application
 - include_role:
     name: app-partner-powerup-bizobs
@@ -189,6 +186,39 @@
   - include_role:
       name: dashboard
       tasks_from: template-values-file
+
+# Deploy dashboard after BizObs configuration is ready
+- include_role:
+    name: dashboard
+
+# Wait for dashboard to be ready
+- name: Wait for dashboard to be ready
+  wait_for:
+    host: localhost
+    port: 80
+    delay: 10
+    timeout: 120
+  failed_when: false
+
+- name: Check dashboard deployment status
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Pod
+    namespace: ace
+    label_selectors:
+      - "app.kubernetes.io/name=dashboard"
+  register: dashboard_pods
+  failed_when: false
+
+- name: Display dashboard status
+  debug:
+    msg: |
+      Dashboard deployment status:
+      Dashboard URL: https://dashboard.{{ ingress_domain }}
+      Dashboard pods: {{ dashboard_pods.resources | length if dashboard_pods.resources is defined else 'Not found' }}
+      {% if dashboard_pods.resources is defined and dashboard_pods.resources | length > 0 %}
+      Pod status: {{ dashboard_pods.resources[0].status.phase if dashboard_pods.resources[0].status is defined else 'Unknown' }}
+      {% endif %}
 
 # Partner PowerUp BizObs App - Start Application and Setup Ingress
 - name: Start Application
@@ -267,3 +297,28 @@
                   port:
                     number: 80
   when: port_check is succeeded and health_check is succeeded
+
+# Final deployment status
+- name: Display final deployment status
+  debug:
+    msg: |
+      🎉 Partner PowerUp BizObs Deployment Status:
+      
+      ✅ Dashboard URL: https://dashboard.{{ ingress_domain }}
+      ✅ Dashboard Username: dt_training  
+      ✅ Dashboard Password: {{ ansible_env.ACE_BOX_DASHBOARD_PASSWORD | default('Check logs for password') }}
+      
+      ✅ BizObs Application URL: {{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}
+      ✅ BizObs Health Check: {{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/health
+      
+      📊 Business Analytics Features:
+      - Customer Journey Simulation
+      - Dynamic Microservices (Step1-Step6)
+      - Industry-Specific Templates  
+      - Real-time Business Analytics
+      - Dynatrace Integration
+      
+      🔧 Troubleshooting:
+      - If dashboard shows 404, wait 2-3 minutes for full deployment
+      - Check pod status: kubectl get pods -n ace
+      - Check ingress: kubectl get ingress -A
