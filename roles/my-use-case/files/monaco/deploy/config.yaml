@@ -29,13 +29,13 @@ configs:
         schema: builtin:oneagent.features
         scope: environment
 
-  - id: holistic-api-service-naming
-    config:
-      name: "Holistic API Rules"
-      template: service-naming-rule.json
-      skip: false
-    type:
-      api: service-naming-rule
+ # - id: holistic-api-service-naming
+#    config:
+#      name: "Holistic API Rules"
+#      template: service-naming-rule.json
+#      skip: false
+#    type:
+ #     api: service-naming-rule
 
   - id: bizobstemplate
     type:
