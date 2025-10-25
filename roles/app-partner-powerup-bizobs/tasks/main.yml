@@ -150,7 +150,7 @@
 
 - name: Install Node.js dependencies with enhanced error handling
   shell: |
-    cd {{ bizobs_home | default('/home/dt_training') }}/bizobs-app
+    cd "{{ bizobs_home | default('/home/dt_training') }}/bizobs-app"
     
     # Verify we're in the right directory
     if [ ! -f "package.json" ]; then
