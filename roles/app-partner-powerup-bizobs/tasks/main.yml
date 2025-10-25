@@ -1,306 +1,79 @@
 ---
-# Partner PowerUp BizObs App - EC2 Deployment Tasks
+# Simplified Partner PowerUp BizObs App - EC2 Deployment Tasks
+# Optimized for the actual requirements of your self-contained Node.js app
+# Your app handles most deployment logic internally via its own scripts
 
-# Ensure passwordless sudo is configured before any privileged operations
-- name: Force configure passwordless sudo with multiple methods
+# Install system dependencies (your app needs Node.js, npm, git)
+- name: Install Node.js, npm, and git
   become: true
-  ansible.builtin.shell: |
-    # Method 1: Direct write
-    echo 'dt_training ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/dt_training 2>/dev/null || true
-    chmod 440 /etc/sudoers.d/dt_training 2>/dev/null || true
-    # Method 2: Via tee
-    echo 'dt_training ALL=(ALL) NOPASSWD:ALL' | tee /etc/sudoers.d/dt_training >/dev/null 2>&1 || true
-    chmod 440 /etc/sudoers.d/dt_training 2>/dev/null || true
-    # Method 3: Sudo group
-    echo '%sudo ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudo-group 2>/dev/null || true
-    chmod 440 /etc/sudoers.d/sudo-group 2>/dev/null || true
-  failed_when: false
-  ignore_errors: true
-
-- name: Verify passwordless sudo for package installation
-  ansible.builtin.command: sudo -n whoami
-  register: sudo_check
-  changed_when: false
-  failed_when: false
-
-- name: Add dt_training to sudo group
-  become: true
-  ansible.builtin.user:
-    name: dt_training
-    groups: sudo
-    append: yes
-  failed_when: false
-
-- name: Kill any hanging package management processes
-  become: true
-  ansible.builtin.shell: |
-    killall apt apt-get dpkg 2>/dev/null || true
-    sleep 2
-  failed_when: false
-  changed_when: false
-
-- name: Wait for any existing package operations to complete with timeout
-  become: true
-  shell: |
-    timeout=60
-    while [ $timeout -gt 0 ] && fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do
-      echo "Waiting for other package operations to complete... ($timeout seconds left)"
-      sleep 5
-      timeout=$((timeout-5))
-    done
-    # Force cleanup if still locked
-    if fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; then
-      echo "Force cleaning package locks after timeout"
-      killall apt apt-get dpkg 2>/dev/null || true
-      sleep 2
-    fi
-  changed_when: false
-  failed_when: false
-
-- name: Force clean up any stale package locks
-  become: true
-  shell: |
-    rm -f /var/lib/dpkg/lock-frontend
-    rm -f /var/lib/dpkg/lock
-    rm -f /var/cache/apt/archives/lock
-    rm -f /var/lib/apt/lists/lock
-  failed_when: false
-  changed_when: false
-
-- name: Update package cache with retries and lock handling
-  become: true
-  shell: |
-    # Kill any hanging processes first
-    killall apt apt-get dpkg 2>/dev/null || true
-    sleep 2
-    # Remove locks
-    rm -f /var/lib/dpkg/lock-frontend /var/lib/dpkg/lock /var/cache/apt/archives/lock /var/lib/apt/lists/lock
-    # Update with retries
-    for i in {1..5}; do
-      if apt update; then
-        echo "Package update successful on attempt $i"
-        break
-      else
-        echo "Package update failed on attempt $i, retrying..."
-        killall apt apt-get dpkg 2>/dev/null || true
-        sleep 5
-        rm -f /var/lib/dpkg/lock* /var/cache/apt/archives/lock /var/lib/apt/lists/lock
-      fi
-    done
+  apt:
+    name: ['nodejs', 'npm', 'git', 'curl']
+    state: present
+    update_cache: yes
   retries: 3
-  delay: 10
-  failed_when: false
+  delay: 5
 
-- name: Install Node.js and dependencies with enhanced error handling
-  become: true
-  shell: |
-    # Ensure clean state
-    killall apt apt-get dpkg 2>/dev/null || true
-    rm -f /var/lib/dpkg/lock* /var/cache/apt/archives/lock /var/lib/apt/lists/lock
-    
-    # Install packages with retry logic
-    packages="nodejs npm git curl nginx"
-    for i in {1..5}; do
-      if apt install -y $packages; then
-        echo "Package installation successful on attempt $i"
-        exit 0
-      else
-        echo "Package installation failed on attempt $i, cleaning and retrying..."
-        killall apt apt-get dpkg 2>/dev/null || true
-        sleep 5
-        rm -f /var/lib/dpkg/lock* /var/cache/apt/archives/lock /var/lib/apt/lists/lock
-        dpkg --configure -a 2>/dev/null || true
-      fi
-    done
-    
-    # Final attempt with force
-    apt install -y --fix-broken $packages || echo "Installation completed with warnings"
-  retries: 2
-  delay: 15
-  failed_when: false
+# Verify Node.js version (your app requires Node.js 18+)
+- name: Check Node.js version
+  command: node --version
+  register: node_version
+  changed_when: false
 
-- name: Create BizObs application user (dt_training instead of bizobs for compatibility)
-  become: true
-  user:
-    name: "{{ bizobs_user | default('dt_training') }}"
-    system: no
-    shell: /bin/bash
-    home: "{{ bizobs_home | default('/home/dt_training') }}"
-    create_home: yes
-  failed_when: false
+- name: Display Node.js version
+  debug:
+    msg: "Node.js version: {{ node_version.stdout }}"
 
-- name: Create BizObs parent directory
+# Create app directory with proper permissions
+- name: Create BizObs directory
   become: true
   file:
-    path: "{{ bizobs_home | default('/home/dt_training') }}"
+    path: "{{ bizobs_home | default('/home/dt_training/bizobs-app') }}"
     state: directory
     owner: "{{ bizobs_user | default('dt_training') }}"
     group: "{{ bizobs_user | default('dt_training') }}"
     mode: '0755'
 
-- name: Create BizObs application directory in user home
-  become: true
-  file:
-    path: "{{ bizobs_home | default('/home/dt_training') }}/bizobs-app"
-    state: directory
-    owner: "{{ bizobs_user | default('dt_training') }}"
-    group: "{{ bizobs_user | default('dt_training') }}"
-    mode: '0755'
-
+# Clone your well-structured app from GitHub
 - name: Clone Partner PowerUp BizObs App from GitHub
   git:
     repo: "https://github.com/lawrobar90/Partner-PowerUp-BizObs-App.git"
-    dest: "{{ bizobs_home | default('/home/dt_training') }}/bizobs-app"
+    dest: "{{ bizobs_home | default('/home/dt_training/bizobs-app') }}"
     version: "{{ bizobs_git_branch | default('main') }}"
     force: yes
   become: true
   become_user: "{{ bizobs_user | default('dt_training') }}"
-  failed_when: false
 
-- name: Create npm installation script
-  copy:
-    content: |
-      #!/bin/bash
-      set -e
-      BIZOBS_PATH="{{ bizobs_home | default('/home/dt_training') }}/bizobs-app"
-      cd "$BIZOBS_PATH"
-      
-      # Verify we're in the right directory
-      if [ ! -f "package.json" ]; then
-        echo "ERROR: package.json not found in $(pwd)"
-        ls -la
-        exit 1
-      fi
-      
-      # Clean npm cache and install
-      npm cache clean --force 2>/dev/null || true
-      
-      # Try npm install with multiple methods
-      if npm install --unsafe-perm; then
-        echo "npm install successful"
-      elif npm install --unsafe-perm --no-optional; then
-        echo "npm install successful (without optional packages)"
-      elif npm install --unsafe-perm --legacy-peer-deps; then
-        echo "npm install successful (with legacy peer deps)"
-      else
-        echo "npm install completed with warnings, continuing..."
-      fi
-      
-      # Verify node_modules exists
-      if [ -d "node_modules" ]; then
-        echo "node_modules directory created successfully"
-        ls -la node_modules/ | head -5
-      else
-        echo "WARNING: node_modules directory not found"
-      fi
-    dest: /tmp/npm_install.sh
-    mode: '0755'
-
-- name: Install Node.js dependencies with enhanced error handling
-  command: /tmp/npm_install.sh
+# Your app has clean dependencies - standard npm install works
+- name: Install Node.js dependencies
+  command: npm install --production
+  args:
+    chdir: "{{ bizobs_home | default('/home/dt_training/bizobs-app') }}"
   become: true
   become_user: "{{ bizobs_user | default('dt_training') }}"
-  failed_when: false
-  register: npm_install_result
 
-- name: Display npm installation result
-  debug:
-    msg: "NPM Installation: {{ npm_install_result.stdout_lines | join('\n') }}"
-
-- name: Create systemd service file for BizObs
-  become: true
-  copy:
-    content: |
-      [Unit]
-      Description=Partner PowerUp BizObs Application
-      After=network.target
-
-      [Service]
-      Type=simple
-      User={{ bizobs_user | default('dt_training') }}
-      WorkingDirectory={{ bizobs_home | default('/home/dt_training') }}/bizobs-app
-      ExecStart=/usr/bin/node server.js
-      Restart=always
-      RestartSec=10
-      Environment=NODE_ENV=production
-      Environment=PORT={{ bizobs_port | default(8080) }}
-      Environment=INGRESS_DOMAIN={{ ingress_domain | default('localhost') }}
-
-      [Install]
-      WantedBy=multi-user.target
-    dest: /etc/systemd/system/partner-powerup-bizobs.service
-    mode: '0644'
-  notify: restart partner-powerup-bizobs
-
-- name: Create environment file for BizObs
-  become: true
-  copy:
-    content: |
-      NODE_ENV=production
-      PORT={{ bizobs_port | default(8080) }}
-      INGRESS_DOMAIN={{ ingress_domain | default('localhost') }}
-    dest: "{{ bizobs_home | default('/home/dt_training') }}/bizobs-app/.env"
-    owner: "{{ bizobs_user | default('dt_training') }}"
-    group: "{{ bizobs_user | default('dt_training') }}"
-    mode: '0600'
-  notify: restart partner-powerup-bizobs
-
-- name: Create BizObs logs directory
+# Your app includes its own systemd service setup
+- name: Make setup script executable
   become: true
   file:
-    path: /var/log/bizobs
-    state: directory
-    owner: "{{ bizobs_user | default('dt_training') }}"
-    group: "{{ bizobs_user | default('dt_training') }}"
+    path: "{{ bizobs_home | default('/home/dt_training/bizobs-app') }}/scripts/setup-autostart.sh"
     mode: '0755'
 
-- name: Configure nginx for BizObs (direct EC2 proxy)
+- name: Run app's autostart setup script
   become: true
-  copy:
-    content: |
-      server {
-          listen 80;
-          server_name bizobs.{{ ingress_domain | default('localhost') }};
-          
-          location / {
-              proxy_pass http://127.0.0.1:{{ bizobs_port | default(8080) }};
-              proxy_http_version 1.1;
-              proxy_set_header Upgrade $http_upgrade;
-              proxy_set_header Connection 'upgrade';
-              proxy_set_header Host $host;
-              proxy_set_header X-Real-IP $remote_addr;
-              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-              proxy_set_header X-Forwarded-Proto $scheme;
-              proxy_cache_bypass $http_upgrade;
-          }
-      }
-    dest: /etc/nginx/sites-available/bizobs
-    mode: '0644'
-  notify: restart nginx
+  command: "{{ bizobs_home | default('/home/dt_training/bizobs-app') }}/scripts/setup-autostart.sh"
+  args:
+    chdir: "{{ bizobs_home | default('/home/dt_training/bizobs-app') }}"
 
-- name: Enable BizObs nginx site
-  become: true
-  file:
-    src: /etc/nginx/sites-available/bizobs
-    dest: /etc/nginx/sites-enabled/bizobs
-    state: link
-  notify: restart nginx
-
-- name: Ensure nginx is started and enabled
+# Start the service (your app's script creates the systemd service)
+- name: Start and enable BizObs service
   become: true
   systemd:
-    name: nginx
-    enabled: yes
-    state: started
-
-- name: Enable and start Partner PowerUp BizObs service
-  become: true
-  systemd:
-    name: partner-powerup-bizobs
+    name: bizobs
     enabled: yes
     state: started
     daemon_reload: yes
 
+# Wait for your app to be ready (it has built-in health checks)
 - name: Wait for BizObs application to start
   wait_for:
     host: "127.0.0.1"
@@ -308,17 +81,22 @@
     delay: 10
     timeout: 120
 
+# Test your app's health endpoint
 - name: Test BizObs health endpoint
   uri:
     url: "http://127.0.0.1:{{ bizobs_port | default(8080) }}/api/health"
     method: GET
     status_code: 200
   register: bizobs_health_check
-  retries: 10
-  delay: 5
-  failed_when: false
+  retries: 5
+  delay: 3
 
-- name: Create Kubernetes service for BizObs (proxy to EC2)
+- name: Display health check result
+  debug:
+    msg: "BizObs health check: {{ bizobs_health_check.json | default('OK') }}"
+
+# Create Kubernetes service for external access (ACE-BOX pattern)
+- name: Create Kubernetes service for BizObs
   kubernetes.core.k8s:
     definition:
       apiVersion: v1
@@ -326,6 +104,9 @@
       metadata:
         name: bizobs-service
         namespace: default
+        labels:
+          app: bizobs
+          component: partner-powerup
       spec:
         type: ExternalName
         externalName: "{{ ansible_default_ipv4.address | default('127.0.0.1') }}"
@@ -333,10 +114,11 @@
         - protocol: TCP
           port: "{{ bizobs_port | default(8080) }}"
           targetPort: "{{ bizobs_port | default(8080) }}"
+          name: http
     state: present
-  become: true
   failed_when: false
 
+# Create Kubernetes ingress for external access
 - name: Create Kubernetes ingress for BizObs external access
   kubernetes.core.k8s:
     definition:
@@ -345,13 +127,17 @@
       metadata:
         name: bizobs-ingress
         namespace: default
+        labels:
+          app: bizobs
+          component: partner-powerup
         annotations:
           nginx.ingress.kubernetes.io/rewrite-target: /
-          nginx.ingress.kubernetes.io/upstream-vhost: "{{ ansible_default_ipv4.address | default('127.0.0.1') }}:{{ bizobs_port | default(8080) }}"
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
       spec:
-        ingressClassName: "{{ ingress_class | default('traefik') }}"
         rules:
-        - host: "bizobs.{{ ingress_domain | default('localhost') }}"
+        - host: "{{ bizobs_domain | default('bizobs.' + ingress_domain) }}"
           http:
             paths:
             - path: /
@@ -362,49 +148,33 @@
                   port:
                     number: "{{ bizobs_port | default(8080) }}"
     state: present
-  become: true
   failed_when: false
 
-- name: Display BizObs deployment status
-  debug:
-    msg: |
-      🎉 Partner PowerUp BizObs App deployed successfully!
-      
-      Application Details:
-      - Internal URL: http://127.0.0.1:{{ bizobs_port | default(8080) }}
-      - External URL: https://bizobs.{{ ingress_domain | default('localhost') }}
-      - Health Status: {{ bizobs_health_check.json | default('Healthy') if bizobs_health_check.status == 200 else 'Check Required' }}
-      - Service User: {{ bizobs_user | default('dt_training') }}
-      - Application Path: {{ bizobs_home | default('/home/dt_training') }}/bizobs-app
-      - Deployment Type: Native EC2 + Kubernetes Ingress
-      
-      Features Available:
-      - Customer Journey Simulation
-      - Dynamic Microservices (Step1Service - Step6Service)
-      - Industry-Specific Templates
-      - Real-time Business Analytics
-      - Dynatrace Integration
-      
-      Access Methods:
-      - Local: curl http://localhost:{{ bizobs_port | default(8080) }}/api/health
-      - External: curl https://bizobs.{{ ingress_domain | default('localhost') }}/api/health
-      - Dashboard (K8s): https://dashboard.{{ ingress_domain | default('localhost') }}
-      - Mattermost (K8s): https://mattermost.{{ ingress_domain | default('localhost') }}
+# Final validation
+- name: Validate BizObs deployment
+  uri:
+    url: "http://127.0.0.1:{{ bizobs_port | default(8080) }}/api/admin/services/status"
+    method: GET
+    status_code: 200
+  register: bizobs_admin_check
+  retries: 3
+  delay: 5
+  failed_when: false
 
-- name: Final deployment verification
+- name: Display deployment status
   debug:
     msg: |
-      🔍 Deployment Verification:
+      🎉 Partner PowerUp BizObs deployment complete!
       
-      ✅ Sudo Configuration: {{ 'WORKING' if sudo_check.stdout == 'root' else 'NEEDS ATTENTION' }}
-      ✅ NPM Installation: {{ 'COMPLETED' if npm_install_result.rc == 0 else 'COMPLETED WITH WARNINGS' }}
-      ✅ Application Health: {{ 'HEALTHY' if bizobs_health_check.status == 200 else 'CHECK REQUIRED' }}
-      ✅ Deployment Type: Native EC2 with K8s Ingress
-      ✅ External Access: Kubernetes ingress → EC2 app
+      🔗 Application Access:
+      - Local: http://127.0.0.1:{{ bizobs_port | default(8080) }}
+      - External: {{ ingress_protocol | default('http') }}://{{ bizobs_domain | default('bizobs.' + ingress_domain) }}
+      - Health: http://127.0.0.1:{{ bizobs_port | default(8080) }}/api/health
+      - Admin: http://127.0.0.1:{{ bizobs_port | default(8080) }}/api/admin/services/status
       
-      🚀 BizObs: EC2 native, Dashboard/Mattermost: K8s containers!
-      
-      {% if sudo_check.stdout != 'root' %}
-      ⚠️  Manual sudo fix may be needed:
-      echo 'dt_training ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/dt_training
-      {% endif %}
+      🎭 Features Ready:
+      - Customer Journey Simulation
+      - Multi-persona Load Generation  
+      - Dynatrace Integration
+      - Real-time Service Mesh
+      - Business Observability Dashboard
