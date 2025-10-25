@@ -228,11 +228,11 @@
 - include_role:
     name: dt-oneagent-classic
 
-# Partner PowerUp BizObs App - Deploy and Configure Application
+# Partner PowerUp BizObs App - Native EC2 Deployment (No Kubernetes needed)
 - include_role:
     name: app-partner-powerup-bizobs
 
-# Apply BizObs Dashboard Configuration
+# Apply BizObs Dashboard Configuration (Dashboard runs in K8s)
 - name: Add BizObs Dashboard Configuration
   block:
   - set_fact:
@@ -242,7 +242,7 @@
       name: dashboard
       tasks_from: template-values-file
 
-# Deploy dashboard after BizObs configuration is ready
+# Deploy dashboard after BizObs configuration is ready (Dashboard runs in K8s)
 - include_role:
     name: dashboard
 

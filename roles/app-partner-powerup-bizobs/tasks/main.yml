@@ -119,36 +119,38 @@
   delay: 15
   failed_when: false
 
-- name: Create BizObs application user
+- name: Create BizObs application user (dt_training instead of bizobs for compatibility)
   become: true
   user:
-    name: "{{ bizobs_user | default('bizobs') }}"
-    system: yes
+    name: "{{ bizobs_user | default('dt_training') }}"
+    system: no
     shell: /bin/bash
-    home: "{{ bizobs_home | default('/opt/bizobs') }}"
+    home: "{{ bizobs_home | default('/home/dt_training') }}"
     create_home: yes
+  failed_when: false
 
-- name: Create BizObs application directory
+- name: Create BizObs application directory in user home
   become: true
   file:
-    path: "{{ bizobs_home | default('/opt/bizobs') }}"
+    path: "{{ bizobs_home | default('/home/dt_training') }}/bizobs-app"
     state: directory
-    owner: "{{ bizobs_user | default('bizobs') }}"
-    group: "{{ bizobs_user | default('bizobs') }}"
+    owner: "{{ bizobs_user | default('dt_training') }}"
+    group: "{{ bizobs_user | default('dt_training') }}"
     mode: '0755'
 
 - name: Clone Partner PowerUp BizObs App from GitHub
   git:
     repo: "https://github.com/lawrobar90/Partner-PowerUp-BizObs-App.git"
-    dest: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App"
+    dest: "{{ bizobs_home | default('/home/dt_training') }}/bizobs-app"
     version: "{{ bizobs_git_branch | default('main') }}"
     force: yes
   become: true
-  become_user: "{{ bizobs_user | default('bizobs') }}"
+  become_user: "{{ bizobs_user | default('dt_training') }}"
+  failed_when: false
 
 - name: Install Node.js dependencies with enhanced error handling
   shell: |
-    cd "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App"
+    cd {{ bizobs_home | default('/home/dt_training') }}/bizobs-app
     
     # Verify we're in the right directory
     if [ ! -f "package.json" ]; then
@@ -179,7 +181,7 @@
       echo "WARNING: node_modules directory not found"
     fi
   become: true
-  become_user: root
+  become_user: "{{ bizobs_user | default('dt_training') }}"
   failed_when: false
   register: npm_install_result
 
@@ -189,19 +191,39 @@
 
 - name: Create systemd service file for BizObs
   become: true
-  template:
-    src: partner-powerup-bizobs.service.j2
+  copy:
+    content: |
+      [Unit]
+      Description=Partner PowerUp BizObs Application
+      After=network.target
+
+      [Service]
+      Type=simple
+      User={{ bizobs_user | default('dt_training') }}
+      WorkingDirectory={{ bizobs_home | default('/home/dt_training') }}/bizobs-app
+      ExecStart=/usr/bin/node server.js
+      Restart=always
+      RestartSec=10
+      Environment=NODE_ENV=production
+      Environment=PORT={{ bizobs_port | default(8080) }}
+      Environment=INGRESS_DOMAIN={{ ingress_domain | default('localhost') }}
+
+      [Install]
+      WantedBy=multi-user.target
     dest: /etc/systemd/system/partner-powerup-bizobs.service
     mode: '0644'
   notify: restart partner-powerup-bizobs
 
 - name: Create environment file for BizObs
   become: true
-  template:
-    src: bizobs.env.j2
-    dest: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/.env"
-    owner: "{{ bizobs_user | default('bizobs') }}"
-    group: "{{ bizobs_user | default('bizobs') }}"
+  copy:
+    content: |
+      NODE_ENV=production
+      PORT={{ bizobs_port | default(8080) }}
+      INGRESS_DOMAIN={{ ingress_domain | default('localhost') }}
+    dest: "{{ bizobs_home | default('/home/dt_training') }}/bizobs-app/.env"
+    owner: "{{ bizobs_user | default('dt_training') }}"
+    group: "{{ bizobs_user | default('dt_training') }}"
     mode: '0600'
   notify: restart partner-powerup-bizobs
 
@@ -210,14 +232,30 @@
   file:
     path: /var/log/bizobs
     state: directory
-    owner: "{{ bizobs_user | default('bizobs') }}"
-    group: "{{ bizobs_user | default('bizobs') }}"
+    owner: "{{ bizobs_user | default('dt_training') }}"
+    group: "{{ bizobs_user | default('dt_training') }}"
     mode: '0755'
 
-- name: Configure nginx for BizObs
+- name: Configure nginx for BizObs (direct EC2 proxy)
   become: true
-  template:
-    src: bizobs-nginx.conf.j2
+  copy:
+    content: |
+      server {
+          listen 80;
+          server_name bizobs.{{ ingress_domain | default('localhost') }};
+          
+          location / {
+              proxy_pass http://127.0.0.1:{{ bizobs_port | default(8080) }};
+              proxy_http_version 1.1;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection 'upgrade';
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto $scheme;
+              proxy_cache_bypass $http_upgrade;
+          }
+      }
     dest: /etc/nginx/sites-available/bizobs
     mode: '0644'
   notify: restart nginx
@@ -260,8 +298,28 @@
   register: bizobs_health_check
   retries: 10
   delay: 5
+  failed_when: false
 
-- name: Create Kubernetes ingress for external access
+- name: Create Kubernetes service for BizObs (proxy to EC2)
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: bizobs-service
+        namespace: default
+      spec:
+        type: ExternalName
+        externalName: "{{ ansible_default_ipv4.address | default('127.0.0.1') }}"
+        ports:
+        - protocol: TCP
+          port: {{ bizobs_port | default(8080) }}
+          targetPort: {{ bizobs_port | default(8080) }}
+    state: present
+  become: true
+  failed_when: false
+
+- name: Create Kubernetes ingress for BizObs external access
   kubernetes.core.k8s:
     definition:
       apiVersion: networking.k8s.io/v1
@@ -271,7 +329,9 @@
         namespace: default
         annotations:
           nginx.ingress.kubernetes.io/rewrite-target: /
+          nginx.ingress.kubernetes.io/upstream-vhost: "{{ ansible_default_ipv4.address | default('127.0.0.1') }}:{{ bizobs_port | default(8080) }}"
       spec:
+        ingressClassName: "{{ ingress_class | default('traefik') }}"
         rules:
         - host: "bizobs.{{ ingress_domain | default('localhost') }}"
           http:
@@ -282,26 +342,7 @@
                 service:
                   name: bizobs-service
                   port:
-                    number: 8080
-    state: present
-  become: true
-  failed_when: false
-
-- name: Create Kubernetes service for BizObs
-  kubernetes.core.k8s:
-    definition:
-      apiVersion: v1
-      kind: Service
-      metadata:
-        name: bizobs-service
-        namespace: default
-      spec:
-        type: ExternalName
-        externalName: "localhost"
-        ports:
-        - protocol: TCP
-          port: 8080
-          targetPort: 8080
+                    number: {{ bizobs_port | default(8080) }}
     state: present
   become: true
   failed_when: false
@@ -314,9 +355,10 @@
       Application Details:
       - Internal URL: http://127.0.0.1:{{ bizobs_port | default(8080) }}
       - External URL: https://bizobs.{{ ingress_domain | default('localhost') }}
-      - Health Status: {{ bizobs_health_check.json | default('Healthy') }}
-      - Service User: {{ bizobs_user | default('bizobs') }}
-      - Application Path: {{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App
+      - Health Status: {{ bizobs_health_check.json | default('Healthy') if bizobs_health_check.status == 200 else 'Check Required' }}
+      - Service User: {{ bizobs_user | default('dt_training') }}
+      - Application Path: {{ bizobs_home | default('/home/dt_training') }}/bizobs-app
+      - Deployment Type: Native EC2 + Kubernetes Ingress
       
       Features Available:
       - Customer Journey Simulation
@@ -328,7 +370,8 @@
       Access Methods:
       - Local: curl http://localhost:{{ bizobs_port | default(8080) }}/api/health
       - External: curl https://bizobs.{{ ingress_domain | default('localhost') }}/api/health
-      - Dashboard: https://dashboard.{{ ingress_domain | default('localhost') }}
+      - Dashboard (K8s): https://dashboard.{{ ingress_domain | default('localhost') }}
+      - Mattermost (K8s): https://mattermost.{{ ingress_domain | default('localhost') }}
 
 - name: Final deployment verification
   debug:
@@ -338,9 +381,10 @@
       ✅ Sudo Configuration: {{ 'WORKING' if sudo_check.stdout == 'root' else 'NEEDS ATTENTION' }}
       ✅ NPM Installation: {{ 'COMPLETED' if npm_install_result.rc == 0 else 'COMPLETED WITH WARNINGS' }}
       ✅ Application Health: {{ 'HEALTHY' if bizobs_health_check.status == 200 else 'CHECK REQUIRED' }}
-      ✅ Kubernetes Ingress: AUTOMATED
+      ✅ Deployment Type: Native EC2 with K8s Ingress
+      ✅ External Access: Kubernetes ingress → EC2 app
       
-      🚀 Ready for external access!
+      🚀 BizObs: EC2 native, Dashboard/Mattermost: K8s containers!
       
       {% if sudo_check.stdout != 'root' %}
       ⚠️  Manual sudo fix may be needed:
