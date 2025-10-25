@@ -48,14 +48,19 @@
     name: "monaco-v2"
 
 - name: Deploy Monaco configuration for BizObs
-  ansible.builtin.shell: |
-    /usr/local/bin/monacov2 deploy "{{ role_path }}/files/monaco/manifest.yml"
-  environment:
-    DT_API_TOKEN: "{{ dynatrace_api_token }}"
-    DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') if extra_vars.dt_environment_url_gen3 is defined else '' }}"
-    DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id | default('') }}"
-    DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret | default('') }}"
-    DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint | default('') }}"
+  include_role:
+    name: monaco-v2
+    tasks_from: apply-monaco
+  vars:
+    monaco_projects_root: "{{ role_path }}/files/monaco"
+    monaco_project: ""
+    monaco_environment:
+      DT_API_TOKEN: "{{ dynatrace_api_token }}"
+      DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') if extra_vars.dt_environment_url_gen3 is defined else '' }}"
+      DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id | default('') }}"
+      DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret | default('') }}"
+      DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint | default('') }}"
+      INGRESS_DOMAIN: "{{ ingress_domain }}"
 
 - name: Clone repository
   ansible.builtin.git:
