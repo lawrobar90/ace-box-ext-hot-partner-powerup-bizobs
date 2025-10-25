@@ -1,9 +1,14 @@
 {
+  "type": "SERVICE",
+  "nameFormat": "{ProcessGroup:DetectedName}",
+  "displayName": "BizObs Service Naming Rule",
   "enabled": true,
-  "namingPattern": "{ProcessGroup:DetectedName}",
-  "conditions": [
+  "rules": [
     {
-      "attribute": "PROCESS_GROUP_DETECTED_NAME",
+      "key": {
+        "attribute": "PROCESS_GROUP_DETECTED_NAME",
+        "type": "STATIC"
+      },
       "comparisonInfo": {
         "type": "STRING",
         "operator": "EXISTS",
