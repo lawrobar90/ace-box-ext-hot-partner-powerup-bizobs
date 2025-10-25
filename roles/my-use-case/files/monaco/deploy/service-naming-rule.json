@@ -1,7 +1,7 @@
 {
   "type": "SERVICE",
   "nameFormat": "{ProcessGroup:DetectedName}",
-  "displayName": "BizObs Service Naming Rule",
+  "displayName": "Holistic API Rules",
   "enabled": true,
   "rules": [
     {

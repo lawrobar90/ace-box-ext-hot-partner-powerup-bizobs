@@ -29,9 +29,9 @@ configs:
         schema: builtin:oneagent.features
         scope: environment
 
-  - id: bizobs-service-naming-rule
+  - id: holistic-api-service-naming
     config:
-      name: "BizObs Service Naming"
+      name: "Holistic API Rules"
       template: service-naming-rule.json
       skip: false
     type:
