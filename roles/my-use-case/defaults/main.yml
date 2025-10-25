@@ -1,0 +1,15 @@
+# Partner PowerUp BizObs - Default Variables
+# ACE-BOX deployment optimized
+
+# Application settings
+bizobs_repo_url: "https://github.com/lawrobar90/Partner-PowerUp-BizObs-App.git"
+bizobs_version: "main"
+
+# Company context for demo scenarios
+company_name: "Dynatrace"
+company_domain: "dynatrace.com"
+industry_type: "technology"
+
+# Deployment settings
+force_clone: false
+startup_timeout: 45
