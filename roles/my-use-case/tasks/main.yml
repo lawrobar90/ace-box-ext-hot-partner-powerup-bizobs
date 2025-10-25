@@ -20,29 +20,24 @@
 - include_role:
     name: "microk8s"
 
-# Install Node.js directly without YARN (bypass ACE-BOX nodejs role permission issue)
-- name: Install Node.js via NodeSource repository
-  block:
-    - name: Install NodeSource GPG key
-      ansible.builtin.shell: |
-        curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-      become: true
+# Use ACE-BOX nodejs role (ignore YARN installation failures)
+- name: Install Node.js via ACE-BOX role
+  include_role:
+    name: "nodejs"
+  vars:
+    nodejs_node_version: "v18.20.1"
+  ignore_errors: yes
 
-    - name: Add NodeSource repository
-      ansible.builtin.shell: |
-        echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
-      become: true
+# Verify Node.js is available after role execution
+- name: Verify Node.js installation
+  ansible.builtin.command: |
+    bash -c "source ~/.bashrc && node --version"
+  become_user: "{{ ace_box_user | default('dt_training') }}"
+  register: node_version_check
 
-    - name: Update package cache
-      ansible.builtin.apt:
-        update_cache: yes
-      become: true
-
-    - name: Install Node.js
-      ansible.builtin.apt:
-        name: nodejs
-        state: present
-      become: true
+- name: Debug Node.js version
+  debug:
+    msg: "Node.js version: {{ node_version_check.stdout }}"
 
 # Install OneAgent BEFORE app for proper instrumentation
 - include_role:
