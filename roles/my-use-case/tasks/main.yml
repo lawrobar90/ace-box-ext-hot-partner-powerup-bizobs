@@ -20,24 +20,22 @@
 - include_role:
     name: "microk8s"
 
-# Use ACE-BOX nodejs role (ignore YARN installation failures)
+# Use ACE-BOX nodejs role - YARN failure is acceptable since we only need npm
 - name: Install Node.js via ACE-BOX role
-  include_role:
-    name: "nodejs"
-  vars:
-    nodejs_node_version: "v18.20.1"
-  ignore_errors: yes
-
-# Verify Node.js is available after role execution
-- name: Verify Node.js installation
-  ansible.builtin.command: |
-    bash -c "source ~/.bashrc && node --version"
-  become_user: "{{ ace_box_user | default('dt_training') }}"
-  register: node_version_check
-
-- name: Debug Node.js version
-  debug:
-    msg: "Node.js version: {{ node_version_check.stdout }}"
+  block:
+    - include_role:
+        name: "nodejs"
+      vars:
+        nodejs_node_version: "v18.20.1"
+  rescue:
+    - name: Verify Node.js is available despite YARN failure
+      ansible.builtin.shell: |
+        source ~/.nvm/nvm.sh && node --version
+      become_user: "{{ ace_box_user | default('dt_training') }}"
+      register: node_version_result
+      
+    - debug:
+        msg: "Node.js available: {{ node_version_result.stdout }} (YARN installation failed but not required)"
 
 # Install OneAgent BEFORE app for proper instrumentation
 - include_role:
