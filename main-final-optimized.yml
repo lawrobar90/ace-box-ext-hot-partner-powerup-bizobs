@@ -166,7 +166,7 @@
       
       🎯 Health Check: {{ health_check.status }} - {{ health_check.msg | default('OK') }}
       
-      � Demo Features Ready:
+      🎭 Demo Features Ready:
       - Customer Journey Simulation (Insurance, Retail, Tech, Banking)
       - Multi-persona Load Generation (Karen, Raj, Alex, Sophia)
       - Dynatrace Integration with Business Events
