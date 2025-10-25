@@ -1,18 +1,46 @@
 - set_fact:
     role_path_abs: "{{ role_path }}"
 
-# Configure passwordless sudo for ACE Box automated deployment
-- name: Enable passwordless sudo for dt_training user
+# Configure passwordless sudo for ACE Box automated deployment - CRITICAL FIRST STEP
+- name: Configure passwordless sudo immediately (Method 1)
   become: true
-  ansible.builtin.lineinfile:
-    path: /etc/sudoers.d/dt_training
-    line: 'dt_training ALL=(ALL) NOPASSWD:ALL'
-    create: yes
-    mode: '0440'
-    validate: '/usr/sbin/visudo -cf %s'
+  become_method: sudo
+  ansible.builtin.shell: |
+    echo 'dt_training ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/dt_training
+    chmod 440 /etc/sudoers.d/dt_training
   failed_when: false
+  ignore_errors: true
 
-- name: Verify sudo configuration
+- name: Configure passwordless sudo immediately (Method 2 - Alternative)
+  ansible.builtin.shell: |
+    echo 'dt_training ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/dt_training
+    sudo chmod 440 /etc/sudoers.d/dt_training
+  failed_when: false
+  ignore_errors: true
+
+- name: Configure sudo group passwordless access
+  become: true
+  ansible.builtin.shell: |
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sudo-group
+    chmod 440 /etc/sudoers.d/sudo-group
+  failed_when: false
+  ignore_errors: true
+
+- name: Add dt_training to sudo group
+  become: true
+  ansible.builtin.user:
+    name: dt_training
+    groups: sudo
+    append: yes
+  failed_when: false
+  ignore_errors: true
+
+- name: Force reload sudo configuration
+  ansible.builtin.shell: sudo -k
+  failed_when: false
+  ignore_errors: true
+
+- name: Verify sudo configuration works
   ansible.builtin.command: sudo -n whoami
   register: sudo_test
   changed_when: false
@@ -21,9 +49,11 @@
 - name: Display sudo status
   debug:
     msg: |
-      Sudo configuration: {{ 'SUCCESS' if sudo_test.stdout == 'root' else 'NEEDS MANUAL FIX' }}
+      Sudo configuration: {{ 'SUCCESS - Passwordless sudo configured' if sudo_test.stdout == 'root' else 'WARNING - May need manual intervention' }}
+      Sudo test result: {{ sudo_test.stdout }}
       {% if sudo_test.stdout != 'root' %}
-      Manual fix required: echo 'dt_training ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/dt_training
+      If deployment fails with permission errors, run manually:
+      echo 'dt_training ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/dt_training
       {% endif %}
 
 - include_role:

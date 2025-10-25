@@ -1,190 +1,234 @@
 timestamp	content
-10/25/2025, 8:23:31 AM	2025-10-25 07:23:25 [INFO] Completed all module acebox userdata execution commands.
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:10 AM	2025-10-25 08:19:05 [INFO] Completed all module acebox userdata execution commands.
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : Parse docker daemon configuration] **************
+10/25/2025, 9:19:05 AM	"skipping: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : Set empty docker daemon configuration] **********
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : set_fact] ***************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Create Mattermost admin creds] **************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : Combine docker daemon configurations] ***********
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : include_tasks] ******************************
-10/25/2025, 8:23:26 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/mattermost/tasks/source-secret.yml for localhost
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : set_fact] ***************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Source Mattermost admin secret] *************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : Write out daemon configuration] *****************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Set secrets facts] **************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	"TASK [ace_box.ace_box.docker : Flush handlers] *********************************
 "
-10/25/2025, 8:23:26 AM	TASK [Mattermost - Ensure admin user] ******************************************
-10/25/2025, 8:23:26 AM	"included: mattermost for localhost
+10/25/2025, 9:19:05 AM	RUNNING HANDLER [ace_box.ace_box.docker : Restart Docker] **********************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Search for Mattermost pod] ******************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.k3s : k3s restart] ***************************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Create Admin User] **************************
-10/25/2025, 8:23:26 AM	[DEPRECATION WARNING]: The 'return_code' return key is being renamed to 'rc'. 
-10/25/2025, 8:23:26 AM	Both keys are being returned for now to allow users to migrate their 
-10/25/2025, 8:23:26 AM	"automation. This feature will be removed from kubernetes.core in version 4.0.0.
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Download Helm binary] ***
+10/25/2025, 9:19:05 AM	"changed: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Extract Helm binary] ***
+10/25/2025, 9:19:05 AM	"changed: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Move Helm binary to /usr/local/bin] ***
+10/25/2025, 9:19:05 AM	"changed: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Remove Helm temp files] ***
+10/25/2025, 9:19:05 AM	"changed: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Remove Helm extracted directory] ***
+10/25/2025, 9:19:05 AM	"changed: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Verify Helm installation] ***
+10/25/2025, 9:19:05 AM	"changed: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Display Helm version] ***
+10/25/2025, 9:19:05 AM	"ok: [localhost] => {
+    ""msg"": ""Helm installed successfully: v3.19.0+g3d8990f"""
+10/25/2025, 9:19:05 AM	"}
+"
+10/25/2025, 9:19:05 AM	TASK [include_role : mattermost] ***********************************************
+10/25/2025, 9:19:05 AM	"included: mattermost for localhost
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Add Mattermost chart repo] ******************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Deploy Mattermost Team Edition] *************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Wait for Deployment ready state] ************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : include_tasks] ******************************
+10/25/2025, 9:19:05 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/mattermost/tasks/create-secret.yml for localhost
+"
+10/25/2025, 9:19:05 AM	TASK [Generate admin password] *************************************************
+10/25/2025, 9:19:05 AM	"included: config-v2 for localhost
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Create Mattermost admin creds] **************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : include_tasks] ******************************
+10/25/2025, 9:19:05 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/mattermost/tasks/source-secret.yml for localhost
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Source Mattermost admin secret] *************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Set secrets facts] **************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [Mattermost - Ensure admin user] ******************************************
+10/25/2025, 9:19:05 AM	"included: mattermost for localhost
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Search for Mattermost pod] ******************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Create Admin User] **************************
+10/25/2025, 9:19:05 AM	[DEPRECATION WARNING]: The 'return_code' return key is being renamed to 'rc'. 
+10/25/2025, 9:19:05 AM	Both keys are being returned for now to allow users to migrate their 
+10/25/2025, 9:19:05 AM	"automation. This feature will be removed from kubernetes.core in version 4.0.0.
  Deprecation warnings can be disabled by setting deprecation_warnings=False in "
-10/25/2025, 8:23:26 AM	ansible.cfg.
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	ansible.cfg.
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [Mattermost - Ensure admin token] *****************************************
-10/25/2025, 8:23:26 AM	"included: mattermost for localhost
+10/25/2025, 9:19:05 AM	TASK [Mattermost - Ensure admin token] *****************************************
+10/25/2025, 9:19:05 AM	"included: mattermost for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Search for Mattermost pod] ******************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Search for Mattermost pod] ******************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Create Token] *******************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Create Token] *******************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : set_fact] ***********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : set_fact] ***********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [Mattermost - Ensure team] ************************************************
-10/25/2025, 8:23:26 AM	"included: mattermost for localhost
+10/25/2025, 9:19:05 AM	TASK [Mattermost - Ensure team] ************************************************
+10/25/2025, 9:19:05 AM	"included: mattermost for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Get existing team] **************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Get existing team] **************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Create new team] ****************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Create new team] ****************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Set team ID if new team is created] *********
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Set team ID if new team is created] *********
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Set team ID if team exists] *****************
-10/25/2025, 8:23:26 AM	"skipping: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : Set team ID if team exists] *****************
+10/25/2025, 9:19:05 AM	"skipping: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : set_fact] ***********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.mattermost : set_fact] ***********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : dashboard] ************************************************
-10/25/2025, 8:23:26 AM	"included: dashboard for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : dashboard] ************************************************
+10/25/2025, 9:19:05 AM	"included: dashboard for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : file] ****************************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dashboard : file] ****************************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : Template /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/mattermost/templates/mattermost-dashboard.yml.j2 file] ***
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dashboard : Template /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/mattermost/templates/mattermost-dashboard.yml.j2 file] ***
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : Override include_dashboard_value_file after successful templating] ***
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dashboard : Override include_dashboard_value_file after successful templating] ***
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : dt-oneagent-classic] **************************************
-10/25/2025, 8:23:26 AM	"included: dt-oneagent-classic for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : dt-oneagent-classic] **************************************
+10/25/2025, 9:19:05 AM	"included: dt-oneagent-classic for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : dt-access-token] ******************************************
-10/25/2025, 8:23:26 AM	"included: dt-access-token for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : dt-access-token] ******************************************
+10/25/2025, 9:19:05 AM	"included: dt-access-token for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:23:26 AM	"included: config-v2 for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:19:05 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:23:26 AM	"included: config-v2 for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:19:05 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-oneagent-classic : file] ******************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-oneagent-classic : file] ******************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-oneagent-classic : set_fact] **************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-oneagent-classic : set_fact] **************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-oneagent-classic : Download OneAgent installer] *******
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-oneagent-classic : Download OneAgent installer] *******
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-oneagent-classic : Install OneAgent] ******************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-oneagent-classic : Install OneAgent] ******************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : dashboard] ************************************************
-10/25/2025, 8:23:26 AM	"included: dashboard for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : app-partner-powerup-bizobs] *******************************
+10/25/2025, 9:19:05 AM	"included: app-partner-powerup-bizobs for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Verify passwordless sudo for package installation] ***
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Configure passwordless sudo if needed] ***
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"skipping: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Ensure sudo group has passwordless access] ***
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Add dt_training to sudo group] ***
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : include_tasks] *******************************
-10/25/2025, 8:23:26 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/dashboard/tasks/template-values-file.yml for localhost
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Wait for any existing package operations to complete] ***
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : file] ****************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Clean up any stale package locks] ***
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : Template /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/dashboard/templates/default-ext-refs.yml.j2 file] ***
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Update package cache] *******
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : Override include_dashboard_value_file after successful templating] ***
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Install Node.js and dependencies] ***
+10/25/2025, 9:19:05 AM	FAILED - RETRYING: [localhost]: Install Node.js and dependencies (3 retries left).
+10/25/2025, 9:19:05 AM	FAILED - RETRYING: [localhost]: Install Node.js and dependencies (2 retries left).
+10/25/2025, 9:19:05 AM	FAILED - RETRYING: [localhost]: Install Node.js and dependencies (1 retries left).
+10/25/2025, 9:19:05 AM	"fatal: [localhost]: FAILED! => {""attempts"": 3, ""changed"": false, ""msg"": ""Failed to lock apt for exclusive operation: Failed to lock directory /var/lib/apt/lists/: E:Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)""}
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : Find all Dashboard Helm values files] ********
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	PLAY RECAP *********************************************************************
+10/25/2025, 9:19:05 AM	"localhost                  : ok=154  changed=49   unreachable=0    failed=1    skipped=5    rescued=0    ignored=0   
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : Create ace namespace] ************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : Add label to ace namespace] ******************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : Install] *************************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dashboard : Print some dashboard config] *****************
-10/25/2025, 8:23:26 AM	"ok: [localhost] => {
-    ""msg"": [
-        ""Dashboard URL: https://dashboard.bf806cbd-8902-4ea7-a053-ae1a3580a00f.dynatrace.training"",
-        ""Dashboard username: dt_training"",
-        ""Dashboard password: RQJo5eke""
-    ]"
-10/25/2025, 8:23:26 AM	"}
-"
-10/25/2025, 8:23:26 AM	TASK [include_role : app-partner-powerup-bizobs] *******************************
-10/25/2025, 8:23:26 AM	"included: app-partner-powerup-bizobs for localhost
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Install Node.js and dependencies] ***
-10/25/2025, 8:23:26 AM	"fatal: [localhost]: FAILED! => {""cache_update_time"": 1761376826, ""cache_updated"": false, ""changed"": false, ""msg"": ""'/usr/bin/apt-get -y -o \""Dpkg::Options::=--force-confdef\"" -o \""Dpkg::Options::=--force-confold\""       install 'npm=8.5.1~ds-1'' failed: E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)\nE: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are you root?\n"", ""rc"": 100, ""stderr"": ""E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)\nE: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are you root?\n"", ""stderr_lines"": [""E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)"", ""E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are you root?""], ""stdout"": """", ""stdout_lines"": []}
-"
-10/25/2025, 8:23:26 AM	PLAY RECAP *********************************************************************
-10/25/2025, 8:23:26 AM	"localhost                  : ok=157  changed=53   unreachable=0    failed=1    skipped=6    rescued=0    ignored=0   
-"
-10/25/2025, 8:23:26 AM	"Traceback (most recent call last):
+10/25/2025, 9:19:05 AM	"Traceback (most recent call last):
   File ""/usr/local/bin/ace"", line 555, in <module>
     ace(auto_envvar_prefix='ACE')
   File ""/usr/lib/python3/dist-packages/click/core.py"", line 1128, in __call__
@@ -201,382 +245,324 @@ timestamp	content
     subprocess.run((
   File ""/usr/lib/python3.10/subprocess.py"", line 526, in run
     raise CalledProcessError(retcode, process.args,"
-10/25/2025, 8:23:26 AM	subprocess.CalledProcessError: Command 'ANSIBLE_COLLECTIONS_PATH=/home/dt_training/.ansible/collections ansible-playbook ace_box.ace_box.main_v2 --extra-vars '{"ace_box_user": "dt_training", "ace_config_file_path": "/home/dt_training/.ace/ace.config.yml", "use_case_ext_src": "https://GITHUB_USER:GITHUB_TOKEN@github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs.git", "use_case_ext_version": "main", "local": false}' --tags "use_case_ext"' returned non-zero exit status 2.
-10/25/2025, 8:23:26 AM	2025-10-25 07:23:25 [FATAL] ACE-Box usecase deployment has failed due to 'ace enable' completing with a non-zero exit code. See ACE-Box logs for additional information.
-10/25/2025, 8:23:26 AM	2025-10-25 07:23:25 [INFO] ACE-Box dashboard role detected - adding dashboard link in .bashrc file
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-platform : Request a DT OAuth access token] ***********
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	subprocess.CalledProcessError: Command 'ANSIBLE_COLLECTIONS_PATH=/home/dt_training/.ansible/collections ansible-playbook ace_box.ace_box.main_v2 --extra-vars '{"ace_box_user": "dt_training", "ace_config_file_path": "/home/dt_training/.ace/ace.config.yml", "use_case_ext_src": "https://GITHUB_USER:GITHUB_TOKEN@github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs.git", "use_case_ext_version": "main", "local": false}' --tags "use_case_ext"' returned non-zero exit status 2.
+10/25/2025, 9:19:05 AM	2025-10-25 08:19:05 [FATAL] ACE-Box usecase deployment has failed due to 'ace enable' completing with a non-zero exit code. See ACE-Box logs for additional information.
+10/25/2025, 9:19:05 AM	2025-10-25 08:19:05 [INFO] ACE-Box dashboard role detected - adding dashboard link in .bashrc file
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-platform : Request a DT OAuth access token] ***********
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-platform : set_fact] **********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-platform : set_fact] **********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-platform : Install app dynatrace.biz.flow] ************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-platform : Install app dynatrace.biz.flow] ************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : monaco-v2] ************************************************
-10/25/2025, 8:23:26 AM	"included: monaco-v2 for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : monaco-v2] ************************************************
+10/25/2025, 9:19:05 AM	"included: monaco-v2 for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Download] ***************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Download] ***************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : monaco-v2] ************************************************
-10/25/2025, 8:23:26 AM	"included: monaco-v2 for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : monaco-v2] ************************************************
+10/25/2025, 9:19:05 AM	"included: monaco-v2 for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.monaco-v2 : include_tasks] *******************************
-10/25/2025, 8:23:26 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/monaco-v2/tasks/ensure-access-token.yml for localhost
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.monaco-v2 : include_tasks] *******************************
+10/25/2025, 9:19:05 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/monaco-v2/tasks/ensure-access-token.yml for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : dt-access-token] ******************************************
-10/25/2025, 8:23:26 AM	"included: dt-access-token for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : dt-access-token] ******************************************
+10/25/2025, 9:19:05 AM	"included: dt-access-token for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:23:26 AM	"included: config-v2 for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:19:05 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:23:26 AM	"included: config-v2 for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:19:05 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"skipping: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"skipping: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Apply Configuration for Project] ****
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Apply Configuration for Project] ****
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : k3s] ******************************************************
-10/25/2025, 8:23:26 AM	"included: k3s for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : k3s] ******************************************************
+10/25/2025, 9:19:05 AM	"included: k3s for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:23:26 AM	"included: config-v2 for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:19:05 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:23:26 AM	"included: config-v2 for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:19:05 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.k3s : Ensures /etc/rancher/k3s dir exists] ***************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.k3s : Ensures /etc/rancher/k3s dir exists] ***************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.k3s : Template k3s kubelet.config] ***********************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.k3s : Template k3s kubelet.config] ***********************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.k3s : Install k3s] ***************************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.k3s : Install k3s] ***************************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.k3s : pip install kubernetes] ****************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.k3s : pip install kubernetes] ****************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.k3s : Create a directory if it does not exist] ***********
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.k3s : Create a directory if it does not exist] ***********
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.k3s : copy kube config] **********************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.k3s : copy kube config] **********************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.k3s : Install Helm] **************************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.k3s : Install Helm] **************************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : docker] ***************************************************
-10/25/2025, 8:23:26 AM	"included: docker for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : docker] ***************************************************
+10/25/2025, 9:19:05 AM	"included: docker for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : Update repositories cache] **********************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : Update repositories cache] **********************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : Ensure Docker pre-reqs] *************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : Ensure Docker pre-reqs] *************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : Ensure keyrings directory] **********************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : Ensure keyrings directory] **********************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : Add Docker's official GPG key] ******************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : Add Docker's official GPG key] ******************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : Add Docker APT repository] **********************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : Add Docker APT repository] **********************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : Install Docker packages] ************************
-10/25/2025, 8:23:26 AM	changed: [localhost] => (item=docker-ce)
-10/25/2025, 8:23:26 AM	ok: [localhost] => (item=docker-ce-cli)
-10/25/2025, 8:23:26 AM	ok: [localhost] => (item=containerd.io)
-10/25/2025, 8:23:26 AM	ok: [localhost] => (item=docker-buildx-plugin)
-10/25/2025, 8:23:26 AM	"ok: [localhost] => (item=docker-compose-plugin)
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : Install Docker packages] ************************
+10/25/2025, 9:19:05 AM	changed: [localhost] => (item=docker-ce)
+10/25/2025, 9:19:05 AM	ok: [localhost] => (item=docker-ce-cli)
+10/25/2025, 9:19:05 AM	ok: [localhost] => (item=containerd.io)
+10/25/2025, 9:19:05 AM	ok: [localhost] => (item=docker-buildx-plugin)
+10/25/2025, 9:19:05 AM	"ok: [localhost] => (item=docker-compose-plugin)
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : private-registry] *****************************************
-10/25/2025, 8:23:26 AM	"included: private-registry for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : private-registry] *****************************************
+10/25/2025, 9:19:05 AM	"included: private-registry for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.private-registry : Private registry configuration] *******
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.private-registry : Private registry configuration] *******
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.private-registry : Install resources private] ************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.private-registry : Install resources private] ************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.k3s : include_tasks] *************************************
-10/25/2025, 8:23:26 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/k3s/tasks/configure-registry.yml for localhost
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.k3s : include_tasks] *************************************
+10/25/2025, 9:19:05 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/k3s/tasks/configure-registry.yml for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [Source registry url] *****************************************************
-10/25/2025, 8:23:26 AM	"included: private-registry for localhost
+10/25/2025, 9:19:05 AM	TASK [Source registry url] *****************************************************
+10/25/2025, 9:19:05 AM	"included: private-registry for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [Source registry url] *****************************************************
-10/25/2025, 8:23:26 AM	"skipping: [localhost]
+10/25/2025, 9:19:05 AM	TASK [Source registry url] *****************************************************
+10/25/2025, 9:19:05 AM	"skipping: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.private-registry : kubernetes.core.k8s_info] *************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.private-registry : kubernetes.core.k8s_info] *************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.private-registry : set_fact] *****************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.private-registry : set_fact] *****************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.k3s : Creating file /etc/rancher/k3s/registries.yaml] ****
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.k3s : Creating file /etc/rancher/k3s/registries.yaml] ****
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : docker] ***************************************************
-10/25/2025, 8:23:26 AM	"included: docker for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : docker] ***************************************************
+10/25/2025, 9:19:05 AM	"included: docker for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : Check if docker daemon configuration exists] ****
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.docker : Check if docker daemon configuration exists] ****
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : Parse docker daemon configuration] **************
-10/25/2025, 8:23:26 AM	"skipping: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : Set empty docker daemon configuration] **********
-10/25/2025, 8:23:26 AM	"ok: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : set_fact] ***************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : Combine docker daemon configurations] ***********
-10/25/2025, 8:23:26 AM	"ok: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : set_fact] ***************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.docker : Write out daemon configuration] *****************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	"TASK [ace_box.ace_box.docker : Flush handlers] *********************************
-"
-10/25/2025, 8:23:26 AM	RUNNING HANDLER [ace_box.ace_box.docker : Restart Docker] **********************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.k3s : k3s restart] ***************************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Download Helm binary] ***
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Extract Helm binary] ***
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Move Helm binary to /usr/local/bin] ***
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Remove Helm temp files] ***
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Remove Helm extracted directory] ***
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Verify Helm installation] ***
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Display Helm version] ***
-10/25/2025, 8:23:26 AM	"ok: [localhost] => {
-    ""msg"": ""Helm installed successfully: v3.19.0+g3d8990f"""
-10/25/2025, 8:23:26 AM	"}
-"
-10/25/2025, 8:23:26 AM	TASK [include_role : mattermost] ***********************************************
-10/25/2025, 8:23:26 AM	"included: mattermost for localhost
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Add Mattermost chart repo] ******************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Deploy Mattermost Team Edition] *************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : Wait for Deployment ready state] ************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.mattermost : include_tasks] ******************************
-10/25/2025, 8:23:26 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/mattermost/tasks/create-secret.yml for localhost
-"
-10/25/2025, 8:23:26 AM	TASK [Generate admin password] *************************************************
-10/25/2025, 8:23:26 AM	"included: config-v2 for localhost
-"
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	2025-10-25 07:19:03 [INFO] Command 'sudo -u dt_training cp -RT /tmp/ace-box/user-skel/ /home/dt_training' completed successfully
-10/25/2025, 8:23:26 AM	2025-10-25 07:19:03 [INFO] Command 'chmod +x /home/dt_training/init.sh' completed successfully
-10/25/2025, 8:23:26 AM	2025-10-25 07:19:03 [INFO] Command 'rm -rf /tmp/ace-box' completed successfully
-10/25/2025, 8:23:26 AM	2025-10-25 07:19:17 [INFO] Command '/home/dt_training/init.sh' completed successfully
-10/25/2025, 8:23:26 AM	2025-10-25 07:19:18 [INFO] Creating ace prepare command with all extra-vars
-10/25/2025, 8:23:26 AM	2025-10-25 07:19:18 [INFO] Starting ace prepare
-10/25/2025, 8:23:26 AM	2025-10-25 07:19:22 [INFO] Command 'cd /home/dt_training' completed successfully
-10/25/2025, 8:23:26 AM	2025-10-25 07:19:22 [INFO] Running ace enable with external use-case github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs.git
-10/25/2025, 8:23:26 AM	WARNING:root:Warning: --ansible-workdir is deprecated and will be removed in a future version.
-10/25/2025, 8:23:26 AM	[WARNING]: provided hosts list is empty, only localhost is available. Note that
-10/25/2025, 8:23:26 AM	the implicit localhost does not match 'all'
-10/25/2025, 8:23:26 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+10/25/2025, 9:19:05 AM	2025-10-25 08:10:19 [INFO] Cloning and initializing Ace-Box
+10/25/2025, 9:19:05 AM	2025-10-25 08:10:25 [INFO] Command 'sudo -u dt_training cp -RT /tmp/ace-box/user-skel/ /home/dt_training' completed successfully
+10/25/2025, 9:19:05 AM	2025-10-25 08:10:25 [INFO] Command 'chmod +x /home/dt_training/init.sh' completed successfully
+10/25/2025, 9:19:05 AM	2025-10-25 08:10:25 [INFO] Command 'rm -rf /tmp/ace-box' completed successfully
+10/25/2025, 9:19:05 AM	2025-10-25 08:10:39 [INFO] Command '/home/dt_training/init.sh' completed successfully
+10/25/2025, 9:19:05 AM	2025-10-25 08:10:39 [INFO] Creating ace prepare command with all extra-vars
+10/25/2025, 9:19:05 AM	2025-10-25 08:10:39 [INFO] Starting ace prepare
+10/25/2025, 9:19:05 AM	2025-10-25 08:10:43 [INFO] Command 'cd /home/dt_training' completed successfully
+10/25/2025, 9:19:05 AM	2025-10-25 08:10:43 [INFO] Running ace enable with external use-case github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs.git
+10/25/2025, 9:19:05 AM	WARNING:root:Warning: --ansible-workdir is deprecated and will be removed in a future version.
+10/25/2025, 9:19:05 AM	[WARNING]: provided hosts list is empty, only localhost is available. Note that
+10/25/2025, 9:19:05 AM	the implicit localhost does not match 'all'
+10/25/2025, 9:19:05 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
  in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/25/2025, 8:23:26 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/25/2025, 8:23:26 AM	v2/tasks/main.yml, line: 30. This feature will be removed in version 2.18. 
-10/25/2025, 8:23:26 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/25/2025, 8:23:26 AM	ansible.cfg.
-10/25/2025, 8:23:26 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+10/25/2025, 9:19:05 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/25/2025, 9:19:05 AM	v2/tasks/main.yml, line: 30. This feature will be removed in version 2.18. 
+10/25/2025, 9:19:05 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/25/2025, 9:19:05 AM	ansible.cfg.
+10/25/2025, 9:19:05 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
  in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/25/2025, 8:23:26 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/25/2025, 8:23:26 AM	v2/tasks/main.yml, line: 43. This feature will be removed in version 2.18. 
-10/25/2025, 8:23:26 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/25/2025, 8:23:26 AM	ansible.cfg.
-10/25/2025, 8:23:26 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+10/25/2025, 9:19:05 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/25/2025, 9:19:05 AM	v2/tasks/main.yml, line: 43. This feature will be removed in version 2.18. 
+10/25/2025, 9:19:05 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/25/2025, 9:19:05 AM	ansible.cfg.
+10/25/2025, 9:19:05 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
  in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/25/2025, 8:23:26 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/25/2025, 8:23:26 AM	v2/tasks/main.yml, line: 56. This feature will be removed in version 2.18. 
-10/25/2025, 8:23:26 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/25/2025, 8:23:26 AM	ansible.cfg.
-10/25/2025, 8:23:26 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+10/25/2025, 9:19:05 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/25/2025, 9:19:05 AM	v2/tasks/main.yml, line: 56. This feature will be removed in version 2.18. 
+10/25/2025, 9:19:05 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/25/2025, 9:19:05 AM	ansible.cfg.
+10/25/2025, 9:19:05 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
  in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/25/2025, 8:23:26 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/25/2025, 8:23:26 AM	v2/tasks/main.yml, line: 69. This feature will be removed in version 2.18. 
-10/25/2025, 8:23:26 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/25/2025, 8:23:26 AM	"ansible.cfg.
+10/25/2025, 9:19:05 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/25/2025, 9:19:05 AM	v2/tasks/main.yml, line: 69. This feature will be removed in version 2.18. 
+10/25/2025, 9:19:05 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/25/2025, 9:19:05 AM	"ansible.cfg.
 "
-10/25/2025, 8:23:26 AM	"PLAY [Main V2] *****************************************************************
+10/25/2025, 9:19:05 AM	"PLAY [Main V2] *****************************************************************
 "
-10/25/2025, 8:23:26 AM	TASK [Gathering Facts] *********************************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [Gathering Facts] *********************************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.use-case-ext : Determine use_case_repo_path] *************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.use-case-ext : Determine use_case_repo_path] *************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.use-case-ext : Create repos directory] *******************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.use-case-ext : Create repos directory] *******************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.use-case-ext : Clone external use case] ******************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.use-case-ext : Clone external use case] ******************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.use-case-ext : Synchronize Use Case role] ****************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.use-case-ext : Synchronize Use Case role] ****************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.use-case-ext : Synchronize roles] ************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.use-case-ext : Synchronize roles] ************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.use-case-ext : Synchronize var override] *****************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.use-case-ext : Synchronize var override] *****************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.use-case-ext : Source var override] **********************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.use-case-ext : Source var override] **********************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : {{ use_case_ext_src | ace_box.ace_box.useCaseExtSrcToName }}] ***
-10/25/2025, 8:23:26 AM	"included: ace-box-ext-hot-partner-powerup-bizobs for localhost
+10/25/2025, 9:19:05 AM	TASK [include_role : {{ use_case_ext_src | ace_box.ace_box.useCaseExtSrcToName }}] ***
+10/25/2025, 9:19:05 AM	"included: ace-box-ext-hot-partner-powerup-bizobs for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : set_fact] *******
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : set_fact] *******
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : dt-access-token] ******************************************
-10/25/2025, 8:23:26 AM	"included: dt-access-token for localhost
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Enable passwordless sudo for dt_training user] ***
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Verify sudo configuration] ***
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:23:26 AM	"included: config-v2 for localhost
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Display sudo status] ***
+10/25/2025, 9:19:05 AM	"ok: [localhost] => {
+    ""msg"": ""Sudo configuration: NEEDS MANUAL FIX\nManual fix required: echo 'dt_training ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/dt_training\n"""
+10/25/2025, 9:19:05 AM	"}
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [include_role : dt-access-token] ******************************************
+10/25/2025, 9:19:05 AM	"included: dt-access-token for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:19:05 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:23:26 AM	"included: config-v2 for localhost
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:19:05 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Validate required variables for OAuth] ***
-10/25/2025, 8:23:26 AM	"skipping: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Debug OAuth Configuration] ***
-10/25/2025, 8:23:26 AM	"}
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Request a DT OAuth Access Token] ***
-10/25/2025, 8:23:26 AM	"changed: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:19:05 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Set OAuth Access Token] ***
-10/25/2025, 8:23:26 AM	"ok: [localhost]
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Validate required variables for OAuth] ***
+10/25/2025, 9:19:05 AM	"skipping: [localhost]
 "
-10/25/2025, 8:23:26 AM	TASK [Install Biz Flow App] ****************************************************
-10/25/2025, 8:23:26 AM	"included: dt-platform for localhost => (item={'dt_app_id': 'dynatrace.biz.flow', 'dt_app_version': '1.20.3'})
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Debug OAuth Configuration] ***
+10/25/2025, 9:19:05 AM	"}
 "
-10/25/2025, 8:23:26 AM	2025-10-25 07:18:59 [INFO] Cloning and initializing Ace-Box
-10/25/2025, 8:23:25 AM	2025-10-25 07:23:25 [FATAL] ACE-Box usecase deployment has failed due to 'ace enable' completing with a non-zero exit code. See ACE-Box logs for additional information.
-10/25/2025, 8:23:25 AM	"localhost                  : ok=157  changed=53   unreachable=0    failed=1    skipped=6    rescued=0    ignored=0   
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Request a DT OAuth Access Token] ***
+10/25/2025, 9:19:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:25 AM	"Traceback (most recent call last):
+10/25/2025, 9:19:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Set OAuth Access Token] ***
+10/25/2025, 9:19:05 AM	"ok: [localhost]
+"
+10/25/2025, 9:19:05 AM	TASK [Install Biz Flow App] ****************************************************
+10/25/2025, 9:19:05 AM	"included: dt-platform for localhost => (item={'dt_app_id': 'dynatrace.biz.flow', 'dt_app_version': '1.20.3'})
+"
+10/25/2025, 9:19:05 AM	"localhost                  : ok=154  changed=49   unreachable=0    failed=1    skipped=5    rescued=0    ignored=0   
+"
+10/25/2025, 9:19:05 AM	"Traceback (most recent call last):
   File ""/usr/local/bin/ace"", line 555, in <module>
     ace(auto_envvar_prefix='ACE')
   File ""/usr/lib/python3/dist-packages/click/core.py"", line 1128, in __call__
@@ -593,554 +579,542 @@ timestamp	content
     subprocess.run((
   File ""/usr/lib/python3.10/subprocess.py"", line 526, in run
     raise CalledProcessError(retcode, process.args,"
-10/25/2025, 8:23:25 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Install Node.js and dependencies] ***
-10/25/2025, 8:23:25 AM	"fatal: [localhost]: FAILED! => {""cache_update_time"": 1761376826, ""cache_updated"": false, ""changed"": false, ""msg"": ""'/usr/bin/apt-get -y -o \""Dpkg::Options::=--force-confdef\"" -o \""Dpkg::Options::=--force-confold\""       install 'npm=8.5.1~ds-1'' failed: E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)\nE: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are you root?\n"", ""rc"": 100, ""stderr"": ""E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)\nE: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are you root?\n"", ""stderr_lines"": [""E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)"", ""E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are you root?""], ""stdout"": """", ""stdout_lines"": []}
+10/25/2025, 9:19:05 AM	2025-10-25 08:19:05 [FATAL] ACE-Box usecase deployment has failed due to 'ace enable' completing with a non-zero exit code. See ACE-Box logs for additional information.
+10/25/2025, 9:19:04 AM	FAILED - RETRYING: [localhost]: Install Node.js and dependencies (3 retries left).
+10/25/2025, 9:19:04 AM	FAILED - RETRYING: [localhost]: Install Node.js and dependencies (2 retries left).
+10/25/2025, 9:19:04 AM	FAILED - RETRYING: [localhost]: Install Node.js and dependencies (1 retries left).
+10/25/2025, 9:19:04 AM	"fatal: [localhost]: FAILED! => {""attempts"": 3, ""changed"": false, ""msg"": ""Failed to lock apt for exclusive operation: Failed to lock directory /var/lib/apt/lists/: E:Could not open lock file /var/lib/apt/lists/lock - open (13: Permission denied)""}
 "
-10/25/2025, 8:23:25 AM	PLAY RECAP *********************************************************************
-10/25/2025, 8:23:24 AM	TASK [include_role : app-partner-powerup-bizobs] *******************************
-10/25/2025, 8:23:24 AM	"included: app-partner-powerup-bizobs for localhost
+10/25/2025, 9:19:04 AM	PLAY RECAP *********************************************************************
+10/25/2025, 9:14:37 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Install Node.js and dependencies] ***
+10/25/2025, 9:14:33 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Update package cache] *******
+10/25/2025, 9:14:33 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:24 AM	"changed: [localhost]
+10/25/2025, 9:14:32 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Clean up any stale package locks] ***
+10/25/2025, 9:14:32 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:24 AM	TASK [ace_box.ace_box.dashboard : Print some dashboard config] *****************
-10/25/2025, 8:23:24 AM	"ok: [localhost] => {
-    ""msg"": [
-        ""Dashboard URL: https://dashboard.bf806cbd-8902-4ea7-a053-ae1a3580a00f.dynatrace.training"",
-        ""Dashboard username: dt_training"",
-        ""Dashboard password: RQJo5eke""
-    ]"
-10/25/2025, 8:23:24 AM	"}
+10/25/2025, 9:14:32 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Wait for any existing package operations to complete] ***
+10/25/2025, 9:14:32 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:20 AM	TASK [ace_box.ace_box.dashboard : Install] *************************************
-10/25/2025, 8:23:15 AM	TASK [ace_box.ace_box.dashboard : Add label to ace namespace] ******************
-10/25/2025, 8:23:15 AM	"changed: [localhost]
+10/25/2025, 9:14:32 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Add dt_training to sudo group] ***
+10/25/2025, 9:14:32 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:15 AM	TASK [ace_box.ace_box.dashboard : Create ace namespace] ************************
-10/25/2025, 8:23:15 AM	"changed: [localhost]
+10/25/2025, 9:14:31 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Configure passwordless sudo if needed] ***
+10/25/2025, 9:14:31 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:14 AM	TASK [ace_box.ace_box.dashboard : Find all Dashboard Helm values files] ********
-10/25/2025, 8:23:14 AM	"ok: [localhost]
+10/25/2025, 9:14:31 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Ensure sudo group has passwordless access] ***
+10/25/2025, 9:14:31 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:14 AM	TASK [ace_box.ace_box.dashboard : Template /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/dashboard/templates/default-ext-refs.yml.j2 file] ***
-10/25/2025, 8:23:14 AM	"changed: [localhost]
+10/25/2025, 9:14:31 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:14 AM	TASK [ace_box.ace_box.dashboard : Override include_dashboard_value_file after successful templating] ***
-10/25/2025, 8:23:14 AM	"ok: [localhost]
+10/25/2025, 9:14:31 AM	TASK [ace_box.ace_box.app-partner-powerup-bizobs : Verify passwordless sudo for package installation] ***
+10/25/2025, 9:14:31 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:13 AM	TASK [ace_box.ace_box.dashboard : include_tasks] *******************************
-10/25/2025, 8:23:13 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/dashboard/tasks/template-values-file.yml for localhost
+10/25/2025, 9:14:31 AM	TASK [include_role : app-partner-powerup-bizobs] *******************************
+10/25/2025, 9:14:31 AM	"included: app-partner-powerup-bizobs for localhost
 "
-10/25/2025, 8:23:13 AM	TASK [ace_box.ace_box.dashboard : file] ****************************************
-10/25/2025, 8:23:13 AM	"ok: [localhost]
+10/25/2025, 9:13:52 AM	TASK [ace_box.ace_box.dt-oneagent-classic : Install OneAgent] ******************
+10/25/2025, 9:13:48 AM	TASK [ace_box.ace_box.dt-oneagent-classic : Download OneAgent installer] *******
+10/25/2025, 9:13:48 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:13 AM	"changed: [localhost]
+10/25/2025, 9:13:47 AM	TASK [ace_box.ace_box.dt-oneagent-classic : file] ******************************
+10/25/2025, 9:13:47 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:13 AM	TASK [include_role : dashboard] ************************************************
-10/25/2025, 8:23:13 AM	"included: dashboard for localhost
+10/25/2025, 9:13:47 AM	TASK [ace_box.ace_box.dt-oneagent-classic : set_fact] **************************
+10/25/2025, 9:13:47 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:13 AM	TASK [ace_box.ace_box.dashboard : set_fact] ************************************
-10/25/2025, 8:23:13 AM	"ok: [localhost]
+10/25/2025, 9:13:46 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:13:46 AM	"changed: [localhost]
 "
-10/25/2025, 8:23:13 AM	TASK [ace_box.ace_box.dashboard : set_fact] ************************************
-10/25/2025, 8:23:13 AM	"ok: [localhost]
+10/25/2025, 9:13:46 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:13:46 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:13 AM	TASK [ace_box.ace_box.dashboard : set_fact] ************************************
-10/25/2025, 8:23:13 AM	"skipping: [localhost]
+10/25/2025, 9:13:46 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/25/2025, 9:13:46 AM	"ok: [localhost]
 "
-10/25/2025, 8:23:13 AM	TASK [ace_box.ace_box.dashboard : set_fact] ************************************
-10/25/2025, 8:23:13 AM	"ok: [localhost]
+10/25/2025, 9:13:46 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/25/2025, 9:13:46 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:37 AM	TASK [ace_box.ace_box.dt-oneagent-classic : Install OneAgent] ******************
-10/25/2025, 8:22:32 AM	TASK [ace_box.ace_box.dt-oneagent-classic : Download OneAgent installer] *******
-10/25/2025, 8:22:32 AM	"changed: [localhost]
+10/25/2025, 9:13:46 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:13:46 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:22:31 AM	TASK [ace_box.ace_box.dt-oneagent-classic : set_fact] **************************
-10/25/2025, 8:22:31 AM	"ok: [localhost]
+10/25/2025, 9:13:46 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:13:46 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:31 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:22:31 AM	"changed: [localhost]
+10/25/2025, 9:13:46 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:13:46 AM	"changed: [localhost]
 "
-10/25/2025, 8:22:31 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:22:31 AM	"ok: [localhost]
+10/25/2025, 9:13:46 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:13:46 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:31 AM	TASK [ace_box.ace_box.dt-oneagent-classic : file] ******************************
-10/25/2025, 8:22:31 AM	"changed: [localhost]
+10/25/2025, 9:13:46 AM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
+10/25/2025, 9:13:46 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:30 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:22:30 AM	"included: config-v2 for localhost
+10/25/2025, 9:13:46 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:13:46 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:22:30 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:22:30 AM	"ok: [localhost]
+10/25/2025, 9:13:46 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:13:46 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:30 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:22:30 AM	"changed: [localhost]
+10/25/2025, 9:13:45 AM	TASK [include_role : dt-access-token] ******************************************
+10/25/2025, 9:13:45 AM	"included: dt-access-token for localhost
 "
-10/25/2025, 8:22:30 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:22:30 AM	"ok: [localhost]
+10/25/2025, 9:13:45 AM	TASK [ace_box.ace_box.dashboard : Template /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/mattermost/templates/mattermost-dashboard.yml.j2 file] ***
+10/25/2025, 9:13:45 AM	"changed: [localhost]
 "
-10/25/2025, 8:22:30 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/25/2025, 8:22:30 AM	"ok: [localhost]
+10/25/2025, 9:13:45 AM	TASK [ace_box.ace_box.dashboard : Override include_dashboard_value_file after successful templating] ***
+10/25/2025, 9:13:45 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:30 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/25/2025, 8:22:30 AM	"ok: [localhost]
+10/25/2025, 9:13:45 AM	TASK [include_role : dt-oneagent-classic] **************************************
+10/25/2025, 9:13:45 AM	"included: dt-oneagent-classic for localhost
 "
-10/25/2025, 8:22:30 AM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
-10/25/2025, 8:22:30 AM	"ok: [localhost]
+10/25/2025, 9:13:45 AM	TASK [ace_box.ace_box.dashboard : file] ****************************************
+10/25/2025, 9:13:45 AM	"changed: [localhost]
 "
-10/25/2025, 8:22:30 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:22:30 AM	"included: config-v2 for localhost
+10/25/2025, 9:13:45 AM	TASK [ace_box.ace_box.mattermost : Set team ID if team exists] *****************
+10/25/2025, 9:13:45 AM	"skipping: [localhost]
 "
-10/25/2025, 8:22:30 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:22:30 AM	"ok: [localhost]
+10/25/2025, 9:13:45 AM	TASK [ace_box.ace_box.mattermost : set_fact] ***********************************
+10/25/2025, 9:13:45 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:30 AM	TASK [include_role : dt-oneagent-classic] **************************************
-10/25/2025, 8:22:30 AM	"included: dt-oneagent-classic for localhost
+10/25/2025, 9:13:45 AM	TASK [include_role : dashboard] ************************************************
+10/25/2025, 9:13:45 AM	"included: dashboard for localhost
 "
-10/25/2025, 8:22:30 AM	TASK [include_role : dt-access-token] ******************************************
-10/25/2025, 8:22:30 AM	"included: dt-access-token for localhost
+10/25/2025, 9:13:44 AM	TASK [ace_box.ace_box.mattermost : Create new team] ****************************
+10/25/2025, 9:13:44 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:29 AM	TASK [ace_box.ace_box.dashboard : Template /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/mattermost/templates/mattermost-dashboard.yml.j2 file] ***
-10/25/2025, 8:22:29 AM	"changed: [localhost]
+10/25/2025, 9:13:44 AM	TASK [ace_box.ace_box.mattermost : Set team ID if new team is created] *********
+10/25/2025, 9:13:44 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:29 AM	TASK [ace_box.ace_box.dashboard : Override include_dashboard_value_file after successful templating] ***
-10/25/2025, 8:22:29 AM	"ok: [localhost]
+10/25/2025, 9:13:44 AM	TASK [ace_box.ace_box.mattermost : Get existing team] **************************
+10/25/2025, 9:13:44 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:29 AM	TASK [ace_box.ace_box.dashboard : file] ****************************************
-10/25/2025, 8:22:29 AM	"changed: [localhost]
+10/25/2025, 9:13:44 AM	TASK [Mattermost - Ensure team] ************************************************
+10/25/2025, 9:13:44 AM	"included: mattermost for localhost
 "
-10/25/2025, 8:22:29 AM	TASK [ace_box.ace_box.mattermost : Create new team] ****************************
-10/25/2025, 8:22:29 AM	"ok: [localhost]
+10/25/2025, 9:13:44 AM	TASK [ace_box.ace_box.mattermost : Create Token] *******************************
+10/25/2025, 9:13:44 AM	"changed: [localhost]
 "
-10/25/2025, 8:22:29 AM	TASK [ace_box.ace_box.mattermost : Set team ID if new team is created] *********
-10/25/2025, 8:22:29 AM	"ok: [localhost]
+10/25/2025, 9:13:44 AM	TASK [ace_box.ace_box.mattermost : set_fact] ***********************************
+10/25/2025, 9:13:44 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:29 AM	TASK [ace_box.ace_box.mattermost : Set team ID if team exists] *****************
-10/25/2025, 8:22:29 AM	"skipping: [localhost]
+10/25/2025, 9:13:43 AM	TASK [ace_box.ace_box.mattermost : Search for Mattermost pod] ******************
+10/25/2025, 9:13:43 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:29 AM	TASK [ace_box.ace_box.mattermost : set_fact] ***********************************
-10/25/2025, 8:22:29 AM	"ok: [localhost]
-"
-10/25/2025, 8:22:29 AM	TASK [include_role : dashboard] ************************************************
-10/25/2025, 8:22:29 AM	"included: dashboard for localhost
-"
-10/25/2025, 8:22:28 AM	TASK [ace_box.ace_box.mattermost : Get existing team] **************************
-10/25/2025, 8:22:28 AM	"ok: [localhost]
-"
-10/25/2025, 8:22:28 AM	TASK [ace_box.ace_box.mattermost : Create Token] *******************************
-10/25/2025, 8:22:28 AM	"changed: [localhost]
-"
-10/25/2025, 8:22:28 AM	TASK [ace_box.ace_box.mattermost : set_fact] ***********************************
-10/25/2025, 8:22:28 AM	"ok: [localhost]
-"
-10/25/2025, 8:22:28 AM	TASK [Mattermost - Ensure team] ************************************************
-10/25/2025, 8:22:28 AM	"included: mattermost for localhost
-"
-10/25/2025, 8:22:27 AM	TASK [ace_box.ace_box.mattermost : Search for Mattermost pod] ******************
-10/25/2025, 8:22:27 AM	"ok: [localhost]
-"
-10/25/2025, 8:22:27 AM	TASK [Mattermost - Ensure admin token] *****************************************
-10/25/2025, 8:22:27 AM	"included: mattermost for localhost
-"
-10/25/2025, 8:22:27 AM	TASK [ace_box.ace_box.mattermost : Create Admin User] **************************
-10/25/2025, 8:22:27 AM	[DEPRECATION WARNING]: The 'return_code' return key is being renamed to 'rc'. 
-10/25/2025, 8:22:27 AM	Both keys are being returned for now to allow users to migrate their 
-10/25/2025, 8:22:27 AM	"automation. This feature will be removed from kubernetes.core in version 4.0.0.
+10/25/2025, 9:13:42 AM	TASK [ace_box.ace_box.mattermost : Create Admin User] **************************
+10/25/2025, 9:13:42 AM	[DEPRECATION WARNING]: The 'return_code' return key is being renamed to 'rc'. 
+10/25/2025, 9:13:42 AM	Both keys are being returned for now to allow users to migrate their 
+10/25/2025, 9:13:42 AM	"automation. This feature will be removed from kubernetes.core in version 4.0.0.
  Deprecation warnings can be disabled by setting deprecation_warnings=False in "
-10/25/2025, 8:22:27 AM	ansible.cfg.
-10/25/2025, 8:22:27 AM	"changed: [localhost]
+10/25/2025, 9:13:42 AM	ansible.cfg.
+10/25/2025, 9:13:42 AM	"changed: [localhost]
 "
-10/25/2025, 8:22:26 AM	TASK [ace_box.ace_box.mattermost : Search for Mattermost pod] ******************
-10/25/2025, 8:22:26 AM	"ok: [localhost]
+10/25/2025, 9:13:42 AM	TASK [Mattermost - Ensure admin token] *****************************************
+10/25/2025, 9:13:42 AM	"included: mattermost for localhost
 "
-10/25/2025, 8:22:25 AM	TASK [ace_box.ace_box.mattermost : Set secrets facts] **************************
-10/25/2025, 8:22:25 AM	"ok: [localhost]
+10/25/2025, 9:13:41 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:25 AM	TASK [Mattermost - Ensure admin user] ******************************************
-10/25/2025, 8:22:25 AM	"included: mattermost for localhost
+10/25/2025, 9:13:41 AM	TASK [ace_box.ace_box.mattermost : Search for Mattermost pod] ******************
+10/25/2025, 9:13:41 AM	TASK [ace_box.ace_box.mattermost : Source Mattermost admin secret] *************
+10/25/2025, 9:13:41 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:25 AM	TASK [ace_box.ace_box.mattermost : Source Mattermost admin secret] *************
-10/25/2025, 8:22:25 AM	"ok: [localhost]
+10/25/2025, 9:13:41 AM	TASK [ace_box.ace_box.mattermost : Set secrets facts] **************************
+10/25/2025, 9:13:41 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:25 AM	TASK [ace_box.ace_box.mattermost : Create Mattermost admin creds] **************
-10/25/2025, 8:22:25 AM	"changed: [localhost]
+10/25/2025, 9:13:41 AM	TASK [Mattermost - Ensure admin user] ******************************************
+10/25/2025, 9:13:41 AM	"included: mattermost for localhost
 "
-10/25/2025, 8:22:25 AM	TASK [ace_box.ace_box.mattermost : include_tasks] ******************************
-10/25/2025, 8:22:25 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/mattermost/tasks/source-secret.yml for localhost
+10/25/2025, 9:13:40 AM	TASK [ace_box.ace_box.mattermost : Create Mattermost admin creds] **************
+10/25/2025, 9:13:40 AM	"changed: [localhost]
 "
-10/25/2025, 8:22:24 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:22:24 AM	"changed: [localhost]
+10/25/2025, 9:13:40 AM	TASK [ace_box.ace_box.mattermost : include_tasks] ******************************
+10/25/2025, 9:13:40 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/mattermost/tasks/source-secret.yml for localhost
 "
-10/25/2025, 8:22:24 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:22:24 AM	"ok: [localhost]
+10/25/2025, 9:13:40 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:13:40 AM	"changed: [localhost]
 "
-10/25/2025, 8:22:24 AM	TASK [ace_box.ace_box.mattermost : Wait for Deployment ready state] ************
-10/25/2025, 8:22:24 AM	"ok: [localhost]
+10/25/2025, 9:13:40 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:13:40 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:24 AM	TASK [ace_box.ace_box.mattermost : include_tasks] ******************************
-10/25/2025, 8:22:24 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/mattermost/tasks/create-secret.yml for localhost
+10/25/2025, 9:13:39 AM	TASK [ace_box.ace_box.mattermost : Wait for Deployment ready state] ************
+10/25/2025, 9:13:39 AM	"ok: [localhost]
 "
-10/25/2025, 8:22:24 AM	TASK [Generate admin password] *************************************************
-10/25/2025, 8:22:24 AM	"included: config-v2 for localhost
+10/25/2025, 9:13:39 AM	TASK [ace_box.ace_box.mattermost : include_tasks] ******************************
+10/25/2025, 9:13:39 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/mattermost/tasks/create-secret.yml for localhost
 "
-10/25/2025, 8:22:24 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:22:24 AM	"ok: [localhost]
+10/25/2025, 9:13:39 AM	TASK [Generate admin password] *************************************************
+10/25/2025, 9:13:39 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:22:23 AM	"changed: [localhost]
+10/25/2025, 9:13:39 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:13:39 AM	"ok: [localhost]
 "
-10/25/2025, 8:20:43 AM	TASK [ace_box.ace_box.mattermost : Deploy Mattermost Team Edition] *************
-10/25/2025, 8:20:38 AM	TASK [ace_box.ace_box.mattermost : Add Mattermost chart repo] ******************
-10/25/2025, 8:20:38 AM	"changed: [localhost]
+10/25/2025, 9:13:39 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:38 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Display Helm version] ***
-10/25/2025, 8:20:38 AM	"ok: [localhost] => {
+10/25/2025, 9:12:10 AM	TASK [ace_box.ace_box.mattermost : Deploy Mattermost Team Edition] *************
+10/25/2025, 9:12:05 AM	TASK [ace_box.ace_box.mattermost : Add Mattermost chart repo] ******************
+10/25/2025, 9:12:05 AM	"changed: [localhost]
+"
+10/25/2025, 9:12:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Verify Helm installation] ***
+10/25/2025, 9:12:05 AM	"changed: [localhost]
+"
+10/25/2025, 9:12:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Display Helm version] ***
+10/25/2025, 9:12:05 AM	"ok: [localhost] => {
     ""msg"": ""Helm installed successfully: v3.19.0+g3d8990f"""
-10/25/2025, 8:20:38 AM	"}
+10/25/2025, 9:12:05 AM	"}
 "
-10/25/2025, 8:20:38 AM	TASK [include_role : mattermost] ***********************************************
-10/25/2025, 8:20:38 AM	"included: mattermost for localhost
+10/25/2025, 9:12:05 AM	TASK [include_role : mattermost] ***********************************************
+10/25/2025, 9:12:05 AM	"included: mattermost for localhost
 "
-10/25/2025, 8:20:37 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Remove Helm extracted directory] ***
-10/25/2025, 8:20:37 AM	"changed: [localhost]
+10/25/2025, 9:12:05 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Remove Helm extracted directory] ***
+10/25/2025, 9:12:05 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:37 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Verify Helm installation] ***
-10/25/2025, 8:20:37 AM	"changed: [localhost]
+10/25/2025, 9:12:04 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Remove Helm temp files] ***
+10/25/2025, 9:12:04 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:37 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Remove Helm temp files] ***
-10/25/2025, 8:20:37 AM	"changed: [localhost]
+10/25/2025, 9:12:04 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Move Helm binary to /usr/local/bin] ***
+10/25/2025, 9:12:04 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:37 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Move Helm binary to /usr/local/bin] ***
-10/25/2025, 8:20:37 AM	"changed: [localhost]
+10/25/2025, 9:12:04 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Extract Helm binary] ***
+10/25/2025, 9:12:04 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:36 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Extract Helm binary] ***
-10/25/2025, 8:20:36 AM	"changed: [localhost]
+10/25/2025, 9:12:02 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Download Helm binary] ***
+10/25/2025, 9:12:02 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:35 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Download Helm binary] ***
-10/25/2025, 8:20:35 AM	"changed: [localhost]
+10/25/2025, 9:12:01 AM	TASK [ace_box.ace_box.k3s : k3s restart] ***************************************
+10/25/2025, 9:12:01 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:34 AM	TASK [ace_box.ace_box.k3s : k3s restart] ***************************************
-10/25/2025, 8:20:34 AM	"changed: [localhost]
+10/25/2025, 9:11:59 AM	RUNNING HANDLER [ace_box.ace_box.docker : Restart Docker] **********************
+10/25/2025, 9:11:59 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:32 AM	RUNNING HANDLER [ace_box.ace_box.docker : Restart Docker] **********************
-10/25/2025, 8:20:32 AM	"changed: [localhost]
+10/25/2025, 9:11:56 AM	TASK [ace_box.ace_box.docker : Write out daemon configuration] *****************
+10/25/2025, 9:11:56 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:30 AM	TASK [ace_box.ace_box.docker : Write out daemon configuration] *****************
-10/25/2025, 8:20:30 AM	"changed: [localhost]
+10/25/2025, 9:11:56 AM	"TASK [ace_box.ace_box.docker : Flush handlers] *********************************
 "
-10/25/2025, 8:20:30 AM	"TASK [ace_box.ace_box.docker : Flush handlers] *********************************
+10/25/2025, 9:11:56 AM	TASK [ace_box.ace_box.docker : Set empty docker daemon configuration] **********
+10/25/2025, 9:11:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:20:30 AM	TASK [ace_box.ace_box.docker : set_fact] ***************************************
-10/25/2025, 8:20:30 AM	"ok: [localhost]
+10/25/2025, 9:11:56 AM	TASK [ace_box.ace_box.docker : set_fact] ***************************************
+10/25/2025, 9:11:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:20:30 AM	TASK [ace_box.ace_box.docker : Check if docker daemon configuration exists] ****
-10/25/2025, 8:20:30 AM	"ok: [localhost]
+10/25/2025, 9:11:56 AM	TASK [ace_box.ace_box.docker : Combine docker daemon configurations] ***********
+10/25/2025, 9:11:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:20:30 AM	TASK [ace_box.ace_box.docker : Parse docker daemon configuration] **************
-10/25/2025, 8:20:30 AM	"skipping: [localhost]
+10/25/2025, 9:11:56 AM	TASK [ace_box.ace_box.docker : set_fact] ***************************************
+10/25/2025, 9:11:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:20:30 AM	TASK [ace_box.ace_box.docker : Set empty docker daemon configuration] **********
-10/25/2025, 8:20:30 AM	"ok: [localhost]
+10/25/2025, 9:11:56 AM	TASK [include_role : docker] ***************************************************
+10/25/2025, 9:11:56 AM	"included: docker for localhost
 "
-10/25/2025, 8:20:30 AM	TASK [ace_box.ace_box.docker : set_fact] ***************************************
-10/25/2025, 8:20:30 AM	"ok: [localhost]
+10/25/2025, 9:11:56 AM	TASK [ace_box.ace_box.docker : Check if docker daemon configuration exists] ****
+10/25/2025, 9:11:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:20:30 AM	TASK [ace_box.ace_box.docker : Combine docker daemon configurations] ***********
-10/25/2025, 8:20:30 AM	"ok: [localhost]
+10/25/2025, 9:11:56 AM	TASK [ace_box.ace_box.docker : Parse docker daemon configuration] **************
+10/25/2025, 9:11:56 AM	"skipping: [localhost]
 "
-10/25/2025, 8:20:30 AM	TASK [ace_box.ace_box.k3s : Creating file /etc/rancher/k3s/registries.yaml] ****
-10/25/2025, 8:20:30 AM	"changed: [localhost]
+10/25/2025, 9:11:56 AM	TASK [ace_box.ace_box.k3s : Creating file /etc/rancher/k3s/registries.yaml] ****
+10/25/2025, 9:11:56 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:30 AM	TASK [include_role : docker] ***************************************************
-10/25/2025, 8:20:30 AM	"included: docker for localhost
+10/25/2025, 9:11:55 AM	TASK [ace_box.ace_box.private-registry : kubernetes.core.k8s_info] *************
+10/25/2025, 9:11:55 AM	"ok: [localhost]
 "
-10/25/2025, 8:20:29 AM	TASK [ace_box.ace_box.private-registry : kubernetes.core.k8s_info] *************
-10/25/2025, 8:20:29 AM	"ok: [localhost]
+10/25/2025, 9:11:55 AM	TASK [ace_box.ace_box.private-registry : set_fact] *****************************
+10/25/2025, 9:11:55 AM	"ok: [localhost]
 "
-10/25/2025, 8:20:29 AM	TASK [ace_box.ace_box.private-registry : set_fact] *****************************
-10/25/2025, 8:20:29 AM	"ok: [localhost]
+10/25/2025, 9:11:54 AM	TASK [ace_box.ace_box.private-registry : Install resources private] ************
+10/25/2025, 9:11:54 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:29 AM	TASK [Source registry url] *****************************************************
-10/25/2025, 8:20:29 AM	"skipping: [localhost]
+10/25/2025, 9:11:54 AM	TASK [ace_box.ace_box.k3s : include_tasks] *************************************
+10/25/2025, 9:11:54 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/k3s/tasks/configure-registry.yml for localhost
 "
-10/25/2025, 8:20:28 AM	TASK [ace_box.ace_box.private-registry : Install resources private] ************
-10/25/2025, 8:20:28 AM	"changed: [localhost]
+10/25/2025, 9:11:54 AM	TASK [Source registry url] *****************************************************
+10/25/2025, 9:11:54 AM	"included: private-registry for localhost
 "
-10/25/2025, 8:20:28 AM	TASK [ace_box.ace_box.k3s : include_tasks] *************************************
-10/25/2025, 8:20:28 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/k3s/tasks/configure-registry.yml for localhost
+10/25/2025, 9:11:54 AM	TASK [Source registry url] *****************************************************
+10/25/2025, 9:11:54 AM	"skipping: [localhost]
 "
-10/25/2025, 8:20:28 AM	TASK [Source registry url] *****************************************************
-10/25/2025, 8:20:28 AM	"included: private-registry for localhost
+10/25/2025, 9:11:53 AM	TASK [ace_box.ace_box.private-registry : Private registry configuration] *******
+10/25/2025, 9:11:53 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:28 AM	TASK [ace_box.ace_box.private-registry : Private registry configuration] *******
-10/25/2025, 8:20:28 AM	"changed: [localhost]
+10/25/2025, 9:11:53 AM	changed: [localhost] => (item=docker-ce)
+10/25/2025, 9:11:53 AM	ok: [localhost] => (item=docker-ce-cli)
+10/25/2025, 9:11:53 AM	ok: [localhost] => (item=containerd.io)
+10/25/2025, 9:11:53 AM	ok: [localhost] => (item=docker-buildx-plugin)
+10/25/2025, 9:11:53 AM	"ok: [localhost] => (item=docker-compose-plugin)
 "
-10/25/2025, 8:20:27 AM	TASK [include_role : private-registry] *****************************************
-10/25/2025, 8:20:27 AM	"included: private-registry for localhost
+10/25/2025, 9:11:53 AM	TASK [include_role : private-registry] *****************************************
+10/25/2025, 9:11:53 AM	"included: private-registry for localhost
 "
-10/25/2025, 8:20:27 AM	changed: [localhost] => (item=docker-ce)
-10/25/2025, 8:20:27 AM	ok: [localhost] => (item=docker-ce-cli)
-10/25/2025, 8:20:27 AM	ok: [localhost] => (item=containerd.io)
-10/25/2025, 8:20:27 AM	ok: [localhost] => (item=docker-buildx-plugin)
-10/25/2025, 8:20:27 AM	"ok: [localhost] => (item=docker-compose-plugin)
+10/25/2025, 9:11:30 AM	TASK [ace_box.ace_box.docker : Install Docker packages] ************************
+10/25/2025, 9:11:26 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:07 AM	TASK [ace_box.ace_box.docker : Install Docker packages] ************************
-10/25/2025, 8:20:02 AM	"changed: [localhost]
+10/25/2025, 9:11:25 AM	TASK [ace_box.ace_box.docker : Add Docker APT repository] **********************
+10/25/2025, 9:11:21 AM	TASK [ace_box.ace_box.docker : Add Docker's official GPG key] ******************
+10/25/2025, 9:11:21 AM	"changed: [localhost]
 "
-10/25/2025, 8:20:02 AM	TASK [ace_box.ace_box.docker : Add Docker APT repository] **********************
-10/25/2025, 8:19:57 AM	TASK [ace_box.ace_box.docker : Add Docker's official GPG key] ******************
-10/25/2025, 8:19:57 AM	"changed: [localhost]
+10/25/2025, 9:11:20 AM	TASK [ace_box.ace_box.docker : Ensure keyrings directory] **********************
+10/25/2025, 9:11:20 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:57 AM	TASK [ace_box.ace_box.docker : Ensure Docker pre-reqs] *************************
-10/25/2025, 8:19:57 AM	"ok: [localhost]
+10/25/2025, 9:11:20 AM	TASK [ace_box.ace_box.docker : Ensure Docker pre-reqs] *************************
+10/25/2025, 9:11:20 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:57 AM	TASK [ace_box.ace_box.docker : Ensure keyrings directory] **********************
-10/25/2025, 8:19:57 AM	"ok: [localhost]
+10/25/2025, 9:11:19 AM	TASK [ace_box.ace_box.docker : Update repositories cache] **********************
+10/25/2025, 9:11:19 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:56 AM	TASK [ace_box.ace_box.docker : Update repositories cache] **********************
-10/25/2025, 8:19:56 AM	"ok: [localhost]
+10/25/2025, 9:11:17 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:54 AM	"changed: [localhost]
+10/25/2025, 9:11:17 AM	TASK [include_role : docker] ***************************************************
+10/25/2025, 9:11:17 AM	"included: docker for localhost
 "
-10/25/2025, 8:19:54 AM	TASK [include_role : docker] ***************************************************
-10/25/2025, 8:19:54 AM	"included: docker for localhost
+10/25/2025, 9:11:14 AM	TASK [ace_box.ace_box.k3s : Install Helm] **************************************
+10/25/2025, 9:11:09 AM	TASK [ace_box.ace_box.k3s : copy kube config] **********************************
+10/25/2025, 9:11:09 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:52 AM	TASK [ace_box.ace_box.k3s : Install Helm] **************************************
-10/25/2025, 8:19:47 AM	TASK [ace_box.ace_box.k3s : copy kube config] **********************************
-10/25/2025, 8:19:47 AM	"changed: [localhost]
+10/25/2025, 9:11:09 AM	TASK [ace_box.ace_box.k3s : pip install kubernetes] ****************************
+10/25/2025, 9:11:09 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:47 AM	TASK [ace_box.ace_box.k3s : pip install kubernetes] ****************************
-10/25/2025, 8:19:47 AM	"changed: [localhost]
+10/25/2025, 9:11:09 AM	TASK [ace_box.ace_box.k3s : Create a directory if it does not exist] ***********
+10/25/2025, 9:11:09 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:47 AM	TASK [ace_box.ace_box.k3s : Create a directory if it does not exist] ***********
-10/25/2025, 8:19:47 AM	"changed: [localhost]
+10/25/2025, 9:11:06 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:44 AM	"changed: [localhost]
+10/25/2025, 9:11:03 AM	TASK [ace_box.ace_box.k3s : Install k3s] ***************************************
+10/25/2025, 9:10:58 AM	TASK [ace_box.ace_box.k3s : Template k3s kubelet.config] ***********************
+10/25/2025, 9:10:58 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:41 AM	TASK [ace_box.ace_box.k3s : Install k3s] ***************************************
-10/25/2025, 8:19:36 AM	TASK [ace_box.ace_box.k3s : Template k3s kubelet.config] ***********************
-10/25/2025, 8:19:36 AM	"changed: [localhost]
+10/25/2025, 9:10:58 AM	TASK [ace_box.ace_box.k3s : Ensures /etc/rancher/k3s dir exists] ***************
+10/25/2025, 9:10:58 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:36 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:19:36 AM	"changed: [localhost]
+10/25/2025, 9:10:58 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:10:58 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:36 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:19:36 AM	"ok: [localhost]
+10/25/2025, 9:10:58 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:10:58 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:36 AM	TASK [ace_box.ace_box.k3s : Ensures /etc/rancher/k3s dir exists] ***************
-10/25/2025, 8:19:36 AM	"changed: [localhost]
+10/25/2025, 9:10:58 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:10:58 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:35 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:19:35 AM	"ok: [localhost]
+10/25/2025, 9:10:57 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:10:57 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:35 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:19:35 AM	"included: config-v2 for localhost
+10/25/2025, 9:10:57 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:10:57 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:35 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:19:35 AM	"ok: [localhost]
+10/25/2025, 9:10:57 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:10:57 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:19:35 AM	TASK [include_role : k3s] ******************************************************
-10/25/2025, 8:19:35 AM	"included: k3s for localhost
+10/25/2025, 9:10:57 AM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Apply Configuration for Project] ****
+10/25/2025, 9:10:57 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:35 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:19:35 AM	"included: config-v2 for localhost
+10/25/2025, 9:10:57 AM	TASK [include_role : k3s] ******************************************************
+10/25/2025, 9:10:57 AM	"included: k3s for localhost
 "
-10/25/2025, 8:19:35 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:19:35 AM	"ok: [localhost]
+10/25/2025, 9:10:57 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:10:57 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:19:35 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:19:35 AM	"changed: [localhost]
+10/25/2025, 9:10:57 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:10:57 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:35 AM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Apply Configuration for Project] ****
-10/25/2025, 8:19:35 AM	"changed: [localhost]
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:10:56 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:34 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:19:34 AM	"ok: [localhost]
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:10:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:34 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/25/2025, 8:19:34 AM	"ok: [localhost]
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/25/2025, 9:10:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:34 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/25/2025, 8:19:34 AM	"ok: [localhost]
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/25/2025, 9:10:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:34 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/25/2025, 8:19:34 AM	"ok: [localhost]
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/25/2025, 9:10:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:34 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
-10/25/2025, 8:19:34 AM	"skipping: [localhost]
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.monaco-v2 : set_fact] ************************************
+10/25/2025, 9:10:56 AM	"skipping: [localhost]
 "
-10/25/2025, 8:19:34 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:19:34 AM	"included: config-v2 for localhost
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/25/2025, 9:10:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:34 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:19:34 AM	"ok: [localhost]
+10/25/2025, 9:10:56 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:10:56 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:19:34 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:19:34 AM	"changed: [localhost]
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:10:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:34 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:19:34 AM	"changed: [localhost]
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:10:56 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:34 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:19:34 AM	"ok: [localhost]
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:10:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:34 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/25/2025, 8:19:34 AM	"ok: [localhost]
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/25/2025, 9:10:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:34 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/25/2025, 8:19:34 AM	"ok: [localhost]
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
+10/25/2025, 9:10:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:33 AM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
-10/25/2025, 8:19:33 AM	"ok: [localhost]
+10/25/2025, 9:10:56 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:10:56 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:19:33 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:19:33 AM	"included: config-v2 for localhost
+10/25/2025, 9:10:56 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:10:56 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:33 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:19:33 AM	"ok: [localhost]
+10/25/2025, 9:10:55 AM	TASK [include_role : monaco-v2] ************************************************
+10/25/2025, 9:10:55 AM	"included: monaco-v2 for localhost
 "
-10/25/2025, 8:19:33 AM	TASK [include_role : monaco-v2] ************************************************
-10/25/2025, 8:19:33 AM	"included: monaco-v2 for localhost
+10/25/2025, 9:10:55 AM	TASK [ace_box.ace_box.monaco-v2 : include_tasks] *******************************
+10/25/2025, 9:10:55 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/monaco-v2/tasks/ensure-access-token.yml for localhost
 "
-10/25/2025, 8:19:33 AM	TASK [ace_box.ace_box.monaco-v2 : include_tasks] *******************************
-10/25/2025, 8:19:33 AM	"included: /home/dt_training/.ansible/collections/ansible_collections/ace_box/ace_box/roles/monaco-v2/tasks/ensure-access-token.yml for localhost
+10/25/2025, 9:10:55 AM	TASK [include_role : dt-access-token] ******************************************
+10/25/2025, 9:10:55 AM	"included: dt-access-token for localhost
 "
-10/25/2025, 8:19:33 AM	TASK [include_role : dt-access-token] ******************************************
-10/25/2025, 8:19:33 AM	"included: dt-access-token for localhost
+10/25/2025, 9:10:55 AM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Download] ***************************
+10/25/2025, 9:10:55 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:33 AM	TASK [ace_box.ace_box.monaco-v2 : Monaco - Download] ***************************
-10/25/2025, 8:19:33 AM	"changed: [localhost]
+10/25/2025, 9:10:55 AM	TASK [ace_box.ace_box.dt-platform : Install app dynatrace.biz.flow] ************
+10/25/2025, 9:10:55 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:32 AM	TASK [ace_box.ace_box.dt-platform : Install app dynatrace.biz.flow] ************
-10/25/2025, 8:19:32 AM	"ok: [localhost]
+10/25/2025, 9:10:55 AM	TASK [include_role : monaco-v2] ************************************************
+10/25/2025, 9:10:55 AM	"included: monaco-v2 for localhost
 "
-10/25/2025, 8:19:32 AM	TASK [include_role : monaco-v2] ************************************************
-10/25/2025, 8:19:32 AM	"included: monaco-v2 for localhost
+10/25/2025, 9:10:53 AM	TASK [ace_box.ace_box.dt-platform : Request a DT OAuth access token] ***********
+10/25/2025, 9:10:53 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:31 AM	TASK [ace_box.ace_box.dt-platform : Request a DT OAuth access token] ***********
-10/25/2025, 8:19:31 AM	"ok: [localhost]
+10/25/2025, 9:10:53 AM	TASK [ace_box.ace_box.dt-platform : set_fact] **********************************
+10/25/2025, 9:10:53 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:31 AM	TASK [ace_box.ace_box.dt-platform : set_fact] **********************************
-10/25/2025, 8:19:31 AM	"ok: [localhost]
+10/25/2025, 9:10:53 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Request a DT OAuth Access Token] ***
+10/25/2025, 9:10:53 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:31 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Set OAuth Access Token] ***
-10/25/2025, 8:19:31 AM	"ok: [localhost]
+10/25/2025, 9:10:53 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Set OAuth Access Token] ***
+10/25/2025, 9:10:53 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:31 AM	TASK [Install Biz Flow App] ****************************************************
-10/25/2025, 8:19:31 AM	"included: dt-platform for localhost => (item={'dt_app_id': 'dynatrace.biz.flow', 'dt_app_version': '1.20.3'})
+10/25/2025, 9:10:53 AM	TASK [Install Biz Flow App] ****************************************************
+10/25/2025, 9:10:53 AM	"included: dt-platform for localhost => (item={'dt_app_id': 'dynatrace.biz.flow', 'dt_app_version': '1.20.3'})
 "
-10/25/2025, 8:19:31 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Request a DT OAuth Access Token] ***
-10/25/2025, 8:19:31 AM	"changed: [localhost]
+10/25/2025, 9:10:53 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Validate required variables for OAuth] ***
+10/25/2025, 9:10:53 AM	"skipping: [localhost]
 "
-10/25/2025, 8:19:30 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:19:30 AM	"changed: [localhost]
+10/25/2025, 9:10:53 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Debug OAuth Configuration] ***
+10/25/2025, 9:10:53 AM	"}
 "
-10/25/2025, 8:19:30 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:19:30 AM	"ok: [localhost]
+10/25/2025, 9:10:53 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:10:53 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:30 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Validate required variables for OAuth] ***
-10/25/2025, 8:19:30 AM	"skipping: [localhost]
+10/25/2025, 9:10:53 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:10:53 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:30 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Debug OAuth Configuration] ***
-10/25/2025, 8:19:30 AM	"}
+10/25/2025, 9:10:53 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:10:53 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:30 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
-10/25/2025, 8:19:30 AM	"changed: [localhost]
+10/25/2025, 9:10:52 AM	TASK [ace_box.ace_box.config-v2 : blockinfile] *********************************
+10/25/2025, 9:10:52 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:30 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:19:30 AM	"ok: [localhost]
+10/25/2025, 9:10:52 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:10:52 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:30 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/25/2025, 8:19:30 AM	"ok: [localhost]
+10/25/2025, 9:10:52 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/25/2025, 9:10:52 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:30 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
-10/25/2025, 8:19:30 AM	"ok: [localhost]
+10/25/2025, 9:10:52 AM	TASK [ace_box.ace_box.dt-access-token : set_fact] ******************************
+10/25/2025, 9:10:52 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:30 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:19:30 AM	"included: config-v2 for localhost
+10/25/2025, 9:10:52 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:10:52 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:19:30 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:19:30 AM	"ok: [localhost]
+10/25/2025, 9:10:52 AM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
+10/25/2025, 9:10:52 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:30 AM	TASK [include_role : config-v2] ************************************************
-10/25/2025, 8:19:30 AM	"included: config-v2 for localhost
+10/25/2025, 9:10:52 AM	TASK [include_role : config-v2] ************************************************
+10/25/2025, 9:10:52 AM	"included: config-v2 for localhost
 "
-10/25/2025, 8:19:30 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
-10/25/2025, 8:19:30 AM	"ok: [localhost]
+10/25/2025, 9:10:52 AM	TASK [ace_box.ace_box.config-v2 : set_fact] ************************************
+10/25/2025, 9:10:52 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:30 AM	TASK [ace_box.ace_box.dt-access-token : uri] ***********************************
-10/25/2025, 8:19:30 AM	"ok: [localhost]
+10/25/2025, 9:10:52 AM	"included: dt-access-token for localhost
 "
-10/25/2025, 8:19:29 AM	TASK [ace_box.ace_box.use-case-ext : Source var override] **********************
-10/25/2025, 8:19:29 AM	"ok: [localhost]
+10/25/2025, 9:10:52 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Verify sudo configuration] ***
+10/25/2025, 9:10:52 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:29 AM	TASK [include_role : {{ use_case_ext_src | ace_box.ace_box.useCaseExtSrcToName }}] ***
-10/25/2025, 8:19:29 AM	"included: ace-box-ext-hot-partner-powerup-bizobs for localhost
+10/25/2025, 9:10:52 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Display sudo status] ***
+10/25/2025, 9:10:52 AM	"ok: [localhost] => {
+    ""msg"": ""Sudo configuration: NEEDS MANUAL FIX\nManual fix required: echo 'dt_training ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/dt_training\n"""
+10/25/2025, 9:10:52 AM	"}
 "
-10/25/2025, 8:19:29 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : set_fact] *******
-10/25/2025, 8:19:29 AM	"ok: [localhost]
+10/25/2025, 9:10:52 AM	TASK [include_role : dt-access-token] ******************************************
+10/25/2025, 9:10:51 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : Enable passwordless sudo for dt_training user] ***
+10/25/2025, 9:10:51 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:29 AM	TASK [include_role : dt-access-token] ******************************************
-10/25/2025, 8:19:29 AM	"included: dt-access-token for localhost
+10/25/2025, 9:10:51 AM	TASK [include_role : {{ use_case_ext_src | ace_box.ace_box.useCaseExtSrcToName }}] ***
+10/25/2025, 9:10:51 AM	"included: ace-box-ext-hot-partner-powerup-bizobs for localhost
 "
-10/25/2025, 8:19:29 AM	TASK [ace_box.ace_box.use-case-ext : Synchronize var override] *****************
-10/25/2025, 8:19:29 AM	"changed: [localhost]
+10/25/2025, 9:10:51 AM	TASK [ace_box.ace_box.ace-box-ext-hot-partner-powerup-bizobs : set_fact] *******
+10/25/2025, 9:10:51 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:29 AM	TASK [ace_box.ace_box.use-case-ext : Synchronize roles] ************************
-10/25/2025, 8:19:29 AM	"changed: [localhost]
+10/25/2025, 9:10:51 AM	TASK [ace_box.ace_box.use-case-ext : Synchronize var override] *****************
+10/25/2025, 9:10:51 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:29 AM	TASK [ace_box.ace_box.use-case-ext : Synchronize Use Case role] ****************
-10/25/2025, 8:19:29 AM	"changed: [localhost]
+10/25/2025, 9:10:51 AM	TASK [ace_box.ace_box.use-case-ext : Source var override] **********************
+10/25/2025, 9:10:51 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:28 AM	TASK [ace_box.ace_box.use-case-ext : Clone external use case] ******************
-10/25/2025, 8:19:28 AM	"changed: [localhost]
+10/25/2025, 9:10:51 AM	TASK [ace_box.ace_box.use-case-ext : Synchronize roles] ************************
+10/25/2025, 9:10:51 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:24 AM	TASK [ace_box.ace_box.use-case-ext : Create repos directory] *******************
-10/25/2025, 8:19:24 AM	"changed: [localhost]
+10/25/2025, 9:10:50 AM	TASK [ace_box.ace_box.use-case-ext : Synchronize Use Case role] ****************
+10/25/2025, 9:10:50 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:24 AM	TASK [ace_box.ace_box.use-case-ext : Determine use_case_repo_path] *************
-10/25/2025, 8:19:24 AM	"ok: [localhost]
+10/25/2025, 9:10:50 AM	TASK [ace_box.ace_box.use-case-ext : Clone external use case] ******************
+10/25/2025, 9:10:50 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:23 AM	TASK [Gathering Facts] *********************************************************
-10/25/2025, 8:19:23 AM	"ok: [localhost]
+10/25/2025, 9:10:46 AM	TASK [ace_box.ace_box.use-case-ext : Create repos directory] *******************
+10/25/2025, 9:10:46 AM	"changed: [localhost]
 "
-10/25/2025, 8:19:23 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
-10/25/2025, 8:19:23 AM	"ok: [localhost]
+10/25/2025, 9:10:45 AM	TASK [Gathering Facts] *********************************************************
+10/25/2025, 9:10:45 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:23 AM	"ansible.cfg.
+10/25/2025, 9:10:45 AM	TASK [ace_box.ace_box.config-v2 : include_vars] ********************************
+10/25/2025, 9:10:45 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:23 AM	"PLAY [Main V2] *****************************************************************
+10/25/2025, 9:10:45 AM	TASK [ace_box.ace_box.use-case-ext : Determine use_case_repo_path] *************
+10/25/2025, 9:10:45 AM	"ok: [localhost]
 "
-10/25/2025, 8:19:22 AM	WARNING:root:Warning: --ansible-workdir is deprecated and will be removed in a future version.
-10/25/2025, 8:19:22 AM	[WARNING]: provided hosts list is empty, only localhost is available. Note that
-10/25/2025, 8:19:22 AM	the implicit localhost does not match 'all'
-10/25/2025, 8:19:22 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+10/25/2025, 9:10:44 AM	the implicit localhost does not match 'all'
+10/25/2025, 9:10:44 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
  in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/25/2025, 8:19:22 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/25/2025, 8:19:22 AM	v2/tasks/main.yml, line: 30. This feature will be removed in version 2.18. 
-10/25/2025, 8:19:22 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/25/2025, 8:19:22 AM	ansible.cfg.
-10/25/2025, 8:19:22 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+10/25/2025, 9:10:44 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/25/2025, 9:10:44 AM	v2/tasks/main.yml, line: 30. This feature will be removed in version 2.18. 
+10/25/2025, 9:10:44 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/25/2025, 9:10:44 AM	ansible.cfg.
+10/25/2025, 9:10:44 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
  in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/25/2025, 8:19:22 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/25/2025, 8:19:22 AM	v2/tasks/main.yml, line: 43. This feature will be removed in version 2.18. 
-10/25/2025, 8:19:22 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/25/2025, 8:19:22 AM	ansible.cfg.
-10/25/2025, 8:19:22 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+10/25/2025, 9:10:44 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/25/2025, 9:10:44 AM	v2/tasks/main.yml, line: 43. This feature will be removed in version 2.18. 
+10/25/2025, 9:10:44 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/25/2025, 9:10:44 AM	ansible.cfg.
+10/25/2025, 9:10:44 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
  in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/25/2025, 8:19:22 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/25/2025, 8:19:22 AM	v2/tasks/main.yml, line: 56. This feature will be removed in version 2.18. 
-10/25/2025, 8:19:22 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/25/2025, 8:19:22 AM	ansible.cfg.
-10/25/2025, 8:19:22 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
+10/25/2025, 9:10:44 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/25/2025, 9:10:44 AM	v2/tasks/main.yml, line: 56. This feature will be removed in version 2.18. 
+10/25/2025, 9:10:44 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/25/2025, 9:10:44 AM	ansible.cfg.
+10/25/2025, 9:10:44 AM	"[DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated
  in favor of specifying a dictionary. Error occurred in the file: /home/dt_trai"
-10/25/2025, 8:19:22 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
-10/25/2025, 8:19:22 AM	v2/tasks/main.yml, line: 69. This feature will be removed in version 2.18. 
-10/25/2025, 8:19:22 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
-10/25/2025, 8:19:22 AM	2025-10-25 07:19:18 [INFO] Starting ace prepare
-10/25/2025, 8:19:22 AM	2025-10-25 07:19:22 [INFO] Command 'cd /home/dt_training' completed successfully
-10/25/2025, 8:19:22 AM	2025-10-25 07:19:22 [INFO] Running ace enable with external use-case github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs.git
-10/25/2025, 8:19:18 AM	2025-10-25 07:19:18 [INFO] Creating ace prepare command with all extra-vars
-10/25/2025, 8:19:18 AM	2025-10-25 07:19:17 [INFO] Command '/home/dt_training/init.sh' completed successfully
-10/25/2025, 8:19:09 AM	2025-10-25 07:19:03 [INFO] Command 'rm -rf /tmp/ace-box' completed successfully
-10/25/2025, 8:19:04 AM	2025-10-25 07:18:59 [INFO] Cloning and initializing Ace-Box
-10/25/2025, 8:19:04 AM	2025-10-25 07:19:03 [INFO] Command 'sudo -u dt_training cp -RT /tmp/ace-box/user-skel/ /home/dt_training' completed successfully
-10/25/2025, 8:19:04 AM	2025-10-25 07:19:03 [INFO] Command 'chmod +x /home/dt_training/init.sh' completed successfully
+10/25/2025, 9:10:44 AM	ning/.ansible/collections/ansible_collections/ace_box/ace_box/roles/config-
+10/25/2025, 9:10:44 AM	v2/tasks/main.yml, line: 69. This feature will be removed in version 2.18. 
+10/25/2025, 9:10:44 AM	Deprecation warnings can be disabled by setting deprecation_warnings=False in 
+10/25/2025, 9:10:44 AM	"ansible.cfg.
+"
+10/25/2025, 9:10:44 AM	"PLAY [Main V2] *****************************************************************
+"
+10/25/2025, 9:10:44 AM	WARNING:root:Warning: --ansible-workdir is deprecated and will be removed in a future version.
+10/25/2025, 9:10:44 AM	[WARNING]: provided hosts list is empty, only localhost is available. Note that
+10/25/2025, 9:10:44 AM	2025-10-25 08:10:39 [INFO] Starting ace prepare
+10/25/2025, 9:10:44 AM	2025-10-25 08:10:43 [INFO] Command 'cd /home/dt_training' completed successfully
+10/25/2025, 9:10:44 AM	2025-10-25 08:10:43 [INFO] Running ace enable with external use-case github.com/lawrobar90/ace-box-ext-hot-partner-powerup-bizobs.git
+10/25/2025, 9:10:39 AM	2025-10-25 08:10:39 [INFO] Command '/home/dt_training/init.sh' completed successfully
+10/25/2025, 9:10:39 AM	2025-10-25 08:10:39 [INFO] Creating ace prepare command with all extra-vars
+10/25/2025, 9:10:29 AM	2025-10-25 08:10:25 [INFO] Command 'rm -rf /tmp/ace-box' completed successfully
+10/25/2025, 9:10:25 AM	2025-10-25 08:10:25 [INFO] Command 'chmod +x /home/dt_training/init.sh' completed successfully
+10/25/2025, 9:10:25 AM	2025-10-25 08:10:19 [INFO] Cloning and initializing Ace-Box
+10/25/2025, 9:10:25 AM	2025-10-25 08:10:25 [INFO] Command 'sudo -u dt_training cp -RT /tmp/ace-box/user-skel/ /home/dt_training' completed successfully
