@@ -1,6 +1,24 @@
 ---
 # Partner PowerUp BizObs App - EC2 Deployment Tasks
 
+# Ensure passwordless sudo is configured before any privileged operations
+- name: Verify passwordless sudo for package installation
+  ansible.builtin.command: sudo -n whoami
+  register: sudo_check
+  changed_when: false
+  failed_when: false
+
+- name: Configure passwordless sudo if needed
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/dt_training
+    line: 'dt_training ALL=(ALL) NOPASSWD:ALL'
+    create: yes
+    mode: '0440'
+    validate: '/usr/sbin/visudo -cf %s'
+  when: sudo_check.stdout != 'root'
+  failed_when: false
+
 - name: Wait for any existing package operations to complete
   become: true
   shell: |

@@ -1,6 +1,31 @@
 - set_fact:
     role_path_abs: "{{ role_path }}"
 
+# Configure passwordless sudo for ACE Box automated deployment
+- name: Enable passwordless sudo for dt_training user
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/dt_training
+    line: 'dt_training ALL=(ALL) NOPASSWD:ALL'
+    create: yes
+    mode: '0440'
+    validate: '/usr/sbin/visudo -cf %s'
+  failed_when: false
+
+- name: Verify sudo configuration
+  ansible.builtin.command: sudo -n whoami
+  register: sudo_test
+  changed_when: false
+  failed_when: false
+
+- name: Display sudo status
+  debug:
+    msg: |
+      Sudo configuration: {{ 'SUCCESS' if sudo_test.stdout == 'root' else 'NEEDS MANUAL FIX' }}
+      {% if sudo_test.stdout != 'root' %}
+      Manual fix required: echo 'dt_training ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/dt_training
+      {% endif %}
+
 - include_role:
     name: dt-access-token
   vars:
