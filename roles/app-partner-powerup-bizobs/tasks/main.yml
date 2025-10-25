@@ -148,38 +148,47 @@
   become_user: "{{ bizobs_user | default('dt_training') }}"
   failed_when: false
 
+- name: Create npm installation script
+  copy:
+    content: |
+      #!/bin/bash
+      set -e
+      BIZOBS_PATH="{{ bizobs_home | default('/home/dt_training') }}/bizobs-app"
+      cd "$BIZOBS_PATH"
+      
+      # Verify we're in the right directory
+      if [ ! -f "package.json" ]; then
+        echo "ERROR: package.json not found in $(pwd)"
+        ls -la
+        exit 1
+      fi
+      
+      # Clean npm cache and install
+      npm cache clean --force 2>/dev/null || true
+      
+      # Try npm install with multiple methods
+      if npm install --unsafe-perm; then
+        echo "npm install successful"
+      elif npm install --unsafe-perm --no-optional; then
+        echo "npm install successful (without optional packages)"
+      elif npm install --unsafe-perm --legacy-peer-deps; then
+        echo "npm install successful (with legacy peer deps)"
+      else
+        echo "npm install completed with warnings, continuing..."
+      fi
+      
+      # Verify node_modules exists
+      if [ -d "node_modules" ]; then
+        echo "node_modules directory created successfully"
+        ls -la node_modules/ | head -5
+      else
+        echo "WARNING: node_modules directory not found"
+      fi
+    dest: /tmp/npm_install.sh
+    mode: '0755'
+
 - name: Install Node.js dependencies with enhanced error handling
-  shell: |
-    cd "{{ bizobs_home | default('/home/dt_training') }}/bizobs-app"
-    
-    # Verify we're in the right directory
-    if [ ! -f "package.json" ]; then
-      echo "ERROR: package.json not found in $(pwd)"
-      ls -la
-      exit 1
-    fi
-    
-    # Clean npm cache and install
-    npm cache clean --force 2>/dev/null || true
-    
-    # Try npm install with multiple methods
-    if npm install --unsafe-perm; then
-      echo "npm install successful"
-    elif npm install --unsafe-perm --no-optional; then
-      echo "npm install successful (without optional packages)"
-    elif npm install --unsafe-perm --legacy-peer-deps; then
-      echo "npm install successful (with legacy peer deps)"
-    else
-      echo "npm install completed with warnings, continuing..."
-    fi
-    
-    # Verify node_modules exists
-    if [ -d "node_modules" ]; then
-      echo "node_modules directory created successfully"
-      ls -la node_modules/ | head -5
-    else
-      echo "WARNING: node_modules directory not found"
-    fi
+  command: /tmp/npm_install.sh
   become: true
   become_user: "{{ bizobs_user | default('dt_training') }}"
   failed_when: false
