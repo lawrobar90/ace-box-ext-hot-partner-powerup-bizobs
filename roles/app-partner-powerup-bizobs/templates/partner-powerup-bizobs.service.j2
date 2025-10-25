@@ -17,7 +17,7 @@ TimeoutStopSec=5
 
 # Environment
 Environment=NODE_ENV=production
-Environment=PORT={{ bizobs_port | default(4000) }}
+Environment=PORT={{ bizobs_port | default(8080) }}
 EnvironmentFile={{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/partner-powerup-bizobs/.env
 
 # Security

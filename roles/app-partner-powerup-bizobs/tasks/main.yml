@@ -44,8 +44,9 @@
     path: "{{ bizobs_home | default('/opt/bizobs') }}/Partner-PowerUp-BizObs-App/partner-powerup-bizobs"
     production: false
     state: present
+    unsafe_perm: true
   become: true
-  become_user: "{{ bizobs_user | default('bizobs') }}"
+  become_user: root
 
 - name: Create systemd service file for BizObs
   become: true
@@ -108,13 +109,13 @@
 - name: Wait for BizObs application to start
   wait_for:
     host: "127.0.0.1"
-    port: "{{ bizobs_port | default(4000) }}"
+    port: "{{ bizobs_port | default(8080) }}"
     delay: 10
     timeout: 120
 
 - name: Test BizObs health endpoint
   uri:
-    url: "http://127.0.0.1:{{ bizobs_port | default(4000) }}/api/health"
+    url: "http://127.0.0.1:{{ bizobs_port | default(8080) }}/api/health"
     method: GET
     status_code: 200
   register: bizobs_health_check
@@ -127,7 +128,7 @@
       🎉 Partner PowerUp BizObs App deployed successfully!
       
       Application Details:
-      - Internal URL: http://127.0.0.1:{{ bizobs_port | default(4000) }}
+      - Internal URL: http://127.0.0.1:{{ bizobs_port | default(8080) }}
       - External URL: http://bizobs.{{ ingress_domain }}
       - Health Status: {{ bizobs_health_check.json | default('Healthy') }}
       - Service User: {{ bizobs_user | default('bizobs') }}

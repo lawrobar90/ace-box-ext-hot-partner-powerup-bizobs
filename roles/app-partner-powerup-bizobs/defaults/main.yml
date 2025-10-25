@@ -4,7 +4,7 @@
 # Application Configuration
 bizobs_user: "bizobs"
 bizobs_home: "/opt/bizobs"
-bizobs_port: 4000
+bizobs_port: 8080
 bizobs_host: "0.0.0.0"
 bizobs_git_branch: "main"
 
