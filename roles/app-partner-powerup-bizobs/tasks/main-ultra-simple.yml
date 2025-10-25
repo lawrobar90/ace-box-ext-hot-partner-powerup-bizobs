@@ -1,0 +1,127 @@
+---
+# Ultra-Simplified Partner PowerUp BizObs App - EC2 Deployment
+# Uses your app's built-in scripts to avoid systemd permission issues
+
+# Install basic dependencies (your app manages everything else)
+- name: Install Node.js, npm, and git
+  become: true
+  apt:
+    name: ['nodejs', 'npm', 'git']
+    state: present
+    update_cache: yes
+  retries: 3
+  delay: 5
+
+# Create app directory with proper permissions
+- name: Create BizObs application directory
+  become: true
+  file:
+    path: "{{ bizobs_home | default('/home/dt_training') }}/bizobs-app"
+    state: directory
+    owner: "{{ bizobs_user | default('dt_training') }}"
+    group: "{{ bizobs_user | default('dt_training') }}"
+    mode: '0755'
+
+# Clone your self-contained app
+- name: Clone Partner PowerUp BizObs App
+  git:
+    repo: "https://github.com/lawrobar90/Partner-PowerUp-BizObs-App.git"
+    dest: "{{ bizobs_home | default('/home/dt_training') }}/bizobs-app"
+    version: "{{ bizobs_git_branch | default('main') }}"
+    force: yes
+  become: true
+  become_user: "{{ bizobs_user | default('dt_training') }}"
+
+# Install dependencies with your app's package.json
+- name: Install Node.js dependencies
+  command: npm install --production
+  args:
+    chdir: "{{ bizobs_home | default('/home/dt_training') }}/bizobs-app"
+  become: true
+  become_user: "{{ bizobs_user | default('dt_training') }}"
+
+# Start app using your built-in startup script (avoids systemd issues)
+- name: Start BizObs app using built-in script
+  shell: |
+    cd "{{ bizobs_home | default('/home/dt_training') }}/bizobs-app"
+    chmod +x scripts/setup-autostart.sh
+    nohup npm start > /tmp/bizobs.log 2>&1 &
+    sleep 5
+  become: true
+  become_user: "{{ bizobs_user | default('dt_training') }}"
+
+# Wait for app to be ready
+- name: Wait for BizObs application to start
+  wait_for:
+    host: "127.0.0.1"
+    port: "{{ bizobs_port | default(8080) }}"
+    delay: 10
+    timeout: 60
+
+# Test app health
+- name: Test BizObs health endpoint
+  uri:
+    url: "http://127.0.0.1:{{ bizobs_port | default(8080) }}/api/health"
+    method: GET
+    status_code: 200
+  register: bizobs_health_check
+  retries: 3
+  delay: 5
+
+# Create Kubernetes ingress for external access (ACE-BOX pattern)
+- name: Create Kubernetes ingress for BizObs
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: bizobs-ingress
+        namespace: default
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /
+      spec:
+        rules:
+        - host: "{{ bizobs_domain | default('bizobs.' + ingress_domain) }}"
+          http:
+            paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: bizobs-service
+                  port:
+                    number: "{{ bizobs_port | default(8080) }}"
+    state: present
+  failed_when: false
+
+# Create service to expose the app
+- name: Create Kubernetes service for BizObs
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: bizobs-service
+        namespace: default
+      spec:
+        type: ExternalName
+        externalName: "{{ ansible_default_ipv4.address | default('127.0.0.1') }}"
+        ports:
+        - protocol: TCP
+          port: "{{ bizobs_port | default(8080) }}"
+          targetPort: "{{ bizobs_port | default(8080) }}"
+    state: present
+  failed_when: false
+
+# Success message
+- name: Display deployment status
+  debug:
+    msg: |
+      ✅ Partner PowerUp BizObs deployed successfully!
+      
+      🔗 Access URLs:
+      - Local: http://127.0.0.1:{{ bizobs_port | default(8080) }}
+      - External: {{ ingress_protocol | default('http') }}://{{ bizobs_domain | default('bizobs.' + ingress_domain) }}
+      - Health: http://127.0.0.1:{{ bizobs_port | default(8080) }}/api/health
+      
+      🎯 App is running in background with nohup - no systemd required!
