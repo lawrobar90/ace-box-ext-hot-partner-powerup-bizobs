@@ -187,7 +187,14 @@
     state: present
   register: bizobs_service_result
 
-- name: Create BizObs Endpoints pointing to localhost
+- name: Get host machine IP address
+  ansible.builtin.shell: |
+    # Get the primary interface IP that's not localhost
+    ip route get 8.8.8.8 | awk '{print $7; exit}'
+  register: host_ip_result
+  failed_when: host_ip_result.rc != 0
+
+- name: Create BizObs Endpoints pointing to host machine IP
   kubernetes.core.k8s:
     definition:
       apiVersion: v1
@@ -197,7 +204,7 @@
         namespace: default
       subsets:
       - addresses:
-        - ip: "127.0.0.1"
+        - ip: "{{ host_ip_result.stdout.strip() }}"
         ports:
         - port: 8080
           name: http
@@ -324,7 +331,7 @@
       ✅ ACE-BOX Deployment Summary:
       - Health Check: {{ health_check.status }}
       - Service Created: {{ bizobs_service_result is succeeded }}
-      - Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
+      - Endpoints Created: {{ bizobs_endpoints_result is succeeded }} (Host IP: {{ host_ip_result.stdout.strip() }})
       - Ingress Created: {{ bizobs_ingress_result is succeeded }}
       - Ingress Class: {{ ingress_class | default('public') }} (ACE-BOX standard)
       - Automation: Fully automated - no manual steps required!
