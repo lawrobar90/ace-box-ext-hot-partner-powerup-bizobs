@@ -62,9 +62,9 @@
 # Skip npm install since the comprehensive startup script handles it
 # Skip dependency installation to avoid duplication with startup script
 
-- name: Copy ACE-BOX aware startup script
+- name: Copy ACE-BOX aware startup script from files
   ansible.builtin.copy:
-    src: "{{ role_path }}/../../start-server-ace-aware.sh"
+    src: "start-server-ace-aware.sh"
     dest: "{{ bizobs_app_dir }}/start-server-ace-aware.sh"
     mode: '0755'
     force: yes
