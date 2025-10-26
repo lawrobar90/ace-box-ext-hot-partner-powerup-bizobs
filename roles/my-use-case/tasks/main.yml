@@ -154,6 +154,16 @@
 - include_role:
     name: "mattermost"
 
+- name: Verify Kubernetes resources were created
+  ansible.builtin.debug:
+    msg: |
+      Service Created: {{ bizobs_service_result is succeeded }}
+      Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
+      Ingress Created: {{ bizobs_ingress_result is succeeded }}
+      Target IP: {{ ansible_default_ipv4.address }}
+      External URL: http://{{ bizobs_domain }}/
+
+# Configure Dashboard LAST so it has all service links available
 - name: Configure Dashboard with BizObs links
   block:
     - set_fact:
@@ -165,8 +175,6 @@
 
     - include_role:
         name: "dashboard"
-
-# External access for BizObs application - ACE-BOX standard pattern
 - name: Create BizObs service and endpoints first
   kubernetes.core.k8s:
     definition:
@@ -267,10 +275,18 @@
     msg: |
       🎉 Partner PowerUp BizObs deployed successfully with ACE-BOX standards!
       
+      � Deployment Order Completed:
+      1. ✅ Dynatrace OneAgent & Monaco Config
+      2. ✅ BizObs Application (verified healthy)
+      3. ✅ Mattermost Collaboration
+      4. ✅ Kubernetes Service & Ingress
+      5. ✅ Dashboard (with all service links)
+      
       🔗 Access URLs:
+      - Dashboard: http://dashboard.{{ ingress_domain }}/ (📊 Central hub with all links)
       - BizObs App: http://{{ bizobs_domain }}/
-      - Dashboard: http://dashboard.{{ ingress_domain }}/
       - Mattermost: http://mattermost.{{ ingress_domain }}/
+      - Dynatrace: {{ extra_vars.dt_environment_url_gen3.rstrip('/') }}
       
       🎯 BizObs Features Ready:
       - Customer Journey Simulation: http://{{ bizobs_domain }}/api/journey-simulation/simulate-journey
@@ -289,8 +305,10 @@
       ✅ ACE-BOX Deployment Summary:
       - Health Check: {{ health_check.status }}
       - Service Created: {{ bizobs_service_result is succeeded }}
+      - Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
       - Ingress Created: {{ bizobs_ingress_result is succeeded }}
+      - Dashboard: Available with all service links
       - Ingress Class: {{ ingress_class | default('public') }} (ACE-BOX standard)
       - Automation: Fully automated - no manual steps required!
       
-      💡 Note: Uses ACE-BOX standard patterns for seamless integration
+      💡 Note: Dashboard deployed last to include all service URLs
