@@ -88,25 +88,20 @@
     mode: '0755'
     force: yes
 
-- name: Start application with ACE-BOX optimized script
-  ansible.builtin.shell: |
-    cd {{ bizobs_app_dir }}
-    ./start-server-ace-optimized.sh
+- name: Start Partner PowerUp BizObs application with comprehensive setup
+  shell: |
+    cd {{ app_dir }}
+    chmod +x start-server.sh
+    ./start-server.sh --ace-box-id="{{ ace_box_id | default('ace-box-demo') }}" --external-url="{{ bizobs_external_url | default('http://localhost:8080') }}"
   environment:
-    DT_SERVICE_NAME: "bizobs-main-server"
-    DT_APPLICATION_NAME: "BizObs-CustomerJourney"
-    DT_TAGS: "environment=ace-box app=BizObs service=bizobs component=main-server deployment=ace-box"
-    DT_RELEASE_STAGE: "ace-box-demo"
-    DT_RELEASE_PRODUCT: "Partner-PowerUp-BizObs"
-    DT_RELEASE_VERSION: "1.0.0"
-    BIZOBS_EXTERNAL_URL: "https://{{ bizobs_domain }}"
     ACE_BOX_ID: "{{ ace_box_id | default('ace-box-demo') }}"
+    BIZOBS_EXTERNAL_URL: "{{ bizobs_external_url | default('http://localhost:8080') }}"
     COMPANY_NAME: "{{ company_name | default('Dynatrace') }}"
     COMPANY_DOMAIN: "{{ company_domain | default('dynatrace.com') }}"
     INDUSTRY_TYPE: "{{ industry_type | default('technology') }}"
-  become_user: "{{ ace_box_user | default('dt_training') }}"
-  async: 60
-  poll: 0
+    EXTERNAL_URL_OVERRIDE: "{{ bizobs_external_url | default('http://localhost:8080') }}"
+  args:
+    chdir: "{{ app_dir }}"
 
 - name: Wait for startup
   ansible.builtin.wait_for:
