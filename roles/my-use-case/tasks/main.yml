@@ -59,21 +59,14 @@
     force: yes
   become_user: "{{ ace_box_user | default('dt_training') }}"
 
-# Skip npm install since the comprehensive startup script handles it
-# Skip dependency installation to avoid duplication with startup script
+# Use the comprehensive startup script from the app repository
+# This avoids duplication and uses the battle-tested 501-line script
 
-- name: Copy ACE-BOX aware startup script from files
-  ansible.builtin.copy:
-    src: "start-server-ace-aware.sh"
-    dest: "{{ bizobs_app_dir }}/start-server-ace-aware.sh"
-    mode: '0755'
-    force: yes
-
-- name: Start Partner PowerUp BizObs with ACE-BOX aware script
+- name: Start Partner PowerUp BizObs with existing comprehensive script
   shell: |
     cd {{ bizobs_app_dir }}
-    chmod +x start-server-ace-aware.sh
-    ./start-server-ace-aware.sh --ace-box-id="{{ ace_box_id | default('ace-box-demo') }}" --external-url="http://{{ bizobs_domain }}"
+    chmod +x start-server.sh
+    ./start-server.sh --ace-box-id="{{ ace_box_id | default('ace-box-demo') }}" --external-url="http://{{ bizobs_domain }}"
   environment:
     ACE_BOX_ID: "{{ ace_box_id | default('ace-box-demo') }}"
     BIZOBS_EXTERNAL_URL: "http://{{ bizobs_domain }}"
