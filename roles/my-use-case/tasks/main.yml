@@ -166,7 +166,60 @@
     - include_role:
         name: "dashboard"
 
-# External access for BizObs application - Simple ACE-BOX pattern
+# External access for BizObs application - ACE-BOX standard pattern
+- name: Create BizObs service and endpoints first
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: bizobs-service
+        namespace: default
+        labels:
+          app: bizobs
+          component: partner-powerup
+      spec:
+        type: ClusterIP
+        ports:
+        - port: 8080
+          targetPort: 8080
+          protocol: TCP
+          name: http
+    state: present
+  register: bizobs_service_result
+
+- name: Create BizObs endpoints pointing to node localhost
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Endpoints
+      metadata:
+        name: bizobs-service
+        namespace: default
+        labels:
+          app: bizobs
+          component: partner-powerup
+      subsets:
+      - addresses:
+        - ip: "{{ ansible_default_ipv4.address }}"
+        ports:
+        - port: 8080
+          protocol: TCP
+          name: http
+    state: present
+  register: bizobs_endpoints_result
+
+- name: Wait for service to be ready
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Service
+    name: bizobs-service
+    namespace: default
+  register: service_info
+  until: service_info.resources | length > 0
+  retries: 10
+  delay: 3
+
 - name: Create BizObs ingress for external access
   kubernetes.core.k8s:
     definition:
@@ -181,7 +234,7 @@
         annotations:
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
           nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
-          nginx.ingress.kubernetes.io/upstream-vhost: "localhost:8080"
+          nginx.ingress.kubernetes.io/rewrite-target: /
       spec:
         ingressClassName: "{{ ingress_class | default('public') }}"
         rules:
@@ -200,43 +253,13 @@
   retries: 3
   delay: 5
 
-- name: Create BizObs service pointing to localhost
-  kubernetes.core.k8s:
-    definition:
-      apiVersion: v1
-      kind: Service
-      metadata:
-        name: bizobs-service
-        namespace: default
-      spec:
-        type: ClusterIP
-        ports:
-        - port: 8080
-          targetPort: 8080
-    state: present
-  register: bizobs_service_result
-
-- name: Create BizObs endpoints pointing to localhost
-  kubernetes.core.k8s:
-    definition:
-      apiVersion: v1
-      kind: Endpoints
-      metadata:
-        name: bizobs-service
-        namespace: default
-      subsets:
-      - addresses:
-        - ip: "127.0.0.1"
-        ports:
-        - port: 8080
-    state: present
-  register: bizobs_endpoints_result
-
 - name: Verify Kubernetes resources were created
   ansible.builtin.debug:
     msg: |
       Service Created: {{ bizobs_service_result is succeeded }}
+      Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
       Ingress Created: {{ bizobs_ingress_result is succeeded }}
+      Target IP: {{ ansible_default_ipv4.address }}
       External URL: http://{{ bizobs_domain }}/
 
 - name: Final deployment status
