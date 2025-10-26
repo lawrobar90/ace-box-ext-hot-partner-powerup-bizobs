@@ -114,8 +114,6 @@
 - name: Display startup status
   debug:
     msg: "BizObs startup log: {{ startup_log.stdout }}"
-    delay: 5
-    timeout: 30
 
 - name: Verify application health
   ansible.builtin.uri:
