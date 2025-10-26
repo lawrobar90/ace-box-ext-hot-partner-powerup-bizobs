@@ -166,51 +166,7 @@
     - include_role:
         name: "dashboard"
 
-# External access for BizObs application
-- name: Create BizObs Kubernetes service (Endpoints approach for better reliability)
-  kubernetes.core.k8s:
-    definition:
-      apiVersion: v1
-      kind: Service
-      metadata:
-        name: bizobs-service
-        namespace: default
-        labels:
-          app: bizobs
-          component: partner-powerup
-      spec:
-        type: ClusterIP
-        ports:
-        - port: 8080
-          targetPort: 8080
-          name: http
-    state: present
-  register: bizobs_service_result
-
-- name: Get host machine IP address
-  ansible.builtin.shell: |
-    # Get the primary interface IP that's not localhost
-    hostname -I | cut -d' ' -f1
-  register: host_ip_result
-  failed_when: host_ip_result.rc != 0
-
-- name: Create BizObs Endpoints pointing to host machine IP
-  kubernetes.core.k8s:
-    definition:
-      apiVersion: v1
-      kind: Endpoints
-      metadata:
-        name: bizobs-service
-        namespace: default
-      subsets:
-      - addresses:
-        - ip: "{{ host_ip_result.stdout.strip() }}"
-        ports:
-        - port: 8080
-          name: http
-    state: present
-  register: bizobs_endpoints_result
-
+# External access for BizObs application - Simple ACE-BOX pattern
 - name: Create BizObs ingress for external access
   kubernetes.core.k8s:
     definition:
@@ -223,10 +179,9 @@
           app: bizobs
           component: partner-powerup
         annotations:
-          nginx.ingress.kubernetes.io/rewrite-target: /
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
           nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
-          nginx.ingress.kubernetes.io/proxy-buffering: "off"
+          nginx.ingress.kubernetes.io/upstream-vhost: "localhost:8080"
       spec:
         ingressClassName: "{{ ingress_class | default('public') }}"
         rules:
@@ -245,64 +200,29 @@
   retries: 3
   delay: 5
 
+- name: Create BizObs service pointing to localhost
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: bizobs-service
+        namespace: default
+      spec:
+        type: ExternalName
+        externalName: "host.docker.internal"
+        ports:
+        - port: 8080
+          targetPort: 8080
+    state: present
+  register: bizobs_service_result
+
 - name: Verify Kubernetes resources were created
   ansible.builtin.debug:
     msg: |
       Service Created: {{ bizobs_service_result is succeeded }}
       Ingress Created: {{ bizobs_ingress_result is succeeded }}
       External URL: http://{{ bizobs_domain }}/
-
-# Verify ingress configuration using ACE-BOX standards
-- name: Wait for ingress to be ready (ACE-BOX standard check)
-  kubernetes.core.k8s_info:
-    api_version: networking.k8s.io/v1
-    kind: Ingress
-    name: bizobs-ingress
-    namespace: default
-  register: ingress_status
-  retries: 5
-  delay: 10
-  until: ingress_status.resources | length > 0
-
-- name: Display ingress configuration
-  ansible.builtin.debug:
-    msg: |
-      🔧 ACE-BOX Standard Ingress Configuration:
-      Ingress Class: {{ ingress_class | default('public') }}
-      Domain: {{ bizobs_domain }}
-      Status: {{ 'Created' if ingress_status.resources | length > 0 else 'Pending' }}
-      
-      ✅ No manual intervention required - fully automated!
-
-# ACE-BOX Standard Verification (No sudo required)
-- name: Verify ingress resource configuration
-  kubernetes.core.k8s_info:
-    api_version: networking.k8s.io/v1
-    kind: Ingress
-    name: bizobs-ingress
-    namespace: default
-  register: final_ingress_status
-
-- name: Display ingress configuration details
-  ansible.builtin.debug:
-    msg: |
-      🔧 Ingress Configuration (ACE-BOX Standard):
-      Status: {{ 'Created Successfully' if final_ingress_status.resources else 'Creation Failed' }}
-      Ingress Class: {{ ingress_class | default('public') }}
-      Host: {{ bizobs_domain }}
-      
-      ✅ This deployment follows ACE-BOX conventions:
-      - Uses standard ingress class: {{ ingress_class | default('public') }}
-      - No manual sudo intervention required
-      - Fully automated deployment process
-
-- name: Verify service and ingress readiness
-  kubernetes.core.k8s_info:
-    api_version: v1
-    kind: Service
-    name: bizobs-service
-    namespace: default
-  register: final_service_status
 
 - name: Final deployment status
   ansible.builtin.debug:
@@ -331,7 +251,6 @@
       ✅ ACE-BOX Deployment Summary:
       - Health Check: {{ health_check.status }}
       - Service Created: {{ bizobs_service_result is succeeded }}
-      - Endpoints Created: {{ bizobs_endpoints_result is succeeded }} (Host IP: {{ host_ip_result.stdout.strip() }})
       - Ingress Created: {{ bizobs_ingress_result is succeeded }}
       - Ingress Class: {{ ingress_class | default('public') }} (ACE-BOX standard)
       - Automation: Fully automated - no manual steps required!
