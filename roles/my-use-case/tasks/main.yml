@@ -34,8 +34,16 @@
       become_user: "{{ ace_box_user | default('dt_training') }}"
       register: node_version_result
       
-    - debug:
-        msg: "Node.js available: {{ node_version_result.stdout }} (YARN installation failed but not required)"
+    - name: Log Node.js status
+      ansible.builtin.debug:
+        msg: "Node.js available: {{ node_version_result.stdout }} (YARN installation failed but not required for BizObs)"
+
+    - name: Ensure Node.js is in PATH for current session
+      ansible.builtin.shell: |
+        echo 'export PATH="$HOME/.nvm/versions/node/v18.20.1/bin:$PATH"' >> ~/.bashrc
+        . ~/.bashrc
+      become_user: "{{ ace_box_user | default('dt_training') }}"
+      failed_when: false
 
 # Install OneAgent BEFORE app for proper instrumentation
 - include_role:
@@ -112,7 +120,7 @@
   register: startup_log
   
 - name: Display startup status
-  debug:
+  ansible.builtin.debug:
     msg: "BizObs startup log: {{ startup_log.stdout }}"
 
 - name: Verify application health
@@ -121,8 +129,9 @@
     method: GET
     status_code: 200
   register: health_check
-  retries: 3
-  delay: 5
+  retries: 5
+  delay: 10
+  until: health_check is succeeded
 
 - name: Verify admin services status
   ansible.builtin.uri:
@@ -130,9 +139,16 @@
     method: GET
     status_code: 200
   register: admin_status
-  retries: 2
-  delay: 3
+  retries: 3
+  delay: 5
   failed_when: false
+
+- name: Log health check results
+  ansible.builtin.debug:
+    msg: |
+      Health Check: {{ health_check.status }}
+      Admin Status: {{ admin_status.status | default('Failed') }}
+      BizObs Application Ready: {{ health_check is succeeded }}
 
 # Deploy collaboration tools AFTER app is verified working
 - include_role:
@@ -169,6 +185,8 @@
         - port: 8080
           targetPort: 8080
           name: http
+    state: present
+  register: bizobs_service_result
 
 - name: Create BizObs ingress for external access
   kubernetes.core.k8s:
@@ -185,6 +203,7 @@
           nginx.ingress.kubernetes.io/rewrite-target: /
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
           nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+          nginx.ingress.kubernetes.io/proxy-buffering: "off"
       spec:
         ingressClassName: "{{ ingress_class | default('nginx') }}"
         rules:
@@ -198,8 +217,32 @@
                   name: bizobs-service
                   port:
                     number: 8080
+    state: present
+  register: bizobs_ingress_result
+  retries: 3
+  delay: 5
 
-- debug:
+- name: Verify Kubernetes resources were created
+  ansible.builtin.debug:
+    msg: |
+      Service Created: {{ bizobs_service_result is succeeded }}
+      Ingress Created: {{ bizobs_ingress_result is succeeded }}
+      External URL: http://{{ bizobs_domain }}/
+
+- name: Wait for ingress to be ready
+  kubernetes.core.k8s_info:
+    api_version: networking.k8s.io/v1
+    kind: Ingress
+    name: bizobs-ingress
+    namespace: default
+  register: ingress_status
+  until: ingress_status.resources[0].status.loadBalancer is defined
+  retries: 10
+  delay: 15
+  failed_when: false
+
+- name: Final deployment status
+  ansible.builtin.debug:
     msg: |
       ✅ Partner PowerUp BizObs deployed successfully!
       
@@ -221,3 +264,9 @@
       - Banking: AccountCreation → KYCVerification → TransactionProcessing
       
       🚀 Ready for Dynatrace Business Observability demos!
+      
+      📊 Deployment Status:
+      - Health Check: {{ health_check.status }}
+      - Service Created: {{ bizobs_service_result is succeeded }}
+      - Ingress Created: {{ bizobs_ingress_result is succeeded }}
+      - DNS Status: {{ 'Ready' if ingress_status.resources[0].status.loadBalancer is defined else 'Propagating' }}
