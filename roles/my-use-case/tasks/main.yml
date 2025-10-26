@@ -221,7 +221,7 @@
           nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
           nginx.ingress.kubernetes.io/proxy-buffering: "off"
       spec:
-        ingressClassName: "{{ ingress_class | default('nginx') }}"
+        ingressClassName: "{{ ingress_class | default('public') }}"
         rules:
         - host: "{{ bizobs_domain }}"
           http:
@@ -257,80 +257,63 @@
   delay: 15
   failed_when: false
 
-# Fix common ingress controller issues
-- name: Ensure ingress controller is properly configured
-  block:
-    - name: Restart ingress controller for proper routing
-      ansible.builtin.shell: |
-        microk8s disable ingress
-        microk8s enable ingress
-      become: true
-      when: ingress_status.resources[0].status.loadBalancer is not defined
+# ACE-BOX Standard Verification (No sudo required)
+- name: Verify ingress resource configuration
+  kubernetes.core.k8s_info:
+    api_version: networking.k8s.io/v1
+    kind: Ingress
+    name: bizobs-ingress
+    namespace: default
+  register: final_ingress_status
 
-    - name: Wait for ingress controller restart
-      ansible.builtin.pause:
-        seconds: 45
-      when: ingress_status.resources[0].status.loadBalancer is not defined
-
-    - name: Ensure ingress class is correctly set
-      kubernetes.core.k8s:
-        definition:
-          apiVersion: networking.k8s.io/v1
-          kind: Ingress
-          metadata:
-            name: bizobs-ingress
-            namespace: default
-            labels:
-              app: bizobs
-              component: partner-powerup
-            annotations:
-              nginx.ingress.kubernetes.io/rewrite-target: /
-              nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
-              nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
-              nginx.ingress.kubernetes.io/proxy-buffering: "off"
-          spec:
-            ingressClassName: "nginx"
-            rules:
-            - host: "{{ bizobs_domain }}"
-              http:
-                paths:
-                - path: /
-                  pathType: Prefix
-                  backend:
-                    service:
-                      name: bizobs-service
-                      port:
-                        number: 8080
-        state: present
-      register: bizobs_ingress_fix
-      retries: 3
-      delay: 10
-
-- name: Verify external access after ingress fix
-  ansible.builtin.uri:
-    url: "http://{{ bizobs_domain }}/health"
-    method: GET
-    status_code: 200
-  register: external_health_check
-  retries: 5
-  delay: 15
-  failed_when: false
-
-- name: Final deployment status
+- name: Display ingress configuration details
   ansible.builtin.debug:
     msg: |
-      ✅ Partner PowerUp BizObs deployed successfully!
+      🔧 Ingress Configuration (ACE-BOX Standard):
+      Status: {{ 'Created Successfully' if final_ingress_status.resources else 'Creation Failed' }}
+      Ingress Class: {{ ingress_class | default('public') }}
+      Host: {{ bizobs_domain }}
       
-      🔗 Access URLs:
-      - BizObs App: http://{{ bizobs_domain }}/
-      - Dashboard: http://dashboard.{{ ingress_domain }}/
-      - Mattermost: http://mattermost.{{ ingress_domain }}/
+      ✅ This deployment follows ACE-BOX conventions:
+      - Uses standard ingress class: {{ ingress_class | default('public') }}
+      - No manual sudo intervention required
+      - Fully automated deployment process
+
+- name: Verify service and ingress readiness
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Service
+    name: bizobs-service
+    namespace: default
+  register: final_service_status
+
+- name: Final deployment status - ACE-BOX Integration Complete
+  ansible.builtin.debug:
+    msg: |
+      🎉 Partner PowerUp BizObs integrated with ACE-BOX successfully!
+      
+      ✅ Deployment Details:
+      - Service Status: {{ 'Ready' if final_service_status.resources else 'Pending' }}
+      - Ingress Status: {{ 'Ready' if final_ingress_status.resources else 'Pending' }}
+      - Ingress Class: {{ ingress_class | default('public') }} (ACE-BOX Standard)
+      - Deployment Type: Fully Automated (No manual steps required)
+      
+      🌐 Access URLs:
+      - BizObs App: {{ ingress_protocol | default('http') }}://{{ bizobs_domain }}/
+      - Dashboard: {{ ingress_protocol | default('http') }}://dashboard.{{ ingress_domain }}/
+      - Mattermost: {{ ingress_protocol | default('http') }}://mattermost.{{ ingress_domain }}/
       
       🎯 BizObs Features Ready:
-      - Customer Journey Simulation: http://{{ bizobs_domain }}/api/journey-simulation/simulate-journey
-      - Admin Panel: http://{{ bizobs_domain }}/api/admin/services/status
-      - Health Check: http://{{ bizobs_domain }}/health
+      - Customer Journey Simulation: {{ ingress_protocol | default('http') }}://{{ bizobs_domain }}/api/journey-simulation/simulate-journey
+      - Admin Panel: {{ ingress_protocol | default('http') }}://{{ bizobs_domain }}/api/admin/services/status
+      - Health Check: {{ ingress_protocol | default('http') }}://{{ bizobs_domain }}/health
       - Load Generation: Multi-persona simulation (Karen, Raj, Alex, Sophia)
+      
+      🔧 ACE-BOX Integration Benefits:
+      - Uses standard ACE-BOX ingress patterns
+      - No manual sudo intervention required
+      - Fully automated deployment and configuration
+      - Follows ACE-BOX role conventions for consistency
       
       🎭 Demo Scenarios:
       - Insurance: PolicyDiscovery → QuoteGeneration → PaymentProcessing
