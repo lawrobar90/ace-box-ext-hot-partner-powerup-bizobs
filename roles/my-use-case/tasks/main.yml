@@ -209,13 +209,28 @@
         name: bizobs-service
         namespace: default
       spec:
-        type: ExternalName
-        externalName: "host.docker.internal"
+        type: ClusterIP
         ports:
         - port: 8080
           targetPort: 8080
     state: present
   register: bizobs_service_result
+
+- name: Create BizObs endpoints pointing to localhost
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Endpoints
+      metadata:
+        name: bizobs-service
+        namespace: default
+      subsets:
+      - addresses:
+        - ip: "127.0.0.1"
+        ports:
+        - port: 8080
+    state: present
+  register: bizobs_endpoints_result
 
 - name: Verify Kubernetes resources were created
   ansible.builtin.debug:
