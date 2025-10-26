@@ -3,10 +3,8 @@
 #
 
 ---
-- debug:
-    msg: " Partner PowerUp BizObs - ACE-BOX deployment"
-
 - set_fact:
+    role_path_abs: "{{ role_path }}"
     bizobs_repo_url: "https://github.com/lawrobar90/Partner-PowerUp-BizObs-App.git"
     bizobs_app_dir: "/home/{{ ace_box_user | default('dt_training') }}/Partner-PowerUp-BizObs-App"
     bizobs_domain: "bizobs.{{ ingress_domain }}"
@@ -47,16 +45,27 @@
 - include_role:
     name: "monaco-v2"
 
-- name: Deploy Monaco configuration for BizObs
-  ansible.builtin.shell: |
-    /usr/local/bin/monacov2 deploy {{ role_path }}/files/monaco/manifest.yml
-  environment:
-    DT_API_TOKEN: "{{ dynatrace_api_token }}"
-    DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') }}"
-    DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id | default('') }}"
-    DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret | default('') }}"
-    DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint | default('') }}"
-    INGRESS_DOMAIN: "{{ ingress_domain }}"
+- include_role:
+    name: monaco-v2
+    tasks_from: apply-monaco
+    apply:
+      environment:
+        DT_API_TOKEN: "{{ dynatrace_api_token }}"
+        DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') }}"
+        DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id }}"
+        DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
+        DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint }}"
+        INGRESS_DOMAIN: "{{ ingress_domain }}"
+  vars:
+    monaco_projects_root: "{{ role_path_abs }}/files/monaco"
+    monaco_project: "" # selection of projects or all projects under the root path if set empty
+    monaco_manifest_path: "{{ role_path_abs }}/files/monaco/manifest.yml"
+    monaco_environment:
+      DT_API_TOKEN: "{{ dynatrace_api_token }}"
+      DT_PLATFORM_TENANT_URL: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') }}"
+      DT_OAUTH_CLIENT_ID: "{{ extra_vars.dt_oauth_client_id }}"
+      DT_OAUTH_CLIENT_SECRET: "{{ extra_vars.dt_oauth_client_secret }}"
+      DT_OAUTH_SSO_ENDPOINT: "{{ extra_vars.dt_oauth_sso_endpoint }}"
 
 - name: Clone repository
   ansible.builtin.git:
@@ -74,7 +83,48 @@
 
 - name: Copy optimized startup script
   ansible.builtin.copy:
-    src: "{{ role_path }}/../../start-server-ace-optimized.sh"
+    content: |
+      #!/bin/bash
+      
+      # Start Partner PowerUp BizObs application
+      echo "Starting Partner PowerUp BizObs application..."
+      
+      # Set Dynatrace metadata for better observability
+      export DT_CUSTOM_PROP="app=bizobs,environment=ace-box,version=1.0"
+      export DT_TAGS="app:bizobs environment:ace-box version:1.0"
+      
+      # Health check function
+      health_check() {
+        local retries=30
+        local count=0
+        while [ $count -lt $retries ]; do
+          if curl -s http://localhost:8080/health > /dev/null; then
+            echo "Application is healthy!"
+            return 0
+          fi
+          count=$((count + 1))
+          echo "Waiting for application to start... ($count/$retries)"
+          sleep 2
+        done
+        echo "Health check failed after $retries attempts"
+        return 1
+      }
+      
+      # Start the application
+      cd /home/dt_training/Partner-PowerUp-BizObs-App
+      npm start &
+      APP_PID=$!
+      
+      # Wait for startup and perform health check
+      sleep 10
+      if health_check; then
+        echo "Partner PowerUp BizObs started successfully (PID: $APP_PID)"
+        echo "Access the app at: http://localhost:8080"
+      else
+        echo "Failed to start Partner PowerUp BizObs"
+        kill $APP_PID 2>/dev/null
+        exit 1
+      fi
     dest: "{{ bizobs_app_dir }}/start-server.sh"
     mode: '0755'
     force: yes
