@@ -81,60 +81,31 @@
     chdir: "{{ bizobs_app_dir }}"
   become_user: "{{ ace_box_user | default('dt_training') }}"
 
-- name: Copy optimized startup script
+- name: Copy ACE-BOX optimized startup script
   ansible.builtin.copy:
-    content: |
-      #!/bin/bash
-      
-      # Start Partner PowerUp BizObs application
-      echo "Starting Partner PowerUp BizObs application..."
-      
-      # Set Dynatrace metadata for better observability
-      export DT_CUSTOM_PROP="app=bizobs,environment=ace-box,version=1.0"
-      export DT_TAGS="app:bizobs environment:ace-box version:1.0"
-      
-      # Health check function
-      health_check() {
-        local retries=30
-        local count=0
-        while [ $count -lt $retries ]; do
-          if curl -s http://localhost:8080/health > /dev/null; then
-            echo "Application is healthy!"
-            return 0
-          fi
-          count=$((count + 1))
-          echo "Waiting for application to start... ($count/$retries)"
-          sleep 2
-        done
-        echo "Health check failed after $retries attempts"
-        return 1
-      }
-      
-      # Start the application
-      cd /home/dt_training/Partner-PowerUp-BizObs-App
-      npm start &
-      APP_PID=$!
-      
-      # Wait for startup and perform health check
-      sleep 10
-      if health_check; then
-        echo "Partner PowerUp BizObs started successfully (PID: $APP_PID)"
-        echo "Access the app at: http://localhost:8080"
-      else
-        echo "Failed to start Partner PowerUp BizObs"
-        kill $APP_PID 2>/dev/null
-        exit 1
-      fi
-    dest: "{{ bizobs_app_dir }}/start-server.sh"
+    src: "{{ role_path }}/../../start-server-ace-optimized.sh"
+    dest: "{{ bizobs_app_dir }}/start-server-ace-optimized.sh"
     mode: '0755'
     force: yes
 
-- name: Start application
-  ansible.builtin.shell: /bin/sh ./start-server.sh
-  become: true
-  args:
-    chdir: "{{ bizobs_app_dir }}"
-  async: 30
+- name: Start application with ACE-BOX optimized script
+  ansible.builtin.shell: |
+    cd {{ bizobs_app_dir }}
+    ./start-server-ace-optimized.sh
+  environment:
+    DT_SERVICE_NAME: "bizobs-main-server"
+    DT_APPLICATION_NAME: "BizObs-CustomerJourney"
+    DT_TAGS: "environment=ace-box app=BizObs service=bizobs component=main-server deployment=ace-box"
+    DT_RELEASE_STAGE: "ace-box-demo"
+    DT_RELEASE_PRODUCT: "Partner-PowerUp-BizObs"
+    DT_RELEASE_VERSION: "1.0.0"
+    BIZOBS_EXTERNAL_URL: "https://{{ bizobs_domain }}"
+    ACE_BOX_ID: "{{ ace_box_id | default('ace-box-demo') }}"
+    COMPANY_NAME: "{{ company_name | default('Dynatrace') }}"
+    COMPANY_DOMAIN: "{{ company_domain | default('dynatrace.com') }}"
+    INDUSTRY_TYPE: "{{ industry_type | default('technology') }}"
+  become_user: "{{ ace_box_user | default('dt_training') }}"
+  async: 60
   poll: 0
 
 - name: Wait for startup
