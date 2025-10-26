@@ -190,7 +190,7 @@
 - name: Get host machine IP address
   ansible.builtin.shell: |
     # Get the primary interface IP that's not localhost
-    ip route get 8.8.8.8 | awk "{print \$7; exit}"
+    hostname -I | cut -d' ' -f1
   register: host_ip_result
   failed_when: host_ip_result.rc != 0
 
