@@ -18,24 +18,8 @@
 - include_role:
     name: "microk8s"
 
-# Use ACE-BOX nodejs role - YARN failure is acceptable since we only need npm
-- name: Install Node.js via ACE-BOX role
-  block:
-    - include_role:
-        name: "nodejs"
-      vars:
-        nodejs_node_version: "v18.20.1"
-  rescue:
-    - name: Verify Node.js is available despite YARN failure
-      ansible.builtin.shell: |
-        . ~/.nvm/nvm.sh && node --version
-      args:
-        executable: /bin/bash
-      become_user: "{{ ace_box_user | default('dt_training') }}"
-      register: node_version_result
-      
-    - debug:
-        msg: "Node.js available: {{ node_version_result.stdout }} (YARN installation failed but not required)"
+# Node.js installation handled by comprehensive startup script
+# The startup script installs Node.js v20, npm, and all system dependencies
 
 # Install OneAgent BEFORE app for proper instrumentation
 - include_role:
@@ -75,33 +59,31 @@
     force: yes
   become_user: "{{ ace_box_user | default('dt_training') }}"
 
-- name: Install dependencies
-  ansible.builtin.command:
-    cmd: npm install --production
-    chdir: "{{ bizobs_app_dir }}"
-  become_user: "{{ ace_box_user | default('dt_training') }}"
+# Skip npm install since the comprehensive startup script handles it
+# Skip dependency installation to avoid duplication with startup script
 
-- name: Copy ACE-BOX optimized startup script
+- name: Copy ACE-BOX aware startup script
   ansible.builtin.copy:
-    src: "{{ role_path }}/../../start-server-ace-optimized.sh"
-    dest: "{{ bizobs_app_dir }}/start-server-ace-optimized.sh"
+    src: "{{ role_path }}/../../start-server-ace-aware.sh"
+    dest: "{{ bizobs_app_dir }}/start-server-ace-aware.sh"
     mode: '0755'
     force: yes
 
-- name: Start Partner PowerUp BizObs application with comprehensive setup
+- name: Start Partner PowerUp BizObs with ACE-BOX aware script
   shell: |
-    cd {{ app_dir }}
-    chmod +x start-server.sh
-    ./start-server.sh --ace-box-id="{{ ace_box_id | default('ace-box-demo') }}" --external-url="{{ bizobs_external_url | default('http://localhost:8080') }}"
+    cd {{ bizobs_app_dir }}
+    chmod +x start-server-ace-aware.sh
+    ./start-server-ace-aware.sh --ace-box-id="{{ ace_box_id | default('ace-box-demo') }}" --external-url="http://{{ bizobs_domain }}"
   environment:
     ACE_BOX_ID: "{{ ace_box_id | default('ace-box-demo') }}"
-    BIZOBS_EXTERNAL_URL: "{{ bizobs_external_url | default('http://localhost:8080') }}"
+    BIZOBS_EXTERNAL_URL: "http://{{ bizobs_domain }}"
     COMPANY_NAME: "{{ company_name | default('Dynatrace') }}"
     COMPANY_DOMAIN: "{{ company_domain | default('dynatrace.com') }}"
     INDUSTRY_TYPE: "{{ industry_type | default('technology') }}"
-    EXTERNAL_URL_OVERRIDE: "{{ bizobs_external_url | default('http://localhost:8080') }}"
+    EXTERNAL_URL_OVERRIDE: "http://{{ bizobs_domain }}"
   args:
-    chdir: "{{ app_dir }}"
+    chdir: "{{ bizobs_app_dir }}"
+  become_user: "{{ ace_box_user | default('dt_training') }}"
 
 - name: Wait for startup
   ansible.builtin.wait_for:
