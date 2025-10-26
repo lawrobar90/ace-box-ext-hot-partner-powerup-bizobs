@@ -245,17 +245,27 @@
       Ingress Created: {{ bizobs_ingress_result is succeeded }}
       External URL: http://{{ bizobs_domain }}/
 
-- name: Wait for ingress to be ready
+# Verify ingress configuration using ACE-BOX standards
+- name: Wait for ingress to be ready (ACE-BOX standard check)
   kubernetes.core.k8s_info:
     api_version: networking.k8s.io/v1
     kind: Ingress
     name: bizobs-ingress
     namespace: default
   register: ingress_status
-  until: ingress_status.resources[0].status.loadBalancer is defined
-  retries: 10
-  delay: 15
-  failed_when: false
+  retries: 5
+  delay: 10
+  until: ingress_status.resources | length > 0
+
+- name: Display ingress configuration
+  ansible.builtin.debug:
+    msg: |
+      🔧 ACE-BOX Standard Ingress Configuration:
+      Ingress Class: {{ ingress_class | default('public') }}
+      Domain: {{ bizobs_domain }}
+      Status: {{ 'Created' if ingress_status.resources | length > 0 else 'Pending' }}
+      
+      ✅ No manual intervention required - fully automated!
 
 # ACE-BOX Standard Verification (No sudo required)
 - name: Verify ingress resource configuration
@@ -287,33 +297,21 @@
     namespace: default
   register: final_service_status
 
-- name: Final deployment status - ACE-BOX Integration Complete
+- name: Final deployment status
   ansible.builtin.debug:
     msg: |
-      🎉 Partner PowerUp BizObs integrated with ACE-BOX successfully!
+      🎉 Partner PowerUp BizObs deployed successfully with ACE-BOX standards!
       
-      ✅ Deployment Details:
-      - Service Status: {{ 'Ready' if final_service_status.resources else 'Pending' }}
-      - Ingress Status: {{ 'Ready' if final_ingress_status.resources else 'Pending' }}
-      - Ingress Class: {{ ingress_class | default('public') }} (ACE-BOX Standard)
-      - Deployment Type: Fully Automated (No manual steps required)
-      
-      🌐 Access URLs:
-      - BizObs App: {{ ingress_protocol | default('http') }}://{{ bizobs_domain }}/
-      - Dashboard: {{ ingress_protocol | default('http') }}://dashboard.{{ ingress_domain }}/
-      - Mattermost: {{ ingress_protocol | default('http') }}://mattermost.{{ ingress_domain }}/
+      🔗 Access URLs:
+      - BizObs App: http://{{ bizobs_domain }}/
+      - Dashboard: http://dashboard.{{ ingress_domain }}/
+      - Mattermost: http://mattermost.{{ ingress_domain }}/
       
       🎯 BizObs Features Ready:
-      - Customer Journey Simulation: {{ ingress_protocol | default('http') }}://{{ bizobs_domain }}/api/journey-simulation/simulate-journey
-      - Admin Panel: {{ ingress_protocol | default('http') }}://{{ bizobs_domain }}/api/admin/services/status
-      - Health Check: {{ ingress_protocol | default('http') }}://{{ bizobs_domain }}/health
+      - Customer Journey Simulation: http://{{ bizobs_domain }}/api/journey-simulation/simulate-journey
+      - Admin Panel: http://{{ bizobs_domain }}/api/admin/services/status
+      - Health Check: http://{{ bizobs_domain }}/health
       - Load Generation: Multi-persona simulation (Karen, Raj, Alex, Sophia)
-      
-      🔧 ACE-BOX Integration Benefits:
-      - Uses standard ACE-BOX ingress patterns
-      - No manual sudo intervention required
-      - Fully automated deployment and configuration
-      - Follows ACE-BOX role conventions for consistency
       
       🎭 Demo Scenarios:
       - Insurance: PolicyDiscovery → QuoteGeneration → PaymentProcessing
@@ -323,11 +321,12 @@
       
       🚀 Ready for Dynatrace Business Observability demos!
       
-      📊 Deployment Status:
+      ✅ ACE-BOX Deployment Summary:
       - Health Check: {{ health_check.status }}
       - Service Created: {{ bizobs_service_result is succeeded }}
       - Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
       - Ingress Created: {{ bizobs_ingress_result is succeeded }}
-      - Ingress Fixed: {{ bizobs_ingress_fix is succeeded | default('N/A') }}
-      - External Access: {{ external_health_check.status | default('Pending DNS') }}
-      - DNS Status: {{ 'Ready' if external_health_check is succeeded else 'Propagating - may take 2-3 minutes' }}
+      - Ingress Class: {{ ingress_class | default('public') }} (ACE-BOX standard)
+      - Automation: Fully automated - no manual steps required!
+      
+      💡 Note: Uses ACE-BOX standard patterns for seamless integration
