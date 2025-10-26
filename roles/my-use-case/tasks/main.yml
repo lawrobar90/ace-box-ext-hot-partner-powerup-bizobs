@@ -78,11 +78,12 @@
 # Use the comprehensive startup script from the app repository
 # This avoids duplication and uses the battle-tested 501-line script
 
-- name: Start Partner PowerUp BizObs with existing comprehensive script
+- name: Start Partner PowerUp BizObs with existing comprehensive script (async)
   shell: |
     cd {{ bizobs_app_dir }}
     chmod +x start-server.sh
-    ./start-server.sh --ace-box-id="{{ ace_box_id | default('ace-box-demo') }}" --external-url="http://{{ bizobs_domain }}"
+    nohup ./start-server.sh --ace-box-id="{{ ace_box_id | default('ace-box-demo') }}" --external-url="http://{{ bizobs_domain }}" > /tmp/bizobs-startup.log 2>&1 &
+    echo "Started BizObs application in background"
   environment:
     ACE_BOX_ID: "{{ ace_box_id | default('ace-box-demo') }}"
     BIZOBS_EXTERNAL_URL: "http://{{ bizobs_domain }}"
@@ -98,6 +99,21 @@
   ansible.builtin.wait_for:
     port: 8080
     host: localhost
+    timeout: 300
+    delay: 30
+
+- name: Check startup log for success
+  shell: |
+    if [ -f /tmp/bizobs-startup.log ]; then
+      tail -50 /tmp/bizobs-startup.log
+    else
+      echo "Startup log not found"
+    fi
+  register: startup_log
+  
+- name: Display startup status
+  debug:
+    msg: "BizObs startup log: {{ startup_log.stdout }}"
     delay: 5
     timeout: 30
 
