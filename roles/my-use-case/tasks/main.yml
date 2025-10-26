@@ -167,7 +167,7 @@
         name: "dashboard"
 
 # External access for BizObs application
-- name: Create BizObs Kubernetes service
+- name: Create BizObs Kubernetes service (Endpoints approach for better reliability)
   kubernetes.core.k8s:
     definition:
       apiVersion: v1
@@ -179,14 +179,30 @@
           app: bizobs
           component: partner-powerup
       spec:
-        type: ExternalName
-        externalName: localhost
+        type: ClusterIP
         ports:
         - port: 8080
           targetPort: 8080
           name: http
     state: present
   register: bizobs_service_result
+
+- name: Create BizObs Endpoints pointing to localhost
+  kubernetes.core.k8s:
+    definition:
+      apiVersion: v1
+      kind: Endpoints
+      metadata:
+        name: bizobs-service
+        namespace: default
+      subsets:
+      - addresses:
+        - ip: "127.0.0.1"
+        ports:
+        - port: 8080
+          name: http
+    state: present
+  register: bizobs_endpoints_result
 
 - name: Create BizObs ingress for external access
   kubernetes.core.k8s:
@@ -241,6 +257,65 @@
   delay: 15
   failed_when: false
 
+# Fix common ingress controller issues
+- name: Ensure ingress controller is properly configured
+  block:
+    - name: Restart ingress controller for proper routing
+      ansible.builtin.shell: |
+        microk8s disable ingress
+        microk8s enable ingress
+      become: true
+      when: ingress_status.resources[0].status.loadBalancer is not defined
+
+    - name: Wait for ingress controller restart
+      ansible.builtin.pause:
+        seconds: 45
+      when: ingress_status.resources[0].status.loadBalancer is not defined
+
+    - name: Ensure ingress class is correctly set
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: networking.k8s.io/v1
+          kind: Ingress
+          metadata:
+            name: bizobs-ingress
+            namespace: default
+            labels:
+              app: bizobs
+              component: partner-powerup
+            annotations:
+              nginx.ingress.kubernetes.io/rewrite-target: /
+              nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+              nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+              nginx.ingress.kubernetes.io/proxy-buffering: "off"
+          spec:
+            ingressClassName: "nginx"
+            rules:
+            - host: "{{ bizobs_domain }}"
+              http:
+                paths:
+                - path: /
+                  pathType: Prefix
+                  backend:
+                    service:
+                      name: bizobs-service
+                      port:
+                        number: 8080
+        state: present
+      register: bizobs_ingress_fix
+      retries: 3
+      delay: 10
+
+- name: Verify external access after ingress fix
+  ansible.builtin.uri:
+    url: "http://{{ bizobs_domain }}/health"
+    method: GET
+    status_code: 200
+  register: external_health_check
+  retries: 5
+  delay: 15
+  failed_when: false
+
 - name: Final deployment status
   ansible.builtin.debug:
     msg: |
@@ -268,5 +343,8 @@
       📊 Deployment Status:
       - Health Check: {{ health_check.status }}
       - Service Created: {{ bizobs_service_result is succeeded }}
+      - Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
       - Ingress Created: {{ bizobs_ingress_result is succeeded }}
-      - DNS Status: {{ 'Ready' if ingress_status.resources[0].status.loadBalancer is defined else 'Propagating' }}
+      - Ingress Fixed: {{ bizobs_ingress_fix is succeeded | default('N/A') }}
+      - External Access: {{ external_health_check.status | default('Pending DNS') }}
+      - DNS Status: {{ 'Ready' if external_health_check is succeeded else 'Propagating - may take 2-3 minutes' }}
