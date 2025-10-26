@@ -18,8 +18,24 @@
 - include_role:
     name: "microk8s"
 
-# Node.js installation handled by comprehensive startup script
-# The startup script installs Node.js v20, npm, and all system dependencies
+# Install Node.js via ACE-BOX role for startup script compatibility
+- name: Install Node.js via ACE-BOX role
+  block:
+    - include_role:
+        name: "nodejs"
+      vars:
+        nodejs_node_version: "v18.20.1"
+  rescue:
+    - name: Verify Node.js is available despite YARN failure
+      ansible.builtin.shell: |
+        . ~/.nvm/nvm.sh && node --version
+      args:
+        executable: /bin/bash
+      become_user: "{{ ace_box_user | default('dt_training') }}"
+      register: node_version_result
+      
+    - debug:
+        msg: "Node.js available: {{ node_version_result.stdout }} (YARN installation failed but not required)"
 
 # Install OneAgent BEFORE app for proper instrumentation
 - include_role:
