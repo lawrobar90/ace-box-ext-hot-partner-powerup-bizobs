@@ -170,7 +170,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 Run the simulations as many times as need to get all 12 events. Each svent will have a correlating "** - Exception**" event
 
 ### 1.7 Extra Queries ###
-1.    ** Change the companyName to the one you are testing with **
+** Change the companyName to the one you are testing with **
 1.    See all of your Business Event Data
       ```
       Fetch Bizevents
