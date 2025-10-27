@@ -179,7 +179,7 @@ Run the simulations as many times as need to get all 12 events. Each svent will 
       | filter json.companyName == "**companyName**"
       ```
       
-1. Summarize how much time is spent in each Journe Step
+1. Summarize how much time is spent in each Journey Step
       ```
       fetch bizevents
       | filter json.companyName == "**companyName**"
