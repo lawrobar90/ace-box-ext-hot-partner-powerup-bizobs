@@ -37,11 +37,12 @@ configs:
 #    type:
  #     api: service-naming-rule
 
-  - id: bizobstemplate
-    type:
-      openpipeline:
-        kind: bizevents
-    config:
-      name: Revenue
-      template: bizobstemplate.json
-      skip: false
+  # Temporarily disabled due to OpenPipeline API migration
+  # - id: bizobstemplate
+  #   type:
+  #     openpipeline:
+  #       kind: bizevents
+  #   config:
+  #     name: Revenue
+  #     template: bizobstemplate.json
+  #     skip: false
