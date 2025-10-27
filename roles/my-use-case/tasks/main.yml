@@ -394,15 +394,124 @@
       - Service Created: {{ bizobs_service_result is succeeded }}
       - Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
       - Ingress Created: {{ bizobs_ingress_result is succeeded }}
-      - Dashboard: Available with all service links
+      - Dashboard: {{ '✅ Healthy & Accessible' if dashboard_healthy | default(false) else '⚠️ Issues detected (auto-recovery attempted)' }}
       - Ingress Class: {{ ingress_class | default('public') }} (ACE-BOX standard)
-      - Automation: Fully automated - no manual steps required!
+      - Automation: Fully automated - {{ 'no manual steps required!' if dashboard_healthy | default(false) else 'dashboard may need manual review' }}
       
       💡 Note: Dashboard deployed last to include all service URLs
 
-# Configure public access for dashboard and services  
-- name: Configure public access for all services
+# Configure public access for dashboard and services with health checks
+- name: Configure public access and ensure dashboard health
   block:
+    - name: Wait for dashboard deployment to be ready
+      kubernetes.core.k8s_info:
+        api_version: apps/v1
+        kind: Deployment
+        name: dashboard
+        namespace: ace
+        wait: true
+        wait_condition:
+          type: Available
+          status: "True"
+        wait_timeout: 300
+      register: dashboard_deployment_status
+      failed_when: false
+      
+    - name: Check dashboard pod status
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: Pod
+        namespace: ace
+        label_selectors:
+          - app=dashboard
+      register: dashboard_pods
+      
+    - name: Restart dashboard if pods are not running
+      kubernetes.core.k8s:
+        api_version: apps/v1
+        kind: Deployment
+        name: dashboard
+        namespace: ace
+        state: present
+        definition:
+          spec:
+            template:
+              metadata:
+                annotations:
+                  kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
+      when: dashboard_pods.resources | length == 0 or (dashboard_pods.resources | selectattr('status.phase', 'equalto', 'Running') | list | length == 0)
+      register: dashboard_restart
+      
+    - name: Wait for dashboard pods to be running after restart
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: Pod
+        namespace: ace
+        label_selectors:
+          - app=dashboard
+        wait: true
+        wait_condition:
+          type: Ready
+          status: "True"
+        wait_timeout: 120
+      when: dashboard_restart is changed
+      
+    - name: Verify dashboard service is accessible
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: Service
+        name: dashboard
+        namespace: ace
+      register: dashboard_service
+      
+    - name: Test dashboard service endpoint
+      uri:
+        url: "http://{{ dashboard_service.resources[0].spec.clusterIP }}:{{ dashboard_service.resources[0].spec.ports[0].port }}"
+        method: GET
+        timeout: 30
+      register: dashboard_health_test
+      failed_when: false
+      retries: 5
+      delay: 10
+      when: dashboard_service.resources | length > 0
+      
+    - name: Force recreate dashboard service if unhealthy
+      block:
+        - name: Delete existing dashboard service
+          kubernetes.core.k8s:
+            api_version: v1
+            kind: Service
+            name: dashboard
+            namespace: ace
+            state: absent
+            
+        - name: Wait for service deletion
+          pause:
+            seconds: 10
+            
+        - name: Recreate dashboard service
+          kubernetes.core.k8s:
+            api_version: v1
+            kind: Service
+            name: dashboard
+            namespace: ace
+            state: present
+            definition:
+              metadata:
+                name: dashboard
+                namespace: ace
+                labels:
+                  app: dashboard
+              spec:
+                selector:
+                  app: dashboard
+                ports:
+                - port: 80
+                  targetPort: 8080
+                  protocol: TCP
+                type: ClusterIP
+      when: dashboard_health_test is defined and dashboard_health_test.status != 200
+      
     - name: Remove dashboard basic authentication for public access
       shell: |
         kubectl patch ingress ace-dashboard -n ace --type='json' -p='[
@@ -413,6 +522,36 @@
       register: dashboard_auth_removal
       failed_when: false
       
-    - name: Log dashboard authentication removal
+    - name: Verify dashboard ingress configuration
+      kubernetes.core.k8s_info:
+        api_version: networking.k8s.io/v1
+        kind: Ingress
+        name: ace-dashboard
+        namespace: ace
+      register: dashboard_ingress
+      
+    - name: Test external dashboard access
+      uri:
+        url: "https://dashboard.{{ ingress_domain }}"
+        method: GET
+        timeout: 30
+        validate_certs: false
+      register: external_dashboard_test
+      failed_when: false
+      retries: 3
+      delay: 10
+      
+    - name: Log dashboard status and accessibility
       ansible.builtin.debug:
-        msg: "Dashboard authentication removed for public access: {{ dashboard_auth_removal.rc == 0 }}"
+        msg: |
+          Dashboard Health Check Results:
+          - Deployment Ready: {{ dashboard_deployment_status is succeeded }}
+          - Pods Running: {{ (dashboard_pods.resources | selectattr('status.phase', 'equalto', 'Running') | list | length) > 0 }}
+          - Service Accessible: {{ dashboard_health_test.status | default('Unknown') == 200 }}
+          - Authentication Removed: {{ dashboard_auth_removal.rc == 0 }}
+          - External Access: {{ external_dashboard_test.status | default('Failed') }}
+          - Dashboard URL: https://dashboard.{{ ingress_domain }}
+          
+    - name: Set dashboard health status
+      set_fact:
+        dashboard_healthy: "{{ (dashboard_pods.resources | selectattr('status.phase', 'equalto', 'Running') | list | length) > 0 and (dashboard_health_test.status | default(0) == 200) }}"
