@@ -333,7 +333,7 @@ data:
                         <h3>🔍 Dynatrace Environment</h3>
                         <p>Access your Dynatrace environment to view automatically configured monitoring, business events, and observability data.</p>
                         <div class="service-links">
-                            <a href="{{ dt_environment_url }}" target="_blank" class="service-link">
+                            <a href="{{ extra_vars.dt_environment_url_gen3 | default('https://YOUR_TENANT.apps.dynatrace.com') }}" target="_blank" class="service-link">
                                 🚀 Open Dynatrace Environment
                             </a>
                         </div>
@@ -383,7 +383,7 @@ data:
                         <h3>🔄 BizFlow Workflows</h3>
                         <p>Advanced business process automation and workflow management via Dynatrace Platform.</p>
                         <div class="service-links">
-                            <a href="{{ dt_environment_url }}/ui/apps" target="_blank" class="service-link">
+                            <a href="{{ extra_vars.dt_environment_url_gen3 | default('https://YOUR_TENANT.apps.dynatrace.com') }}/ui/apps" target="_blank" class="service-link">
                                 🔄 Access BizFlow in Platform
                             </a>
                         </div>
@@ -518,7 +518,7 @@ spec:
         - name: INGRESS_DOMAIN
           value: "{{ ingress_domain | default('localhost') }}"
         - name: DT_ENVIRONMENT_URL
-          value: "{{ dt_environment_url | default('https://YOUR_TENANT.apps.dynatrace.com') }}"
+          value: "{{ extra_vars.dt_environment_url_gen3 | default('https://YOUR_TENANT.apps.dynatrace.com') }}"
         - name: BIZOBS_URL
           value: "http://bizobs.{{ ingress_domain | default('localhost') }}"
         - name: MATTERMOST_URL

@@ -364,7 +364,7 @@
       vars:
         k8s_namespace: ace
         ingress_domain: "{{ ingress_domain }}"
-        dt_environment_url: "{{ dt_environment_url | default('https://YOUR_TENANT.apps.dynatrace.com') }}"
+        dt_environment_url: "{{ extra_vars.dt_environment_url_gen3 | default('https://YOUR_TENANT.apps.dynatrace.com') }}"
         mattermost_username: "{{ mattermost_username | default('admin') }}"
         mattermost_password: "{{ mattermost_password | default('admin123') }}"
       register: nginx_dashboard_deployment
