@@ -14,7 +14,7 @@ This lab will help you understand what business analytics is trying to achieve f
       Fetch Bizevents
       | filter isNotNull(rsBody) and isNotNull(rqBody)
       | filter isNotNull(json.additionalFields) and isNotNull(json.stepIndex)
-      | filter json.companyName == $Company
+      | filter json.companyName == "Companyname" //Include your companyName in "" from the BizObs app
       | summarize count(), by:{event.type,json.stepName, json.stepIndex}
       | sort json.stepIndex asc
       ```
