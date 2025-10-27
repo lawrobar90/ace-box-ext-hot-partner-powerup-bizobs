@@ -147,7 +147,9 @@ This lab will show you how to *create* and *validate* **business rules**.
 **Just above the table, click "*Save*"**
 **Make sure you change Status to enable the Dynamic Routing**
 
-*RUN SOME MORE TEST SIMULATIONS THROUGH YOUR BIZOBS APPLICATION UI**
+
+##*RUN SOME MORE TEST SIMULATIONS THROUGH YOUR BIZOBS APPLICATION UI**##
+
 
 ### 1.6 Queries
 
