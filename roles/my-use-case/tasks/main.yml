@@ -334,12 +334,12 @@
 # Deploy nginx-based dashboard for OneAgent compatibility  
 - name: Deploy nginx-based ACE-Box dashboard
   block:
-    - name: Remove existing Node.js dashboard deployment
+    - name: Remove existing dashboard deployment
       kubernetes.core.k8s:
         api_version: apps/v1
         kind: Deployment
         name: dashboard
-        namespace: ace
+        namespace: default
         state: absent
       failed_when: false
       
@@ -348,7 +348,7 @@
         api_version: v1
         kind: Service
         name: dashboard
-        namespace: ace
+        namespace: default
         state: absent
       failed_when: false
       
@@ -360,9 +360,9 @@
       kubernetes.core.k8s:
         state: present
         definition: "{{ lookup('template', 'nginx-dashboard.yml.j2') | from_yaml_all | list }}"
-        namespace: "{{ k8s_namespace | default('ace') }}"
+        namespace: "{{ k8s_namespace | default('default') }}"
       vars:
-        k8s_namespace: ace
+        k8s_namespace: default
         ingress_domain: "{{ ingress_domain }}"
         dt_environment_url: "{{ extra_vars.dt_environment_url_gen3 | default('https://YOUR_TENANT.apps.dynatrace.com') }}"
         mattermost_username: "{{ mattermost_username | default('admin') }}"
@@ -374,7 +374,7 @@
         api_version: apps/v1
         kind: Deployment
         name: ace-box-dashboard
-        namespace: ace
+        namespace: default
         wait: true
         wait_condition:
           type: Available
@@ -386,7 +386,7 @@
       kubernetes.core.k8s_info:
         api_version: v1
         kind: Pod
-        namespace: ace
+        namespace: default
         label_selectors:
           - app=ace-box-dashboard
       register: nginx_dashboard_pods
