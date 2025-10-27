@@ -10,423 +10,396 @@ data:
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>ACE-Box Dashboard</title>
-        <link rel="stylesheet" href="https://dynatrace.github.io/groundhog/dist/groundhog.css">
-        <style>
-            :root {
-                --dt-color-neutral-0: #fcfcfc;
-                --dt-color-neutral-100: #f2f4f5;
-                --dt-color-neutral-200: #e6eaec;
-                --dt-color-neutral-300: #d4dadd;
-                --dt-color-neutral-400: #b9c2c7;
-                --dt-color-neutral-500: #9da8af;
-                --dt-color-neutral-600: #7c8893;
-                --dt-color-neutral-700: #5b6977;
-                --dt-color-neutral-800: #3a4a5b;
-                --dt-color-neutral-900: #1a2b3f;
-                --dt-color-neutral-1000: #151515;
-                
-                --dt-color-purple-100: #f4f0ff;
-                --dt-color-purple-200: #e0d1ff;
-                --dt-color-purple-300: #c5a9ff;
-                --dt-color-purple-400: #a47eff;
-                --dt-color-purple-500: #7c38f5;
-                --dt-color-purple-600: #6925d7;
-                --dt-color-purple-700: #5516b9;
-                --dt-color-purple-800: #42099b;
-                --dt-color-purple-900: #30007d;
-            }
-
-            body {
-                font-family: "BerninaSans", "Segoe UI", "Roboto", "Arial", sans-serif;
-                margin: 0;
-                padding: 0;
-                background: var(--dt-color-neutral-100);
-            }
-
-            .header {
-                background: var(--dt-color-purple-600);
-                color: white;
-                padding: 1rem 2rem;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-            .header h1 {
-                margin: 0;
-                font-size: 1.5rem;
-                font-weight: 600;
-            }
-
-            .nav-tabs {
-                background: white;
-                border-bottom: 1px solid var(--dt-color-neutral-300);
-                padding: 0 2rem;
-            }
-
-            .nav-tabs ul {
-                list-style: none;
-                margin: 0;
-                padding: 0;
-                display: flex;
-            }
-
-            .nav-tabs li {
-                margin-right: 2rem;
-            }
-
-            .nav-tabs button {
-                background: none;
-                border: none;
-                padding: 1rem 0;
-                font-size: 1rem;
-                color: var(--dt-color-neutral-700);
-                cursor: pointer;
-                border-bottom: 3px solid transparent;
-                transition: all 0.2s ease;
-            }
-
-            .nav-tabs button:hover {
-                color: var(--dt-color-purple-600);
-            }
-
-            .nav-tabs button.active {
-                color: var(--dt-color-purple-600);
-                border-bottom-color: var(--dt-color-purple-600);
-            }
-
-            .content {
-                padding: 2rem;
-                max-width: 1200px;
-                margin: 0 auto;
-            }
-
-            .tab-content {
-                display: none;
-            }
-
-            .tab-content.active {
-                display: block;
-            }
-
-            .service-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                gap: 1.5rem;
-                margin-top: 1.5rem;
-            }
-
-            .service-card {
-                background: white;
-                border-radius: 8px;
-                padding: 1.5rem;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                border: 1px solid var(--dt-color-neutral-200);
-            }
-
-            .service-card h3 {
-                margin: 0 0 1rem 0;
-                color: var(--dt-color-purple-600);
-                font-size: 1.2rem;
-            }
-
-            .service-card p {
-                margin: 0 0 1rem 0;
-                color: var(--dt-color-neutral-700);
-                line-height: 1.5;
-            }
-
-            .service-links {
-                display: flex;
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .service-link {
-                display: inline-flex;
-                align-items: center;
-                padding: 0.5rem 1rem;
-                background: var(--dt-color-purple-100);
-                color: var(--dt-color-purple-700);
-                text-decoration: none;
-                border-radius: 4px;
-                font-size: 0.9rem;
-                transition: background-color 0.2s ease;
-            }
-
-            .service-link:hover {
-                background: var(--dt-color-purple-200);
-                color: var(--dt-color-purple-800);
-            }
-
-            .credentials {
-                background: var(--dt-color-neutral-100);
-                padding: 1rem;
-                border-radius: 4px;
-                margin-top: 1rem;
-                font-family: monospace;
-                font-size: 0.85rem;
-            }
-
-            .status-indicator {
-                display: inline-block;
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                margin-right: 8px;
-            }
-
-            .status-healthy {
-                background: #4caf50;
-            }
-
-            .status-warning {
-                background: #ff9800;
-            }
-
-            .deployment-info {
-                background: white;
-                border-radius: 8px;
-                padding: 1.5rem;
-                margin-bottom: 1.5rem;
-                border-left: 4px solid var(--dt-color-purple-600);
-            }
-
-            .how-to-section {
-                background: white;
-                border-radius: 8px;
-                padding: 1.5rem;
-                margin-bottom: 1rem;
-            }
-
-            .how-to-section h3 {
-                color: var(--dt-color-purple-600);
-                margin-top: 0;
-            }
-
-            .step-list {
-                list-style: none;
-                padding: 0;
-                counter-reset: step-counter;
-            }
-
-            .step-list li {
-                counter-increment: step-counter;
-                margin-bottom: 1rem;
-                padding-left: 2rem;
-                position: relative;
-            }
-
-            .step-list li::before {
-                content: counter(step-counter);
-                position: absolute;
-                left: 0;
-                top: 0;
-                background: var(--dt-color-purple-600);
-                color: white;
-                width: 24px;
-                height: 24px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 0.8rem;
-                font-weight: bold;
-            }
-        </style>
+        <title>ACE Dashboard</title>
+        <meta name="description" content="ACE Dashboard">
+        <link rel="icon" href="/favicon.ico">
+        <link rel="stylesheet" href="https://unpkg.com/@dynatrace/groundhog@latest/dist/css/main.css">
     </head>
     <body>
-        <div class="header">
-            <h1>🎯 ACE-Box Dashboard - Partner PowerUp BizObs</h1>
-            <div>
-                <span class="status-indicator status-healthy"></span>
-                Deployment Ready
+        <div class="nav has-no-secondary">
+            <div class="nav__brand nav__logo">
+                <a href="#" onclick="showPage('home')">
+                    <img src="https://assets.dynatrace.com/global/logos/dynatrace-logo.svg" alt="Dynatrace" width="100%" height="24px">
+                </a>
             </div>
+            <nav class="nav__bar">
+                <ul class="nav__list nav__list--primary">
+                    <li class="nav__item is-current" id="nav-home">
+                        <a href="#" class="nav__link" onclick="showPage('home')">How-To ACE Box</a>
+                    </li>
+                    <li class="nav__item" id="nav-preview">
+                        <a href="#" class="nav__link" onclick="showPage('preview')">Deployment Preview</a>
+                    </li>
+                    <li class="nav__item" id="nav-links">
+                        <a href="#" class="nav__link" onclick="showPage('links')">Links</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-
-        <nav class="nav-tabs">
-            <ul>
-                <li><button class="tab-btn active" data-tab="overview">How-To</button></li>
-                <li><button class="tab-btn" data-tab="deployment">Deployment Preview</button></li>
-                <li><button class="tab-btn" data-tab="links">Links</button></li>
-            </ul>
-        </nav>
-
-        <div class="content">
-            <!-- How-To Tab -->
-            <div id="overview" class="tab-content active">
-                <div class="deployment-info">
-                    <h2>🎉 Partner PowerUp BizObs Deployment Complete!</h2>
-                    <p>Your Business Observability demo environment is ready. Access your services below and follow the demo scenarios to showcase Dynatrace capabilities.</p>
-                </div>
-
-                <div class="how-to-section">
-                    <h3>🚀 Quick Start Guide</h3>
-                    <ol class="step-list">
-                        <li><strong>Access BizObs Application:</strong> Navigate to the main demo application to explore customer journey simulations</li>
-                        <li><strong>Review Dynatrace Data:</strong> Check your Dynatrace environment for automatically configured monitoring</li>
-                        <li><strong>Use Mattermost:</strong> Collaborate with your team using the integrated chat platform</li>
-                        <li><strong>Run Demo Scenarios:</strong> Execute predefined business workflows (Insurance, Retail, Tech, Banking)</li>
-                    </ol>
-                </div>
-
-                <div class="how-to-section">
-                    <h3>🎭 Available Demo Scenarios</h3>
-                    <div class="service-grid">
-                        <div class="service-card">
-                            <h3>🏦 Insurance</h3>
-                            <p>PolicyDiscovery → QuoteGeneration → PolicySelection → PaymentProcessing</p>
-                        </div>
-                        <div class="service-card">
-                            <h3>🛒 Retail</h3>
-                            <p>ProductBrowsing → CartManagement → CheckoutProcess → OrderFulfillment</p>
-                        </div>
-                        <div class="service-card">
-                            <h3>💻 Technology</h3>
-                            <p>UserOnboarding → FeatureExploration → DataProcessing → AnalyticsReporting</p>
-                        </div>
-                        <div class="service-card">
-                            <h3>🏛️ Banking</h3>
-                            <p>AccountCreation → KYCVerification → ProductSelection → TransactionProcessing</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Deployment Preview Tab -->
-            <div id="deployment" class="tab-content">
-                <div class="deployment-info">
-                    <h2>📊 Deployment Status</h2>
-                    <p><strong>Environment:</strong> {{ ingress_domain }}</p>
-                    <p><strong>Deployment Time:</strong> <span id="deployment-time"></span></p>
-                </div>
-
-                <div class="service-grid">
-                    <div class="service-card">
-                        <h3>✅ Core Services</h3>
+        
+        <main>
+            <div class="layout__container">
+                <div class="island">
+                    <!-- How-To Page -->
+                    <div id="page-home" class="page-content">
+                        <h1>How-To</h1>
+                        <p>Welcome to your personal ACE Box! It comes with a set of already configured tools, code, pipelines, etc. to showcase a selection of cloud automation use cases.</p>
+                        <p>Before you get started, please familiarize yourself with the Dashboard you're currently looking at:</p>
+                        
                         <ul>
-                            <li><span class="status-indicator status-healthy"></span>Dynatrace OneAgent</li>
-                            <li><span class="status-indicator status-healthy"></span>Monaco Configuration</li>
-                            <li><span class="status-indicator status-healthy"></span>BizObs Application</li>
-                            <li><span class="status-indicator status-healthy"></span>Mattermost</li>
-                            <li><span class="status-indicator status-healthy"></span>Dashboard (nginx)</li>
+                            <li>A <strong>How-To</strong> gives you step-by-step instructions for each use case.</li>
+                            <li>As the name indicates, <strong>Deployment Preview</strong> shows you the currently deployed version of a demo application up in each stage. Don't worry, the page will fine if for now any application is not deployed yet. You will fix this as part of one the first use cases.</li>
+                            <li><strong>Links</strong> lists tools and credentials that you will need while going through the use cases.</li>
                         </ul>
+                        
+                        <p>In addition the following tools have been set up and configured (click on each tab to get an overview of what's been configured):</p>
+                        
+                        <ul class="tab-nav">
+                            <li class="tab-nav__item is-active">
+                                <button class="tab-nav__link" data-tab="dynatrace">Dynatrace</button>
+                            </li>
+                            <li class="tab-nav__item">
+                                <button class="tab-nav__link" data-tab="bizobs">BizObs Application</button>
+                            </li>
+                            <li class="tab-nav__item">
+                                <button class="tab-nav__link" data-tab="mattermost">Mattermost</button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content is-active" id="dynatrace">
+                            <div class="service-info">
+                                <h3>🔍 Dynatrace Observability Platform</h3>
+                                <p><strong>Dynatrace</strong> provides full-stack monitoring and AI-powered observability. You can log in using your tenant credentials. Our installation provides comprehensive monitoring for business events and application performance.</p>
+                                
+                                <h4>Quick Access Links</h4>
+                                <ul class="link-list">
+                                    <li><a href="{{ extra_vars.dt_environment_url_gen3 | default('https://your-tenant.apps.dynatrace.com') }}" target="_blank" rel="noreferrer">🌐 Open Dynatrace Tenant</a></li>
+                                    <li><a href="{{ extra_vars.dt_environment_url_gen3 | default('https://your-tenant.apps.dynatrace.com') }}/ui/apps/dynatrace.notebooks/" target="_blank" rel="noreferrer">📓 Notebooks</a></li>
+                                    <li><a href="{{ extra_vars.dt_environment_url_gen3 | default('https://your-tenant.apps.dynatrace.com') }}/ui/openApp/dynatrace.services/" target="_blank" rel="noreferrer">🏗️ Services</a></li>
+                                    <li><a href="{{ extra_vars.dt_environment_url_gen3 | default('https://your-tenant.apps.dynatrace.com') }}/ui/apps/dynatrace.automations/workflows?owner=all" target="_blank" rel="noreferrer">⚙️ Workflows</a></li>
+                                    <li><a href="{{ extra_vars.dt_environment_url_gen3 | default('https://your-tenant.apps.dynatrace.com') }}/ui/apps/dynatrace.biz.flow" target="_blank" rel="noreferrer">📈 Business Flow</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-content" id="bizobs">
+                            <div class="service-info">
+                                <h3>🏪 BizObs Demo Application</h3>
+                                <p><strong>BizObs Application</strong> is our business observability demo platform. It showcases customer journey tracking, multi-persona traffic generation, and real-time business analytics. Access the application to explore demo scenarios.</p>
+                                
+                                <h4>Application Access</h4>
+                                <ul class="link-list">
+                                    <li><a href="http://bizobs.{{ ingress_domain }}/" target="_blank" rel="noreferrer">🏠 Main Application</a></li>
+                                    <li><a href="http://bizobs.{{ ingress_domain }}/health" target="_blank" rel="noreferrer">❤️ Health Check</a></li>
+                                    <li><a href="http://bizobs.{{ ingress_domain }}/api/admin/services/status" target="_blank" rel="noreferrer">⚙️ Admin Dashboard</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-content" id="mattermost">
+                            <div class="service-info">
+                                <h3>💬 Mattermost Collaboration</h3>
+                                <p><strong>Mattermost</strong> is our team collaboration platform. You can use it for demo coordination, sharing insights, and communicating during the business observability demonstrations.</p>
+                                
+                                <div class="credential-box">
+                                    <h4>🔐 Login Credentials</h4>
+                                    <div class="credential-item">
+                                        <strong>Username:</strong> <code class="credential-value">{{ mattermost_username | default('admin') }}</code>
+                                    </div>
+                                    <div class="credential-item">
+                                        <strong>Password:</strong> <code class="credential-value">{{ mattermost_password | default('admin123') }}</code>
+                                    </div>
+                                    <p class="security-note">
+                                        <em>⚠️ Note: These are the actual deployed credentials for your Mattermost instance.</em>
+                                    </p>
+                                </div>
+                                
+                                <h4>Quick Access</h4>
+                                <ul class="link-list">
+                                    <li><a href="http://mattermost.{{ ingress_domain }}/" target="_blank" rel="noreferrer">🌐 Open Mattermost</a></li>
+                                    <li><a href="http://mattermost.{{ ingress_domain }}/login" target="_blank" rel="noreferrer">🔑 Direct Login</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
                     </div>
-                    <div class="service-card">
-                        <h3>🎯 Business Features</h3>
-                        <ul>
-                            <li><span class="status-indicator status-healthy"></span>Customer Journey Simulation</li>
-                            <li><span class="status-indicator status-healthy"></span>Multi-persona Load Generation</li>
-                            <li><span class="status-indicator status-healthy"></span>Dynatrace Metadata Injection</li>
-                            <li><span class="status-indicator status-healthy"></span>Real-time Observability</li>
-                        </ul>
+                    
+                    <!-- Deployment Preview Page -->
+                    <div id="page-preview" class="page-content" style="display: none;">
+                        <h1>Deployment Preview</h1>
+                        <p>This page shows the currently deployed version of demo applications in each environment stage.</p>
+                        
+                        <h2>Partner PowerUp BizObs Application</h2>
+                        <dl class="definition-list">
+                            <dt>Production Environment</dt>
+                            <dd><a href="http://bizobs.{{ ingress_domain }}/" target="_blank" rel="noreferrer">BizObs Application - Live</a></dd>
+                            
+                            <dt>Application Health</dt>
+                            <dd><a href="http://bizobs.{{ ingress_domain }}/health" target="_blank" rel="noreferrer">Health Check Endpoint</a></dd>
+                            
+                            <dt>Admin Interface</dt>
+                            <dd><a href="http://bizobs.{{ ingress_domain }}/api/admin/services/status" target="_blank" rel="noreferrer">Service Status Dashboard</a></dd>
+                        </dl>
+                    </div>
+                    
+                    <!-- Links Page -->
+                    <div id="page-links" class="page-content" style="display: none;">
+                        <h1>Links</h1>
+                        <p>Access deployed components and credentials for this ACE Box environment.</p>
+                        
+                        <h2>Core Services</h2>
+                        <dl class="definition-list">
+                            <dt>Dynatrace Environment</dt>
+                            <dd><a href="{{ extra_vars.dt_environment_url_gen3 | default('https://your-tenant.apps.dynatrace.com') }}" target="_blank" rel="noreferrer">Access your Dynatrace tenant</a></dd>
+                            
+                            <dt>BizObs Application</dt>
+                            <dd><a href="http://bizobs.{{ ingress_domain }}/" target="_blank" rel="noreferrer">Business Observability demo application</a></dd>
+                            
+                            <dt>Mattermost</dt>
+                            <dd>
+                                <a href="http://mattermost.{{ ingress_domain }}/" target="_blank" rel="noreferrer">Team collaboration platform</a>
+                                <div style="margin-top: 0.5rem; padding: 0.5rem; background-color: var(--color-background-subtle); border-radius: 4px;">
+                                    <small><strong>Login:</strong> {{ mattermost_username | default('admin') }} / {{ mattermost_password | default('admin123') }}</small>
+                                </div>
+                            </dd>
+                        </dl>
                     </div>
                 </div>
             </div>
-
-            <!-- Links Tab -->
-            <div id="links" class="tab-content">
-                <div class="service-grid">
-                    <!-- Dynatrace Environment -->
-                    <div class="service-card">
-                        <h3>🔍 Dynatrace Environment</h3>
-                        <p>Access your Dynatrace environment to view automatically configured monitoring, business events, and observability data.</p>
-                        <div class="service-links">
-                            <a href="{{ extra_vars.dt_environment_url_gen3 | default('https://YOUR_TENANT.apps.dynatrace.com') }}" target="_blank" class="service-link">
-                                🚀 Open Dynatrace Environment
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- BizObs Application -->
-                    <div class="service-card">
-                        <h3>📊 BizObs Application</h3>
-                        <p>Main business observability demo application with customer journey simulations and load generation capabilities.</p>
-                        <div class="service-links">
-                            <a href="http://bizobs.{{ ingress_domain }}" target="_blank" class="service-link">
-                                🏠 Main Application
-                            </a>
-                            <a href="http://bizobs.{{ ingress_domain }}/health" target="_blank" class="service-link">
-                                ❤️ Health Check
-                            </a>
-                            <a href="http://bizobs.{{ ingress_domain }}/api/admin/services/status" target="_blank" class="service-link">
-                                ⚙️ Admin Panel
-                            </a>
-                            <a href="http://bizobs.{{ ingress_domain }}/api/journey-simulation/simulate-journey" target="_blank" class="service-link">
-                                🎭 Journey Simulation
-                            </a>
-                            <a href="http://bizobs.{{ ingress_domain }}/api/load-gen/start" target="_blank" class="service-link">
-                                🏋️ Load Generation
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Mattermost -->
-                    <div class="service-card">
-                        <h3>💬 Mattermost Collaboration</h3>
-                        <p>Team collaboration platform for coordinating demo activities and sharing observability insights.</p>
-                        <div class="service-links">
-                            <a href="http://mattermost.{{ ingress_domain }}" target="_blank" class="service-link">
-                                💬 Open Mattermost
-                            </a>
-                        </div>
-                        <div class="credentials">
-                            <strong>Login Credentials:</strong><br>
-                            Username: {{ mattermost_username }}<br>
-                            Password: {{ mattermost_password }}
-                        </div>
-                    </div>
-
-                    <!-- BizFlow (if available) -->
-                    <div class="service-card">
-                        <h3>🔄 BizFlow Workflows</h3>
-                        <p>Advanced business process automation and workflow management via Dynatrace Platform.</p>
-                        <div class="service-links">
-                            <a href="{{ extra_vars.dt_environment_url_gen3 | default('https://YOUR_TENANT.apps.dynatrace.com') }}/ui/apps" target="_blank" class="service-link">
-                                🔄 Access BizFlow in Platform
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="deployment-info">
-                    <h3>🎯 Quick Demo Links</h3>
-                    <p>Use these direct links for quick demonstrations:</p>
-                    <ul>
-                        <li><strong>Customer Journey:</strong> <a href="http://bizobs.{{ ingress_domain }}/api/journey-simulation/simulate-journey" target="_blank">Simulate Business Processes</a></li>
-                        <li><strong>Load Testing:</strong> <a href="http://bizobs.{{ ingress_domain }}/api/load-gen/start" target="_blank">Generate Synthetic Load</a></li>
-                        <li><strong>Health Monitoring:</strong> <a href="http://bizobs.{{ ingress_domain }}/api/health/detailed" target="_blank">Detailed Health Status</a></li>
-                        <li><strong>Service Mesh:</strong> <a href="http://bizobs.{{ ingress_domain }}/api/admin/services/status" target="_blank">Service Status Overview</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
+        </main>
+        
+        <script src="https://unpkg.com/@dynatrace/groundhog@latest/dist/js/main.js"></script>
         <script>
-            // Tab functionality
+            // Page navigation
+            function showPage(pageId) {
+                // Hide all pages
+                document.querySelectorAll('.page-content').forEach(page => {
+                    page.style.display = 'none';
+                });
+                
+                // Remove active class from all nav items
+                document.querySelectorAll('.nav__item').forEach(item => {
+                    item.classList.remove('is-current');
+                });
+                
+                // Show selected page
+                document.getElementById('page-' + pageId).style.display = 'block';
+                
+                // Add active class to selected nav item
+                document.getElementById('nav-' + pageId).classList.add('is-current');
+            }
+            
+            // Tab functionality for How-To page
             document.addEventListener('DOMContentLoaded', function() {
-                const tabButtons = document.querySelectorAll('.tab-btn');
+                console.log('Dashboard loaded, initializing tabs...');
+                
+                const tabButtons = document.querySelectorAll('.tab-nav__link');
                 const tabContents = document.querySelectorAll('.tab-content');
-
+                
+                console.log('Found tabs:', tabButtons.length, 'Found content:', tabContents.length);
+                
+                function showTab(targetTab) {
+                    console.log('Showing tab:', targetTab);
+                    
+                    // Hide all content
+                    tabContents.forEach(content => {
+                        content.classList.remove('is-active');
+                        content.style.display = 'none';
+                    });
+                    
+                    // Remove active from all buttons
+                    tabButtons.forEach(btn => {
+                        btn.parentElement.classList.remove('is-active');
+                    });
+                    
+                    // Show target content
+                    const targetContent = document.getElementById(targetTab);
+                    if (targetContent) {
+                        targetContent.classList.add('is-active');
+                        targetContent.style.display = 'block';
+                        console.log('Successfully showed tab:', targetTab);
+                    } else {
+                        console.error('Could not find tab content:', targetTab);
+                    }
+                    
+                    // Activate button
+                    const activeButton = document.querySelector(`[data-tab="${targetTab}"]`);
+                    if (activeButton) {
+                        activeButton.parentElement.classList.add('is-active');
+                    }
+                }
+                
                 tabButtons.forEach(button => {
-                    button.addEventListener('click', function() {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
                         const targetTab = this.getAttribute('data-tab');
-
-                        // Remove active class from all tabs and contents
-                        tabButtons.forEach(btn => btn.classList.remove('active'));
-                        tabContents.forEach(content => content.classList.remove('active'));
-
-                        // Add active class to clicked tab and corresponding content
-                        this.classList.add('active');
-                        document.getElementById(targetTab).classList.add('active');
+                        showTab(targetTab);
                     });
                 });
-
-                // Set deployment time
-                document.getElementById('deployment-time').textContent = new Date().toLocaleString();
+                
+                // Show first tab by default
+                if (tabButtons.length > 0) {
+                    const firstTab = tabButtons[0].getAttribute('data-tab');
+                    showTab(firstTab);
+                }
             });
         </script>
+        <style>
+            .tab-nav {
+                display: flex;
+                list-style: none;
+                padding: 0;
+                margin: 2rem 0 1rem 0;
+                border-bottom: 2px solid #e0e0e0;
+                background: #f8f9fa;
+                border-radius: 8px 8px 0 0;
+                padding: 0.5rem;
+                min-height: 60px;
+                align-items: center;
+            }
+            .tab-nav__item {
+                margin-right: 0.5rem;
+            }
+            .tab-nav__link {
+                background: transparent;
+                border: none;
+                padding: 1rem 1.5rem;
+                cursor: pointer;
+                border-radius: 6px;
+                color: #666666 !important;
+                font-size: 1rem;
+                font-weight: 500;
+                text-decoration: none;
+                transition: all 0.2s ease;
+                display: block;
+                min-width: 140px;
+                text-align: center;
+            }
+            .tab-nav__link:hover {
+                background: #f8f9fa !important;
+                color: #333333 !important;
+            }
+            .tab-nav__item.is-active .tab-nav__link {
+                background: #0066cc !important;
+                color: #ffffff !important;
+                font-weight: 600;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .tab-nav__item.is-active .tab-nav__link:hover {
+                background: #0052a3 !important;
+                color: #ffffff !important;
+            }
+            .tab-content {
+                display: none !important;
+                padding: 2rem;
+                background: #ffffff !important;
+                border: 1px solid #e0e0e0;
+                border-radius: 0 0 8px 8px;
+                border-top: none;
+                min-height: 300px;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .tab-content.is-active {
+                display: block !important;
+                opacity: 1 !important;
+            }
+            .tab-content[style*="display: block"] {
+                display: block !important;
+                opacity: 1 !important;
+            }
+            .page-content {
+                min-height: 500px;
+            }
+            .service-info h3 {
+                margin-top: 0;
+                color: var(--color-text-primary);
+                border-bottom: 2px solid var(--color-accent-default);
+                padding-bottom: 0.5rem;
+            }
+            .service-info h4 {
+                color: var(--color-text-primary);
+                margin-top: 1.5rem;
+                margin-bottom: 0.75rem;
+            }
+            .link-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .link-list li {
+                margin-bottom: 0.5rem;
+            }
+            .link-list a {
+                display: inline-block;
+                padding: 0.5rem 1rem;
+                background: var(--color-background-subtle);
+                border: 1px solid var(--color-border-default);
+                border-radius: 4px;
+                text-decoration: none;
+                color: var(--color-text-primary);
+                transition: all 0.2s ease;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .link-list a:hover {
+                background: var(--color-accent-subtle);
+                border-color: var(--color-accent-default);
+                transform: translateY(-1px);
+            }
+            .credential-box {
+                background: var(--color-background-subtle);
+                border: 2px solid var(--color-accent-default);
+                border-radius: 8px;
+                padding: 1.5rem;
+                margin: 1rem 0;
+            }
+            .credential-box h4 {
+                margin-top: 0;
+                color: var(--color-accent-default);
+            }
+            .credential-item {
+                margin-bottom: 0.75rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: #f8f9fa;
+                padding: 0.75rem;
+                border-radius: 6px;
+                border: 1px solid #e9ecef;
+            }
+            .credential-item strong {
+                color: #333333 !important;
+                min-width: 90px;
+                font-weight: 600;
+            }
+            .credential-value {
+                background: #0066cc !important;
+                color: #ffffff !important;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                font-family: 'Courier New', monospace;
+                font-size: 1.1rem;
+                font-weight: bold;
+                border: 2px solid #004499;
+                display: inline-block;
+                user-select: all;
+                -webkit-user-select: all;
+                -moz-user-select: all;
+                -ms-user-select: all;
+                text-shadow: none;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            }
+            .credential-value:focus {
+                outline: 2px solid #66aaff;
+                background: #004499 !important;
+            }
+            .security-note {
+                margin-top: 1rem;
+                font-size: 0.9rem;
+                color: var(--color-text-secondary);
+                font-style: italic;
+            }
+        </style>
     </body>
     </html>
   nginx.conf: |
