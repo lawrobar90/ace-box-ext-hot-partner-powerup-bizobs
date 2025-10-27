@@ -184,7 +184,7 @@ Run the simulations as many times as need to get all 12 events. Each svent will 
       fetch bizevents
       | filter json.companyName == "**companyName**"
       | summarize TimeSpent = avg(toLong(json.estimatedDuration)), by:{event.type}
-      | fieldsAdd sla = if(TimeSpent >= 150 , "✅" , else:"❌")
+      | fieldsAdd sla = if(TimeSpent >= 15 , "✅" , else:"❌")
       ```
       
 1. Request Count per Service
@@ -196,7 +196,6 @@ Run the simulations as many times as need to get all 12 events. Each svent will 
           service = entityName(dt.entity.service),
           requests
       | sort arraySum(requests) desc
-      | limit 100
     ```
 
 1. Failure vs Success Rate
