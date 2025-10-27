@@ -65,7 +65,7 @@ extRefs:
     credentials:
     - type: "text"
       name: "Username"
-      value: "{{ mattermost_admin_username | default('admin') }}"
+      value: "{{ mattermost_username | default(mattermost_admin_name) | default('admin') }}"
     - type: "password"
       name: "Password"
-      value: "{{ mattermost_admin_password | default('Dynatrace1!') }}"
+      value: "{{ mattermost_password | default('Auto-generated - Check Kubernetes Secret') }}"
