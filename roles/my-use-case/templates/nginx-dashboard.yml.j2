@@ -409,6 +409,10 @@ data:
         root /usr/share/nginx/html;
         index index.html;
         
+        # Logging for debugging
+        access_log /var/log/nginx/access.log combined;
+        error_log /var/log/nginx/error.log warn;
+        
         # Security headers
         add_header X-Frame-Options "SAMEORIGIN" always;
         add_header X-Content-Type-Options "nosniff" always;
@@ -425,6 +429,13 @@ data:
         location /health {
             access_log off;
             return 200 "healthy\n";
+            add_header Content-Type text/plain;
+        }
+        
+        # Status endpoint for debugging
+        location /status {
+            access_log off;
+            return 200 "ACE Dashboard Running\n";
             add_header Content-Type text/plain;
         }
         
@@ -463,11 +474,11 @@ spec:
           name: http
         resources:
           requests:
-            memory: "32Mi"
-            cpu: "10m"
+            memory: "128Mi"
+            cpu: "50m"
           limits:
-            memory: "64Mi"
-            cpu: "100m"
+            memory: "256Mi"
+            cpu: "200m"
         volumeMounts:
         - name: dashboard-content
           mountPath: /usr/share/nginx/html
@@ -479,14 +490,18 @@ spec:
           httpGet:
             path: /health
             port: 80
-          initialDelaySeconds: 5
+          initialDelaySeconds: 10
           periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
         readinessProbe:
           httpGet:
             path: /health
             port: 80
-          initialDelaySeconds: 2
+          initialDelaySeconds: 5
           periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
         env:
         - name: INGRESS_DOMAIN
           value: "{{ ingress_domain | default('localhost') }}"
