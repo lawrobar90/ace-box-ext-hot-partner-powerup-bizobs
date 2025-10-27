@@ -8,7 +8,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	*Open* "**Settings Classic**"
 1.	*Open* "**Business Analytics**" menu group
 1.	*Click* on "**OneAgent**"
-1.	*Click* on "**Add new capture rule**"
+1.	*Click* on "**Add new capture rule**" on the **incoming** tab
 1.	For field "**Rule name**", *copy* and *paste*:
       ```
       BizObs App
