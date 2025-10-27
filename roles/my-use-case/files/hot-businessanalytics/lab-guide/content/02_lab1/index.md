@@ -8,7 +8,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	*Open* "**Settings Classic**"
 1.	*Open* "**Business Analytics**" menu group
 1.	*Click* on "**OneAgent**"
-1.	*Click* on "**Add new capture rule**"
+1.	*Click* on "**Add new capture rule**" on the **incoming** tab
 1.	For field "**Rule name**", *copy* and *paste*:
       ```
       BizObs App
@@ -120,7 +120,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 **At the top right of the screen, click "*Save*"**
 
 
-### 1.7 OpenPipeline Dynamic Routing
+### 1.5 OpenPipeline Dynamic Routing
 
 1. *Access* the "**Dynamic routing**" tab
 1. *Create* a *new Dynamic route*
@@ -142,7 +142,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 **Just above the table, click "*Save*"**
 **Make sure you change Status to enable the Dynamic Routing**
 
-### 1.8 Queries
+### 1.6 Queries
 
 ##### Validate new attribute
 1.	From the menu, *open* "**Notebooks**"
@@ -160,3 +160,20 @@ This lab will show you how to *create* and *validate* **business rules**.
       ```
 Run the simulations as many times as need to get all 12 events. Each svent will have a correlating "** - Exception**" event
 
+### 1.7 Service Naming Rules
+
+##### Create a Service Naming Rule for the intelligent traceing to be captured
+1.	*Open* "**Settings Classic**"
+1.	*Open* "**Server-side Service monitoring**" menu group
+1.	*Click* on "**Service naming rules**"
+1.    For Rule name, *copy* and *paste*:
+      ```
+      Holistic API Rules
+      ```
+1.    For Service name format, *copy* and *paste*:
+      ```
+      {ProcessGroup:DetectedName}
+      ```
+1.    For Conditions name format, *select* **Detected process group name** from the dropdown
+1.    Change matcher to **exists**
+1.    Click *Preview* then **Save changes**
