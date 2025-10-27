@@ -59,3 +59,13 @@ extRefs:
   "BizObs Admin Panel":
     description: "Administrative interface for service status and configuration"
     url: "{{ ingress_protocol | default('http') }}://bizobs.{{ ingress_domain }}/api/admin/services/status"
+  "Mattermost Team Collaboration":
+    description: "Team collaboration platform for Dynatrace demos and discussions"
+    url: "{{ ingress_protocol | default('http') }}://mattermost.{{ ingress_domain }}"
+    credentials:
+    - type: "text"
+      name: "Username"
+      value: "{{ mattermost_admin_username | default('admin') }}"
+    - type: "password"
+      name: "Password"
+      value: "{{ mattermost_admin_password | default('Dynatrace1!') }}"
