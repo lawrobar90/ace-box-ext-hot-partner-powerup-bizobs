@@ -175,5 +175,5 @@ Run the simulations as many times as need to get all 12 events. Each svent will 
       {ProcessGroup:DetectedName}
       ```
 1.    For Conditions name format, *select* **Detected process group name** from the dropdown
-1.    Change matcher to *exists*
-1.    Click *Preview* then *Save changes*
+1.    Change matcher to **exists**
+1.    Click *Preview* then **Save changes**
