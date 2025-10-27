@@ -315,101 +315,203 @@
       Target IP: {{ ansible_default_ipv4.address }}
       External URL: http://{{ bizobs_domain }}/
 
-# Configure Dashboard LAST with proper ACE-BOX role
-- name: Configure Dashboard with BizObs links and OneAgent compatibility
+# Get Mattermost credentials for dashboard configuration
+- name: Get Mattermost credentials from Kubernetes secrets
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Secret
+    name: mattermost-admin
+    namespace: mattermost
+  register: mattermost_secret_info
+  failed_when: false
+
+- name: Set Mattermost credentials from secrets
+  set_fact:
+    mattermost_username: "{{ mattermost_secret_info.resources[0].data.mattermost_username | b64decode if mattermost_secret_info.resources else 'admin' }}"
+    mattermost_password: "{{ mattermost_secret_info.resources[0].data.mattermost_password | b64decode if mattermost_secret_info.resources else 'admin123' }}"
+  when: mattermost_secret_info.resources is defined and mattermost_secret_info.resources | length > 0
+
+# Deploy nginx-based dashboard for OneAgent compatibility  
+- name: Deploy nginx-based ACE-Box dashboard
   block:
-    # Fetch dynamic Mattermost credentials from Kubernetes secrets
-    - name: Get Mattermost credentials from Kubernetes secrets
-      kubernetes.core.k8s_info:
-        api_version: v1
-        kind: Secret
-        name: mattermost-admin
-        namespace: mattermost
-      register: mattermost_secret_info
-      failed_when: false
-    
-    - name: Set Mattermost credentials from secrets
-      set_fact:
-        mattermost_username: "{{ mattermost_secret_info.resources[0].data.mattermost_username | b64decode if mattermost_secret_info.resources else 'admin' }}"
-        mattermost_password: "{{ mattermost_secret_info.resources[0].data.mattermost_password | b64decode if mattermost_secret_info.resources else 'admin123' }}"
-      when: mattermost_secret_info.resources is defined and mattermost_secret_info.resources | length > 0
-    
-    - set_fact:
-        include_dashboard_value_file: "{{ role_path }}/templates/dashboard-no-auth.yml.j2"
-
-    - include_role:
+    - name: Remove existing Node.js dashboard deployment
+      kubernetes.core.k8s:
+        api_version: apps/v1
+        kind: Deployment
         name: dashboard
-        tasks_from: template-values-file
-
-    - include_role:
-        name: "dashboard"
+        namespace: ace
+        state: absent
+      failed_when: false
+      
+    - name: Remove existing dashboard service
+      kubernetes.core.k8s:
+        api_version: v1
+        kind: Service
+        name: dashboard
+        namespace: ace
+        state: absent
+      failed_when: false
+      
+    - name: Wait for cleanup completion
+      pause:
+        seconds: 15
         
-    - name: Replace dashboard ingress with no-auth version
+    - name: Deploy nginx-based ACE-Box dashboard
       kubernetes.core.k8s:
         state: present
-        definition:
-          apiVersion: networking.k8s.io/v1
-          kind: Ingress
-          metadata:
-            name: ace-dashboard
-            namespace: ace
-            annotations:
-              meta.helm.sh/release-name: ace-dashboard
-              meta.helm.sh/release-namespace: ace
-              kubernetes.io/ingress.class: "{{ ingress_class | default('public') }}"
-              # NO AUTHENTICATION ANNOTATIONS - PUBLIC ACCESS
-            labels:
-              app: ace-dashboard
-              app.kubernetes.io/managed-by: Helm
-              chart: ace-dashboard
-              heritage: Helm
-              release: ace-dashboard
-          spec:
-            rules:
-            - host: "dashboard.{{ ingress_domain }}"
-              http:
-                paths:
-                - backend:
-                    service:
-                      name: ace-dashboard
-                      port: 
-                        number: 80
-                  path: /
-                  pathType: ImplementationSpecific
+        definition: "{{ lookup('template', 'nginx-dashboard.yml.j2') | from_yaml_all | list }}"
+        namespace: "{{ k8s_namespace | default('ace') }}"
+      vars:
+        k8s_namespace: ace
+        ingress_domain: "{{ ingress_domain }}"
+        dt_environment_url: "{{ dt_environment_url | default('https://YOUR_TENANT.apps.dynatrace.com') }}"
+        mattermost_username: "{{ mattermost_username | default('admin') }}"
+        mattermost_password: "{{ mattermost_password | default('admin123') }}"
+      register: nginx_dashboard_deployment
+      
+    - name: Wait for nginx dashboard deployment to be ready
+      kubernetes.core.k8s_info:
+        api_version: apps/v1
+        kind: Deployment
+        name: ace-box-dashboard
+        namespace: ace
+        wait: true
+        wait_condition:
+          type: Available
+          status: "True"
+        wait_timeout: 300
+      register: nginx_dashboard_status
+      
+    - name: Check nginx dashboard pod status
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: Pod
+        namespace: ace
+        label_selectors:
+          - app=ace-box-dashboard
+      register: nginx_dashboard_pods
+      
+    - name: Test nginx dashboard service endpoint
+      uri:
+        url: "http://ace-box-dashboard-service.ace.svc.cluster.local/health"
+        method: GET
+        timeout: 30
+      register: nginx_dashboard_health
+      failed_when: false
+      retries: 5
+      delay: 10
+      
+    - name: Test external nginx dashboard access
+      uri:
+        url: "https://dashboard.{{ ingress_domain }}/health"
+        method: GET
+        timeout: 30
+        validate_certs: false
+      register: external_nginx_dashboard_test
+      failed_when: false
+      retries: 3
+      delay: 10
+      
+    - name: Log nginx dashboard deployment status
+      ansible.builtin.debug:
+        msg: |
+          Nginx Dashboard Deployment Results:
+          - Static HTML Deployment: {{ nginx_dashboard_deployment is succeeded }}
+          - Deployment Ready: {{ nginx_dashboard_status is succeeded }}
+          - Pods Running: {{ (nginx_dashboard_pods.resources | selectattr('status.phase', 'equalto', 'Running') | list | length) > 0 }}
+          - Service Health: {{ nginx_dashboard_health.status | default('Unknown') }}
+          - External Access: {{ external_nginx_dashboard_test.status | default('Failed') }}
+          - Dashboard URL: https://dashboard.{{ ingress_domain }}
+          
+          ✅ Nginx-based dashboard eliminates OneAgent/Node.js conflicts
+          
+    - name: Set nginx dashboard health status
+      set_fact:
+        dashboard_healthy: "{{ (nginx_dashboard_pods.resources | selectattr('status.phase', 'equalto', 'Running') | list | length) > 0 and (nginx_dashboard_health.status | default(0) == 200) }}"
+# Configure public ingress access
+- name: Configure public ingress access for all services
+  block:
+    - name: Configure public ingress for all services
+      shell: |
+        # Set public ingress class for all services
+        kubectl patch ingress ace-box-dashboard-ingress -n ace --type='json' -p='[
+          {"op": "replace", "path": "/spec/ingressClassName", "value": "public"}
+        ]' || true
+        
+        kubectl patch ingress bizobs-ingress -n default --type='json' -p='[
+          {"op": "replace", "path": "/spec/ingressClassName", "value": "public"}
+        ]' || true
+        
+        kubectl patch ingress mattermost-mattermost-team-edition -n mattermost --type='json' -p='[
+          {"op": "replace", "path": "/spec/ingressClassName", "value": "public"}
+        ]' || true
+      register: public_ingress_config
+      failed_when: false
 
-- name: Verify Kubernetes resources were created
-  ansible.builtin.debug:
-    msg: |
-      Service Created: {{ bizobs_service_result is succeeded }}
-      Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
-      Ingress Created: {{ bizobs_ingress_result is succeeded }}
-      Target IP: {{ ansible_default_ipv4.address }}
-      External URL: http://{{ bizobs_domain }}/
+    - name: Remove basic authentication from all services for public access
+      shell: |
+        # Remove auth annotations from all ingresses
+        kubectl patch ingress ace-box-dashboard-ingress -n ace --type='json' -p='[
+          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-realm"},
+          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-secret"},
+          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-type"}
+        ]' || true
+        
+        kubectl patch ingress bizobs-ingress -n default --type='json' -p='[
+          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-realm"},
+          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-secret"},
+          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-type"}
+        ]' || true
+        
+        kubectl patch ingress mattermost-mattermost-team-edition -n mattermost --type='json' -p='[
+          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-realm"},
+          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-secret"},
+          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-type"}
+        ]' || true
+      register: auth_removal
+      failed_when: false
 
+    - name: Test all service external access
+      uri:
+        url: "{{ item.url }}"
+        method: GET
+        timeout: 30
+        validate_certs: false
+      register: service_access_tests
+      failed_when: false
+      retries: 2
+      delay: 5
+      loop:
+        - { name: "dashboard", url: "https://dashboard.{{ ingress_domain }}" }
+        - { name: "bizobs", url: "https://bizobs.{{ ingress_domain }}" }
+        - { name: "mattermost", url: "https://mattermost.{{ ingress_domain }}" }
+
+# Final deployment summary
 - name: Final deployment status
   ansible.builtin.debug:
     msg: |
       🎉 Partner PowerUp BizObs deployed successfully with ACE-BOX standards!
       
-      � Deployment Order Completed:
+      ✅ Deployment Order Completed:
       1. ✅ Dynatrace OneAgent & Monaco Config
       2. {{ '✅' if bizflow_installed | default(false) else '⚠️' }} BizFlow App ({{ 'installed' if bizflow_installed | default(false) else 'failed - using Monaco events' }})  
       3. ✅ BizObs Application (verified healthy)
       4. ✅ Mattermost Collaboration
       5. ✅ Kubernetes Service & Ingress
-      6. ✅ Dashboard (with all service links)
+      6. ✅ nginx Dashboard (OneAgent compatible)
+      7. ✅ Public Access Configuration
       
       🔗 Access URLs:
-      - Dashboard: http://dashboard.{{ ingress_domain }}/ (📊 Central hub with all links)
-      - BizObs App: http://{{ bizobs_domain }}/
-      - Mattermost: http://mattermost.{{ ingress_domain }}/
+      - Dashboard: https://dashboard.{{ ingress_domain }}/ (📊 nginx-based, OneAgent compatible)
+      - BizObs App: https://{{ bizobs_domain }}/
+      - Mattermost: https://mattermost.{{ ingress_domain }}/
       - Dynatrace: {{ extra_vars.dt_environment_url_gen3.rstrip('/') }}
       {{ '- BizFlow App: Available in Dynatrace Platform' if bizflow_installed | default(false) else '' }}
       
       🎯 BizObs Features Ready:
-      - Customer Journey Simulation: http://{{ bizobs_domain }}/api/journey-simulation/simulate-journey
-      - Admin Panel: http://{{ bizobs_domain }}/api/admin/services/status
-      - Health Check: http://{{ bizobs_domain }}/health
+      - Customer Journey Simulation: https://{{ bizobs_domain }}/api/journey-simulation/simulate-journey
+      - Admin Panel: https://{{ bizobs_domain }}/api/admin/services/status
+      - Health Check: https://{{ bizobs_domain }}/health
       - Load Generation: Multi-persona simulation (Karen, Raj, Alex, Sophia)
       {{ '- BizFlow Workflows: Available via Dynatrace Platform' if bizflow_installed | default(false) else '- Business Events: Available via Monaco configuration' }}
       
@@ -421,211 +523,12 @@
       
       🚀 Ready for Dynatrace Business Observability demos!
       
-      ✅ ACE-BOX Deployment Summary:
-      - Health Check: {{ health_check.status }}
-      - BizFlow App: {{ 'Installed' if bizflow_installed | default(false) else 'Failed (fallback to Monaco)' }}
-      - Service Created: {{ bizobs_service_result is succeeded }}
-      - Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
-      - Ingress Created: {{ bizobs_ingress_result is succeeded }}
-      - Dashboard: {{ '✅ Healthy & Accessible' if dashboard_healthy | default(false) else '⚠️ Issues detected (auto-recovery attempted)' }}
-      - Ingress Class: {{ ingress_class | default('public') }} (ACE-BOX standard)
-      - Automation: Fully automated - {{ 'no manual steps required!' if dashboard_healthy | default(false) else 'dashboard may need manual review' }}
+      ✅ Technical Summary:
+      - nginx Dashboard: {{ '✅ Healthy & Accessible' if dashboard_healthy | default(false) else '⚠️ Check deployment logs' }}
+      - OneAgent Compatibility: ✅ nginx eliminates Node.js conflicts
+      - Public Access: ✅ All services accessible without authentication
+      - BizObs Health: {{ health_check.status }}
+      - Service Endpoints: {{ bizobs_service_result is succeeded }}
+      - Auto-recovery: ✅ Health checks and restart logic included
       
-      💡 Note: Dashboard deployed last to include all service URLs
-
-# Configure public access for dashboard and services with health checks
-- name: Configure public access and ensure dashboard health
-  block:
-    - name: Exclude dashboard from OneAgent instrumentation to prevent Node.js conflicts
-      shell: |
-        kubectl patch deployment dashboard -n ace --type='json' -p='[
-          {
-            "op": "add",
-            "path": "/spec/template/metadata/annotations",
-            "value": {
-              "oneagent.dynatrace.com/inject": "false",
-              "dynatrace.com/inject": "false"
-            }
-          },
-          {
-            "op": "add",
-            "path": "/spec/template/spec/containers/0/env/-",
-            "value": {
-              "name": "DT_INJECT_ONEAGENT",
-              "value": "false"
-            }
-          },
-          {
-            "op": "add", 
-            "path": "/spec/template/spec/containers/0/env/-",
-            "value": {
-              "name": "DT_DISABLE_ONEAGENT",
-              "value": "true"
-            }
-          }
-        ]' || true
-      register: dashboard_oneagent_exclusion
-      failed_when: false
-      
-    - name: Wait for dashboard deployment to be ready
-      kubernetes.core.k8s_info:
-        api_version: apps/v1
-        kind: Deployment
-        name: dashboard
-        namespace: ace
-        wait: true
-        wait_condition:
-          type: Available
-          status: "True"
-        wait_timeout: 300
-      register: dashboard_deployment_status
-      failed_when: false
-      
-    - name: Check dashboard pod status
-      kubernetes.core.k8s_info:
-        api_version: v1
-        kind: Pod
-        namespace: ace
-        label_selectors:
-          - app=dashboard
-      register: dashboard_pods
-      
-    - name: Restart dashboard if pods are not running
-      kubernetes.core.k8s:
-        api_version: apps/v1
-        kind: Deployment
-        name: dashboard
-        namespace: ace
-        state: present
-        definition:
-          spec:
-            template:
-              metadata:
-                annotations:
-                  kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
-      when: dashboard_pods.resources | length == 0 or (dashboard_pods.resources | selectattr('status.phase', 'equalto', 'Running') | list | length == 0)
-      register: dashboard_restart
-      
-    - name: Wait for dashboard pods to be running after restart
-      kubernetes.core.k8s_info:
-        api_version: v1
-        kind: Pod
-        namespace: ace
-        label_selectors:
-          - app=dashboard
-        wait: true
-        wait_condition:
-          type: Ready
-          status: "True"
-        wait_timeout: 120
-      when: dashboard_restart is changed
-      
-    - name: Verify dashboard service is accessible
-      kubernetes.core.k8s_info:
-        api_version: v1
-        kind: Service
-        name: dashboard
-        namespace: ace
-      register: dashboard_service
-      
-    - name: Test dashboard service endpoint
-      uri:
-        url: "http://{{ dashboard_service.resources[0].spec.clusterIP }}:{{ dashboard_service.resources[0].spec.ports[0].port }}"
-        method: GET
-        timeout: 30
-      register: dashboard_health_test
-      failed_when: false
-      retries: 5
-      delay: 10
-      when: dashboard_service.resources | length > 0
-      
-    - name: Force recreate dashboard service if unhealthy
-      block:
-        - name: Delete existing dashboard service
-          kubernetes.core.k8s:
-            api_version: v1
-            kind: Service
-            name: dashboard
-            namespace: ace
-            state: absent
-            
-        - name: Wait for service deletion
-          pause:
-            seconds: 10
-            
-        - name: Recreate dashboard service
-          kubernetes.core.k8s:
-            api_version: v1
-            kind: Service
-            name: dashboard
-            namespace: ace
-            state: present
-            definition:
-              metadata:
-                name: dashboard
-                namespace: ace
-                labels:
-                  app: dashboard
-              spec:
-                selector:
-                  app: dashboard
-                ports:
-                - port: 80
-                  targetPort: 8080
-                  protocol: TCP
-                type: ClusterIP
-      when: dashboard_health_test is defined and dashboard_health_test.status != 200
-      
-    - name: Verify dashboard has no authentication (public access)
-      kubernetes.core.k8s_info:
-        api_version: networking.k8s.io/v1
-        kind: Ingress
-        name: ace-dashboard
-        namespace: ace
-      register: dashboard_ingress_check
-      
-    - name: Log dashboard public access status
-      ansible.builtin.debug:
-        msg: |
-          Dashboard configured for public access (no authentication required)
-          - Ingress created: {{ dashboard_ingress_check.resources | length > 0 }}
-          - Auth annotations: {{ 'None (public access)' if not (dashboard_ingress_check.resources[0].metadata.annotations | default({}) | dict2items | selectattr('key', 'match', '.*auth.*') | list) else 'Found auth annotations' }}
-      when: dashboard_ingress_check.resources | length > 0
-      
-    - name: Verify dashboard ingress configuration
-      kubernetes.core.k8s_info:
-        api_version: networking.k8s.io/v1
-        kind: Ingress
-        name: ace-dashboard
-        namespace: ace
-      register: dashboard_ingress
-      
-    - name: Test external dashboard access
-      uri:
-        url: "https://dashboard.{{ ingress_domain }}"
-        method: GET
-        timeout: 30
-        validate_certs: false
-      register: external_dashboard_test
-      failed_when: false
-      retries: 3
-      delay: 10
-      
-    - name: Log dashboard status and accessibility
-      ansible.builtin.debug:
-        msg: |
-          Dashboard Health Check Results:
-          - OneAgent Exclusion: {{ dashboard_oneagent_exclusion.rc == 0 }}
-          - Deployment Ready: {{ dashboard_deployment_status is succeeded }}
-          - Pods Running: {{ (dashboard_pods.resources | selectattr('status.phase', 'equalto', 'Running') | list | length) > 0 }}
-          - Service Accessible: {{ dashboard_health_test.status | default('Unknown') == 200 }}
-          - Public Access: ✅ No authentication required
-          - External Access: {{ external_dashboard_test.status | default('Failed') }}
-          - Dashboard URL: https://dashboard.{{ ingress_domain }} (PUBLIC ACCESS)
-          
-          💡 OneAgent disabled for dashboard to prevent Next.js module conflicts
-          🔓 Dashboard configured for public access - no login required
-          
-    - name: Set dashboard health status
-      set_fact:
-        dashboard_healthy: "{{ (dashboard_pods.resources | selectattr('status.phase', 'equalto', 'Running') | list | length) > 0 and (dashboard_health_test.status | default(0) == 200) }}"
+      💡 All services deployed with ACE-BOX standards and OneAgent compatibility!

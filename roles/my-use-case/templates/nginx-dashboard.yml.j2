@@ -1,0 +1,583 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dashboard-html
+  namespace: {{ k8s_namespace | default("default") }}
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ACE-Box Dashboard</title>
+        <link rel="stylesheet" href="https://dynatrace.github.io/groundhog/dist/groundhog.css">
+        <style>
+            :root {
+                --dt-color-neutral-0: #fcfcfc;
+                --dt-color-neutral-100: #f2f4f5;
+                --dt-color-neutral-200: #e6eaec;
+                --dt-color-neutral-300: #d4dadd;
+                --dt-color-neutral-400: #b9c2c7;
+                --dt-color-neutral-500: #9da8af;
+                --dt-color-neutral-600: #7c8893;
+                --dt-color-neutral-700: #5b6977;
+                --dt-color-neutral-800: #3a4a5b;
+                --dt-color-neutral-900: #1a2b3f;
+                --dt-color-neutral-1000: #151515;
+                
+                --dt-color-purple-100: #f4f0ff;
+                --dt-color-purple-200: #e0d1ff;
+                --dt-color-purple-300: #c5a9ff;
+                --dt-color-purple-400: #a47eff;
+                --dt-color-purple-500: #7c38f5;
+                --dt-color-purple-600: #6925d7;
+                --dt-color-purple-700: #5516b9;
+                --dt-color-purple-800: #42099b;
+                --dt-color-purple-900: #30007d;
+            }
+
+            body {
+                font-family: "BerninaSans", "Segoe UI", "Roboto", "Arial", sans-serif;
+                margin: 0;
+                padding: 0;
+                background: var(--dt-color-neutral-100);
+            }
+
+            .header {
+                background: var(--dt-color-purple-600);
+                color: white;
+                padding: 1rem 2rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .header h1 {
+                margin: 0;
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+
+            .nav-tabs {
+                background: white;
+                border-bottom: 1px solid var(--dt-color-neutral-300);
+                padding: 0 2rem;
+            }
+
+            .nav-tabs ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+            }
+
+            .nav-tabs li {
+                margin-right: 2rem;
+            }
+
+            .nav-tabs button {
+                background: none;
+                border: none;
+                padding: 1rem 0;
+                font-size: 1rem;
+                color: var(--dt-color-neutral-700);
+                cursor: pointer;
+                border-bottom: 3px solid transparent;
+                transition: all 0.2s ease;
+            }
+
+            .nav-tabs button:hover {
+                color: var(--dt-color-purple-600);
+            }
+
+            .nav-tabs button.active {
+                color: var(--dt-color-purple-600);
+                border-bottom-color: var(--dt-color-purple-600);
+            }
+
+            .content {
+                padding: 2rem;
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+
+            .tab-content {
+                display: none;
+            }
+
+            .tab-content.active {
+                display: block;
+            }
+
+            .service-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+                margin-top: 1.5rem;
+            }
+
+            .service-card {
+                background: white;
+                border-radius: 8px;
+                padding: 1.5rem;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                border: 1px solid var(--dt-color-neutral-200);
+            }
+
+            .service-card h3 {
+                margin: 0 0 1rem 0;
+                color: var(--dt-color-purple-600);
+                font-size: 1.2rem;
+            }
+
+            .service-card p {
+                margin: 0 0 1rem 0;
+                color: var(--dt-color-neutral-700);
+                line-height: 1.5;
+            }
+
+            .service-links {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .service-link {
+                display: inline-flex;
+                align-items: center;
+                padding: 0.5rem 1rem;
+                background: var(--dt-color-purple-100);
+                color: var(--dt-color-purple-700);
+                text-decoration: none;
+                border-radius: 4px;
+                font-size: 0.9rem;
+                transition: background-color 0.2s ease;
+            }
+
+            .service-link:hover {
+                background: var(--dt-color-purple-200);
+                color: var(--dt-color-purple-800);
+            }
+
+            .credentials {
+                background: var(--dt-color-neutral-100);
+                padding: 1rem;
+                border-radius: 4px;
+                margin-top: 1rem;
+                font-family: monospace;
+                font-size: 0.85rem;
+            }
+
+            .status-indicator {
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                margin-right: 8px;
+            }
+
+            .status-healthy {
+                background: #4caf50;
+            }
+
+            .status-warning {
+                background: #ff9800;
+            }
+
+            .deployment-info {
+                background: white;
+                border-radius: 8px;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                border-left: 4px solid var(--dt-color-purple-600);
+            }
+
+            .how-to-section {
+                background: white;
+                border-radius: 8px;
+                padding: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .how-to-section h3 {
+                color: var(--dt-color-purple-600);
+                margin-top: 0;
+            }
+
+            .step-list {
+                list-style: none;
+                padding: 0;
+                counter-reset: step-counter;
+            }
+
+            .step-list li {
+                counter-increment: step-counter;
+                margin-bottom: 1rem;
+                padding-left: 2rem;
+                position: relative;
+            }
+
+            .step-list li::before {
+                content: counter(step-counter);
+                position: absolute;
+                left: 0;
+                top: 0;
+                background: var(--dt-color-purple-600);
+                color: white;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.8rem;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>🎯 ACE-Box Dashboard - Partner PowerUp BizObs</h1>
+            <div>
+                <span class="status-indicator status-healthy"></span>
+                Deployment Ready
+            </div>
+        </div>
+
+        <nav class="nav-tabs">
+            <ul>
+                <li><button class="tab-btn active" data-tab="overview">How-To</button></li>
+                <li><button class="tab-btn" data-tab="deployment">Deployment Preview</button></li>
+                <li><button class="tab-btn" data-tab="links">Links</button></li>
+            </ul>
+        </nav>
+
+        <div class="content">
+            <!-- How-To Tab -->
+            <div id="overview" class="tab-content active">
+                <div class="deployment-info">
+                    <h2>🎉 Partner PowerUp BizObs Deployment Complete!</h2>
+                    <p>Your Business Observability demo environment is ready. Access your services below and follow the demo scenarios to showcase Dynatrace capabilities.</p>
+                </div>
+
+                <div class="how-to-section">
+                    <h3>🚀 Quick Start Guide</h3>
+                    <ol class="step-list">
+                        <li><strong>Access BizObs Application:</strong> Navigate to the main demo application to explore customer journey simulations</li>
+                        <li><strong>Review Dynatrace Data:</strong> Check your Dynatrace environment for automatically configured monitoring</li>
+                        <li><strong>Use Mattermost:</strong> Collaborate with your team using the integrated chat platform</li>
+                        <li><strong>Run Demo Scenarios:</strong> Execute predefined business workflows (Insurance, Retail, Tech, Banking)</li>
+                    </ol>
+                </div>
+
+                <div class="how-to-section">
+                    <h3>🎭 Available Demo Scenarios</h3>
+                    <div class="service-grid">
+                        <div class="service-card">
+                            <h3>🏦 Insurance</h3>
+                            <p>PolicyDiscovery → QuoteGeneration → PolicySelection → PaymentProcessing</p>
+                        </div>
+                        <div class="service-card">
+                            <h3>🛒 Retail</h3>
+                            <p>ProductBrowsing → CartManagement → CheckoutProcess → OrderFulfillment</p>
+                        </div>
+                        <div class="service-card">
+                            <h3>💻 Technology</h3>
+                            <p>UserOnboarding → FeatureExploration → DataProcessing → AnalyticsReporting</p>
+                        </div>
+                        <div class="service-card">
+                            <h3>🏛️ Banking</h3>
+                            <p>AccountCreation → KYCVerification → ProductSelection → TransactionProcessing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deployment Preview Tab -->
+            <div id="deployment" class="tab-content">
+                <div class="deployment-info">
+                    <h2>📊 Deployment Status</h2>
+                    <p><strong>Environment:</strong> {{ ingress_domain }}</p>
+                    <p><strong>Deployment Time:</strong> <span id="deployment-time"></span></p>
+                </div>
+
+                <div class="service-grid">
+                    <div class="service-card">
+                        <h3>✅ Core Services</h3>
+                        <ul>
+                            <li><span class="status-indicator status-healthy"></span>Dynatrace OneAgent</li>
+                            <li><span class="status-indicator status-healthy"></span>Monaco Configuration</li>
+                            <li><span class="status-indicator status-healthy"></span>BizObs Application</li>
+                            <li><span class="status-indicator status-healthy"></span>Mattermost</li>
+                            <li><span class="status-indicator status-healthy"></span>Dashboard (nginx)</li>
+                        </ul>
+                    </div>
+                    <div class="service-card">
+                        <h3>🎯 Business Features</h3>
+                        <ul>
+                            <li><span class="status-indicator status-healthy"></span>Customer Journey Simulation</li>
+                            <li><span class="status-indicator status-healthy"></span>Multi-persona Load Generation</li>
+                            <li><span class="status-indicator status-healthy"></span>Dynatrace Metadata Injection</li>
+                            <li><span class="status-indicator status-healthy"></span>Real-time Observability</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Links Tab -->
+            <div id="links" class="tab-content">
+                <div class="service-grid">
+                    <!-- Dynatrace Environment -->
+                    <div class="service-card">
+                        <h3>🔍 Dynatrace Environment</h3>
+                        <p>Access your Dynatrace environment to view automatically configured monitoring, business events, and observability data.</p>
+                        <div class="service-links">
+                            <a href="{{ dt_environment_url }}" target="_blank" class="service-link">
+                                🚀 Open Dynatrace Environment
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- BizObs Application -->
+                    <div class="service-card">
+                        <h3>📊 BizObs Application</h3>
+                        <p>Main business observability demo application with customer journey simulations and load generation capabilities.</p>
+                        <div class="service-links">
+                            <a href="http://bizobs.{{ ingress_domain }}" target="_blank" class="service-link">
+                                🏠 Main Application
+                            </a>
+                            <a href="http://bizobs.{{ ingress_domain }}/health" target="_blank" class="service-link">
+                                ❤️ Health Check
+                            </a>
+                            <a href="http://bizobs.{{ ingress_domain }}/api/admin/services/status" target="_blank" class="service-link">
+                                ⚙️ Admin Panel
+                            </a>
+                            <a href="http://bizobs.{{ ingress_domain }}/api/journey-simulation/simulate-journey" target="_blank" class="service-link">
+                                🎭 Journey Simulation
+                            </a>
+                            <a href="http://bizobs.{{ ingress_domain }}/api/load-gen/start" target="_blank" class="service-link">
+                                🏋️ Load Generation
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Mattermost -->
+                    <div class="service-card">
+                        <h3>💬 Mattermost Collaboration</h3>
+                        <p>Team collaboration platform for coordinating demo activities and sharing observability insights.</p>
+                        <div class="service-links">
+                            <a href="http://mattermost.{{ ingress_domain }}" target="_blank" class="service-link">
+                                💬 Open Mattermost
+                            </a>
+                        </div>
+                        <div class="credentials">
+                            <strong>Login Credentials:</strong><br>
+                            Username: {{ mattermost_username }}<br>
+                            Password: {{ mattermost_password }}
+                        </div>
+                    </div>
+
+                    <!-- BizFlow (if available) -->
+                    <div class="service-card">
+                        <h3>🔄 BizFlow Workflows</h3>
+                        <p>Advanced business process automation and workflow management via Dynatrace Platform.</p>
+                        <div class="service-links">
+                            <a href="{{ dt_environment_url }}/ui/apps" target="_blank" class="service-link">
+                                🔄 Access BizFlow in Platform
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="deployment-info">
+                    <h3>🎯 Quick Demo Links</h3>
+                    <p>Use these direct links for quick demonstrations:</p>
+                    <ul>
+                        <li><strong>Customer Journey:</strong> <a href="http://bizobs.{{ ingress_domain }}/api/journey-simulation/simulate-journey" target="_blank">Simulate Business Processes</a></li>
+                        <li><strong>Load Testing:</strong> <a href="http://bizobs.{{ ingress_domain }}/api/load-gen/start" target="_blank">Generate Synthetic Load</a></li>
+                        <li><strong>Health Monitoring:</strong> <a href="http://bizobs.{{ ingress_domain }}/api/health/detailed" target="_blank">Detailed Health Status</a></li>
+                        <li><strong>Service Mesh:</strong> <a href="http://bizobs.{{ ingress_domain }}/api/admin/services/status" target="_blank">Service Status Overview</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Tab functionality
+            document.addEventListener('DOMContentLoaded', function() {
+                const tabButtons = document.querySelectorAll('.tab-btn');
+                const tabContents = document.querySelectorAll('.tab-content');
+
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const targetTab = this.getAttribute('data-tab');
+
+                        // Remove active class from all tabs and contents
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        tabContents.forEach(content => content.classList.remove('active'));
+
+                        // Add active class to clicked tab and corresponding content
+                        this.classList.add('active');
+                        document.getElementById(targetTab).classList.add('active');
+                    });
+                });
+
+                // Set deployment time
+                document.getElementById('deployment-time').textContent = new Date().toLocaleString();
+            });
+        </script>
+    </body>
+    </html>
+  nginx.conf: |
+    server {
+        listen 80;
+        server_name _;
+        root /usr/share/nginx/html;
+        index index.html;
+        
+        # Security headers
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        
+        # Main application
+        location / {
+            try_files $uri $uri/ /index.html;
+            expires 1h;
+            add_header Cache-Control "public, no-transform";
+        }
+        
+        # Health check endpoint
+        location /health {
+            access_log off;
+            return 200 "healthy\n";
+            add_header Content-Type text/plain;
+        }
+        
+        # Handle CSS and JS files
+        location ~* \.(css|js|png|jpg|jpeg|gif|ico|svg)$ {
+            expires 1y;
+            add_header Cache-Control "public, immutable";
+        }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ace-box-dashboard
+  namespace: {{ k8s_namespace | default("default") }}
+  labels:
+    app: ace-box-dashboard
+    component: dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ace-box-dashboard
+  template:
+    metadata:
+      labels:
+        app: ace-box-dashboard
+        component: dashboard
+    spec:
+      containers:
+      - name: dashboard
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+          name: http
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "10m"
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+        volumeMounts:
+        - name: dashboard-content
+          mountPath: /usr/share/nginx/html
+          readOnly: true
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d
+          readOnly: true
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 2
+          periodSeconds: 5
+        env:
+        - name: INGRESS_DOMAIN
+          value: "{{ ingress_domain | default('localhost') }}"
+        - name: DT_ENVIRONMENT_URL
+          value: "{{ dt_environment_url | default('https://YOUR_TENANT.apps.dynatrace.com') }}"
+        - name: BIZOBS_URL
+          value: "http://bizobs.{{ ingress_domain | default('localhost') }}"
+        - name: MATTERMOST_URL
+          value: "http://mattermost.{{ ingress_domain | default('localhost') }}"
+        - name: MATTERMOST_USERNAME
+          value: "{{ mattermost_username | default('admin') }}"
+        - name: MATTERMOST_PASSWORD
+          value: "{{ mattermost_password | default('admin123') }}"
+      volumes:
+      - name: dashboard-content
+        configMap:
+          name: dashboard-html
+          items:
+          - key: index.html
+            path: index.html
+      - name: nginx-config
+        configMap:
+          name: dashboard-html
+          items:
+          - key: nginx.conf
+            path: default.conf
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ace-box-dashboard-service
+  namespace: {{ k8s_namespace | default("default") }}
+  labels:
+    app: ace-box-dashboard
+spec:
+  selector:
+    app: ace-box-dashboard
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ace-box-dashboard-ingress
+  namespace: {{ k8s_namespace | default("default") }}
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: "public"
+  rules:
+  - host: dashboard.{{ ingress_domain | default('localhost') }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ace-box-dashboard-service
+            port:
+              number: 80
