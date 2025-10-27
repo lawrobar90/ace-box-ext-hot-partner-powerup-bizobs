@@ -306,15 +306,12 @@
         mattermost_password: "{{ mattermost_secret_info.resources[0].data.mattermost_password | b64decode if mattermost_secret_info.resources else 'admin123' }}"
       when: mattermost_secret_info.resources is defined and mattermost_secret_info.resources | length > 0
     
-    - set_fact:
-        include_dashboard_value_file: "{{ role_path }}/templates/bizobs-dashboard.yml.j2"
-
-    - include_role:
-        name: dashboard
-        tasks_from: template-values-file
-
-    - include_role:
-        name: "dashboard"
+    # First create the HTML content ConfigMap  
+    - name: Generate Dynatrace Groundhog styled dashboard content
+      template:
+        src: dashboard-groundhog.html.j2
+        dest: /tmp/dashboard-groundhog.html
+      delegate_to: localhost
 
 - name: Verify Kubernetes resources were created
   ansible.builtin.debug:
@@ -335,10 +332,10 @@
       2. ✅ BizObs Application (verified healthy)
       3. ✅ Mattermost Collaboration
       4. ✅ Kubernetes Service & Ingress
-      5. ✅ Dashboard (with all service links)
+      4. ✅ Kubernetes Service & Ingress
+      5. ✅ Simple Dashboard Template
       
       🔗 Access URLs:
-      - Dashboard: http://dashboard.{{ ingress_domain }}/ (📊 Central hub with all links)
       - BizObs App: http://{{ bizobs_domain }}/
       - Mattermost: http://mattermost.{{ ingress_domain }}/
       - Dynatrace: {{ extra_vars.dt_environment_url_gen3.rstrip('/') }}
@@ -362,25 +359,8 @@
       - Service Created: {{ bizobs_service_result is succeeded }}
       - Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
       - Ingress Created: {{ bizobs_ingress_result is succeeded }}
-      - Dashboard: Available with all service links
+      - Simple Dashboard: HTML template created
       - Ingress Class: {{ ingress_class | default('public') }} (ACE-BOX standard)
       - Automation: Fully automated - no manual steps required!
       
-      💡 Note: Dashboard deployed last to include all service URLs
-
-# Configure public access for dashboard and services
-- name: Configure public access for all services
-  block:
-    - name: Remove dashboard basic authentication for public access
-      shell: |
-        kubectl patch ingress dashboard -n ace --type='json' -p='[
-          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-realm"},
-          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-secret"},
-          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-type"}
-        ]' || true
-      register: dashboard_auth_removal
-      failed_when: false
-      
-    - name: Log dashboard authentication removal
-      ansible.builtin.debug:
-        msg: "Dashboard authentication removed for public access: {{ dashboard_auth_removal.rc == 0 }}"
+      💡 Note: Simple HTML dashboard template created at /tmp/dashboard-groundhog.html
