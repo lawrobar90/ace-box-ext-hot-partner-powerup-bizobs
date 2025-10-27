@@ -30,24 +30,30 @@ Our previous step will return the **“raw” data** of the errors that users ar
 ```JavaScript
 // optional import of sdk modules 
 import { execution } from '@dynatrace-sdk/automation-utils'; 
+
 export default async function ({ execution_id }) { 
-//Enter your details here! 
-//------------------------ 
-const yourName = "Test user";
-const dqlStepName = "execute_dql_query_1"; 
-//Get the result of the previous step running DQL 
-const r = await 
-fetch(`/platform/automation/v1/executions/${execution_id}/tasks/${dqlStepName}/result`); 
-//Get the content being returned in a variable called "body" 
-const body = await r.json(); 
-//Extract the list of orders affected by errors - "records" is the name of the list of results returned 
-const orders = body["records"]; 
-//Loop through the orders and format nicely to send to Mattermost 
-var niceOutput = ":warning: [" + yourName + "] Orders failing to update credit card: \n"; 
-orders.forEach((order) =>  niceOutput = niceOutput + "\n" + ":credit_card: [*Order ID*]: " + order['orderId'] + ", :1234: [*Error code*]: " + 
-order['Error code'] + ", :hourglass_flowing_sand: [*Error type*]: " + order['Error type'] + ", :email: [*Error message*]: " + order['Error message'] + "\n"); 
-return niceOutput;
-}   
+  const yourName = "Lawro";
+  const dqlStepName = "execute_dql_query_1"; 
+
+  // Fetch DQL result
+  const r = await fetch(`/platform/automation/v1/executions/${execution_id}/tasks/${dqlStepName}/result`); 
+  const body = await r.json(); 
+  const events = body["records"]; 
+
+  // Build Mattermost message
+  let niceOutput = `:rotating_light: **[${yourName}] Exception Events Detected (Last 24h)** :rotating_light:\n`;
+
+  events.forEach((event, index) => {
+    niceOutput += `\n---\n:hash: **Event #${index + 1}**\n`
+                + `:gear: **Step**: \`${event['json.stepName']}\`\n`
+                + `:link: **Correlation ID**: \`${event['json.correlationId']}\`\n`
+                + `:boom: **Error Type**: \`${event['json.errorType']}\`\n`
+                + `:speech_balloon: **Message**: _${event['json.errorMessage']}_\n`;
+  });
+
+  return niceOutput;
+}
+
 ```
 
 3.	Near the top is a section titled “**Enter your details here!**” which has 2 values.
