@@ -49,6 +49,25 @@
 - include_role:
     name: "dt-oneagent-classic"
 
+# Install Biz Flow App
+- name: Install Biz Flow App
+  ignore_errors: true
+  include_role:
+    name: dt-platform
+    tasks_from: ensure-app
+  vars:
+    dt_app_id: "{{ item.dt_app_id }}"
+    dt_app_version: "{{ item.dt_app_version }}"
+    dt_environment_url_gen3: "{{ extra_vars.dt_environment_url_gen3 }}"
+    dt_oauth_sso_endpoint: "{{ extra_vars.dt_oauth_sso_endpoint }}"
+    dt_oauth_client_id: "{{ extra_vars.dt_oauth_client_id }}"
+    dt_oauth_client_secret: "{{ extra_vars.dt_oauth_client_secret }}"
+    dt_oauth_account_urn: "{{ extra_vars.dt_oauth_account_urn }}"
+  loop:
+    - dt_app_id: "dynatrace.biz.flow"
+      dt_app_version: "1.20.3"
+
+
 # Deploy Monaco configuration BEFORE app starts
 - include_role:
     name: "monaco-v2"
