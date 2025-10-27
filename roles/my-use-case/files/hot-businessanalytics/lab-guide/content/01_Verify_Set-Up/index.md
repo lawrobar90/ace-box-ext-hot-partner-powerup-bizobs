@@ -8,9 +8,9 @@ Before we begin, let's verify that you can access the application and environmen
 - *Open* the **Business Partner event** in the section **Upcoming events**
 
 ### 2. **Verify Dynatrace Dashboard**
-- *Verify* **access** to your Dynatrace Dashboard from the University Terminal
-- *Verify* **access** to your Dynatrace Environment
-- *Verify* **access** to the BizObs Application
-- *Verify* **access** to your Mattermost Instance
+- *Verify* **access** to your **Dynatrace Dashboard** from the University Terminal
+- *Verify* **access** to your **Dynatrace Environment**
+- *Verify* **access** to the **BizObs Application**
+- *Verify* **access** to your **Mattermost Instance**
 ## Dynatrace Environment Checks
 - *Verify* Business Flow is installed in the Dynatrace Environment
