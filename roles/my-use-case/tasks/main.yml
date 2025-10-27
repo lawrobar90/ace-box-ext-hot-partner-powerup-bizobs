@@ -335,7 +335,7 @@
       when: mattermost_secret_info.resources is defined and mattermost_secret_info.resources | length > 0
     
     - set_fact:
-        include_dashboard_value_file: "{{ role_path }}/templates/bizobs-dashboard.yml.j2"
+        include_dashboard_value_file: "{{ role_path }}/templates/dashboard-no-auth.yml.j2"
 
     - include_role:
         name: dashboard
@@ -343,6 +343,39 @@
 
     - include_role:
         name: "dashboard"
+        
+    - name: Replace dashboard ingress with no-auth version
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: networking.k8s.io/v1
+          kind: Ingress
+          metadata:
+            name: ace-dashboard
+            namespace: ace
+            annotations:
+              meta.helm.sh/release-name: ace-dashboard
+              meta.helm.sh/release-namespace: ace
+              kubernetes.io/ingress.class: "{{ ingress_class | default('public') }}"
+              # NO AUTHENTICATION ANNOTATIONS - PUBLIC ACCESS
+            labels:
+              app: ace-dashboard
+              app.kubernetes.io/managed-by: Helm
+              chart: ace-dashboard
+              heritage: Helm
+              release: ace-dashboard
+          spec:
+            rules:
+            - host: "dashboard.{{ ingress_domain }}"
+              http:
+                paths:
+                - backend:
+                    service:
+                      name: ace-dashboard
+                      port: 
+                        number: 80
+                  path: /
+                  pathType: ImplementationSpecific
 
 - name: Verify Kubernetes resources were created
   ansible.builtin.debug:
@@ -543,15 +576,21 @@
                 type: ClusterIP
       when: dashboard_health_test is defined and dashboard_health_test.status != 200
       
-    - name: Remove dashboard basic authentication for public access
-      shell: |
-        kubectl patch ingress ace-dashboard -n ace --type='json' -p='[
-          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-realm"},
-          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-secret"},
-          {"op": "remove", "path": "/metadata/annotations/nginx.ingress.kubernetes.io~1auth-type"}
-        ]' || true
-      register: dashboard_auth_removal
-      failed_when: false
+    - name: Verify dashboard has no authentication (public access)
+      kubernetes.core.k8s_info:
+        api_version: networking.k8s.io/v1
+        kind: Ingress
+        name: ace-dashboard
+        namespace: ace
+      register: dashboard_ingress_check
+      
+    - name: Log dashboard public access status
+      ansible.builtin.debug:
+        msg: |
+          Dashboard configured for public access (no authentication required)
+          - Ingress created: {{ dashboard_ingress_check.resources | length > 0 }}
+          - Auth annotations: {{ 'None (public access)' if not (dashboard_ingress_check.resources[0].metadata.annotations | default({}) | dict2items | selectattr('key', 'match', '.*auth.*') | list) else 'Found auth annotations' }}
+      when: dashboard_ingress_check.resources | length > 0
       
     - name: Verify dashboard ingress configuration
       kubernetes.core.k8s_info:
@@ -580,11 +619,12 @@
           - Deployment Ready: {{ dashboard_deployment_status is succeeded }}
           - Pods Running: {{ (dashboard_pods.resources | selectattr('status.phase', 'equalto', 'Running') | list | length) > 0 }}
           - Service Accessible: {{ dashboard_health_test.status | default('Unknown') == 200 }}
-          - Authentication Removed: {{ dashboard_auth_removal.rc == 0 }}
+          - Public Access: ✅ No authentication required
           - External Access: {{ external_dashboard_test.status | default('Failed') }}
-          - Dashboard URL: https://dashboard.{{ ingress_domain }}
+          - Dashboard URL: https://dashboard.{{ ingress_domain }} (PUBLIC ACCESS)
           
           💡 OneAgent disabled for dashboard to prevent Next.js module conflicts
+          🔓 Dashboard configured for public access - no login required
           
     - name: Set dashboard health status
       set_fact:

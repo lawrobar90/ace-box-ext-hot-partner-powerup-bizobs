@@ -1,0 +1,44 @@
+# ACE-BOX Dashboard Configuration - No Authentication
+# Overrides default dashboard values to disable authentication
+
+replicasnum: 1
+domain: "{{ ingress_domain }}"
+authb64encoded: ""  # Empty auth - no authentication
+
+image: "dynatraceace/ace-box-dashboard:1.4.0"
+env: {}
+envSecrets: {}
+
+# Use case config with BizObs links
+useCases:
+  bizobs:
+    name: "Partner PowerUp BizObs"
+    description: "Business Observability Demo Application"
+    url: "http://{{ bizobs_domain }}/"
+    health_url: "http://{{ bizobs_domain }}/health"
+    admin_url: "http://{{ bizobs_domain }}/api/admin/services/status"
+
+# External references 
+extRefs:
+  dynatrace:
+    name: "Dynatrace Environment"
+    url: "{{ extra_vars.dt_environment_url_gen3.rstrip('/') }}"
+  mattermost:
+    name: "Mattermost Collaboration"
+    url: "http://mattermost.{{ ingress_domain }}/"
+    credentials:
+      username: "{{ mattermost_username | default('admin') }}"
+      password: "{{ mattermost_password | default('admin123') }}"
+  bizobs_features:
+    name: "BizObs Features"
+    journey_simulation: "http://{{ bizobs_domain }}/api/journey-simulation/simulate-journey"
+    load_generation: "http://{{ bizobs_domain }}/api/load-gen/start"
+    demo_scenarios: "Insurance, Retail, Tech, Banking workflows"
+
+ingress:
+  enabled: true
+  class: "{{ ingress_class | default('public') }}"
+  # No authentication annotations - public access
+
+virtualservice:
+  enabled: false
