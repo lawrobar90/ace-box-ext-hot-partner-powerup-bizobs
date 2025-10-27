@@ -157,11 +157,11 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	From the menu, *open* "**Notebooks**"
 1.	*Click* on the "**+**" to add a new section
 1.	*Click* on "**DQL**"
-1.	*Copy* and *paste* the **query**:
+1.	*Copy* and *paste* the **query** - Change the companyName to the one you are testing with:
 
       ```
       Fetch Bizevents
-      | filter isNotNull(rsBody) and isNotNull(rqBody)
+      | filter isNotNull(rqBody)
       | filter isNotNull(json.additionalFields) and isNotNull(json.stepIndex)
       | filter json.companyName == $Company
       | summarize count(), by:{event.type,json.stepName, json.stepIndex}
@@ -169,3 +169,44 @@ This lab will show you how to *create* and *validate* **business rules**.
       ```
 Run the simulations as many times as need to get all 12 events. Each svent will have a correlating "** - Exception**" event
 
+### 1.7 Extra Queries ###
+1.    ** Change the companyName to the one you are testing with **
+1.    See all of your Business Event Data
+      ```
+      Fetch Bizevents
+      | filter isNotNull(rqBody)
+      | filter isNotNull(json.additionalFields) and isNotNull(json.stepIndex)
+      | filter json.companyName == "**companyName**"
+      ```
+      
+1. Summarize how much time is spent in each Journe Step
+      ```
+      fetch bizevents
+      | filter json.companyName == "**companyName**"
+      | summarize TimeSpent = avg(toLong(json.estimatedDuration)), by:{event.type}
+      | fieldsAdd sla = if(TimeSpent >= 150 , "✅" , else:"❌")
+      ```
+      
+1. Request Count per Service
+    ```
+    timeseries requests = sum(dt.service.request.count),
+           by:{dt.entity.service}
+      | fields  timeframe, 
+          interval, 
+          service = entityName(dt.entity.service),
+          requests
+      | sort arraySum(requests) desc
+      | limit 100
+    ```
+
+1. Failure vs Success Rate
+   ```
+   timeseries total = sum(dt.service.request.count, default:0),
+           failed = sum(dt.service.request.failure_count,default:0),
+           nonempty: true
+      | fieldsAdd success = total[] -failed[]
+      | fields timeframe,
+               interval,
+               success,
+               failed
+   ```
