@@ -191,15 +191,6 @@
       ansible.builtin.debug:
         msg: "Mattermost ingress fixed: {{ mattermost_ingress_result is succeeded }}"
 
-- name: Verify Kubernetes resources were created
-  ansible.builtin.debug:
-    msg: |
-      Service Created: {{ bizobs_service_result is succeeded }}
-      Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
-      Ingress Created: {{ bizobs_ingress_result is succeeded }}
-      Target IP: {{ ansible_default_ipv4.address }}
-      External URL: http://{{ bizobs_domain }}/
-
 # External access for BizObs application - ACE-BOX standard pattern
 - name: Create BizObs service and endpoints first
   kubernetes.core.k8s:
