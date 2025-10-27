@@ -19,7 +19,7 @@ This lab will help you understand what business analytics is trying to achieve f
       | sort json.stepIndex asc
       ```
 
-1. This DQL will show you the order of your Customer Journey in a simple context. The journey is from STepIndex 1 > 6, and can include exceptions where applicable
+1. This DQL will show you the order of your Customer Journey in a simple context. The journey is from StepIndex 1 > 6, and can include exceptions where applicable
 
 ### 3.2 Creating your Business Flow
 1. *Open* the **Business Flow** app
