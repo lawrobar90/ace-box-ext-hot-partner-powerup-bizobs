@@ -16,9 +16,8 @@ Now that we’ve set when this will run, we can start to add in the rest of the 
 
 ```
 fetch bizevents, from:now()-24h
-| filter type == "CARD_ERROR"
-| parse details, "JSON:errors"
-| fields orderId, {errors[errorCode], alias:`Error code`}, {errors[errorType], alias:`Error type`}, {errors[errorMessage], alias:`Error message`}
+| filter matchesPhrase(event.type, "Exception")
+| fields json.correlationId, json.errorType, json.errorMessage
 ```
 
 ### 4.3 Formatting the data to send
