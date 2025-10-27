@@ -403,6 +403,37 @@
 # Configure public access for dashboard and services with health checks
 - name: Configure public access and ensure dashboard health
   block:
+    - name: Exclude dashboard from OneAgent instrumentation to prevent Node.js conflicts
+      shell: |
+        kubectl patch deployment dashboard -n ace --type='json' -p='[
+          {
+            "op": "add",
+            "path": "/spec/template/metadata/annotations",
+            "value": {
+              "oneagent.dynatrace.com/inject": "false",
+              "dynatrace.com/inject": "false"
+            }
+          },
+          {
+            "op": "add",
+            "path": "/spec/template/spec/containers/0/env/-",
+            "value": {
+              "name": "DT_INJECT_ONEAGENT",
+              "value": "false"
+            }
+          },
+          {
+            "op": "add", 
+            "path": "/spec/template/spec/containers/0/env/-",
+            "value": {
+              "name": "DT_DISABLE_ONEAGENT",
+              "value": "true"
+            }
+          }
+        ]' || true
+      register: dashboard_oneagent_exclusion
+      failed_when: false
+      
     - name: Wait for dashboard deployment to be ready
       kubernetes.core.k8s_info:
         api_version: apps/v1
@@ -545,12 +576,15 @@
       ansible.builtin.debug:
         msg: |
           Dashboard Health Check Results:
+          - OneAgent Exclusion: {{ dashboard_oneagent_exclusion.rc == 0 }}
           - Deployment Ready: {{ dashboard_deployment_status is succeeded }}
           - Pods Running: {{ (dashboard_pods.resources | selectattr('status.phase', 'equalto', 'Running') | list | length) > 0 }}
           - Service Accessible: {{ dashboard_health_test.status | default('Unknown') == 200 }}
           - Authentication Removed: {{ dashboard_auth_removal.rc == 0 }}
           - External Access: {{ external_dashboard_test.status | default('Failed') }}
           - Dashboard URL: https://dashboard.{{ ingress_domain }}
+          
+          💡 OneAgent disabled for dashboard to prevent Next.js module conflicts
           
     - name: Set dashboard health status
       set_fact:
