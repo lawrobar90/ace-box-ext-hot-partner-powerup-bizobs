@@ -158,5 +158,5 @@ This lab will show you how to *create* and *validate* **business rules**.
       | summarize count(), by:{event.type,json.stepName, json.stepIndex}
       | sort json.stepIndex asc
       ```
-Run the simulations as many times as need to get all 12 events. Each svent will have a correlating ** - Exception** event
+Run the simulations as many times as need to get all 12 events. Each svent will have a correlating "** - Exception**" event
 
