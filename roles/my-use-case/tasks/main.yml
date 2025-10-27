@@ -163,18 +163,7 @@
       Target IP: {{ ansible_default_ipv4.address }}
       External URL: http://{{ bizobs_domain }}/
 
-# Configure Dashboard LAST so it has all service links available
-- name: Configure Dashboard with BizObs links
-  block:
-    - set_fact:
-        include_dashboard_value_file: "{{ role_path }}/templates/bizobs-dashboard.yml.j2"
-
-    - include_role:
-        name: dashboard
-        tasks_from: template-values-file
-
-    - include_role:
-        name: "dashboard"
+# External access for BizObs application - ACE-BOX standard pattern
 - name: Create BizObs service and endpoints first
   kubernetes.core.k8s:
     definition:
@@ -260,6 +249,28 @@
   register: bizobs_ingress_result
   retries: 3
   delay: 5
+
+- name: Verify Kubernetes resources were created
+  ansible.builtin.debug:
+    msg: |
+      Service Created: {{ bizobs_service_result is succeeded }}
+      Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
+      Ingress Created: {{ bizobs_ingress_result is succeeded }}
+      Target IP: {{ ansible_default_ipv4.address }}
+      External URL: http://{{ bizobs_domain }}/
+
+# Configure Dashboard LAST with proper ACE-BOX role
+- name: Configure Dashboard with BizObs links
+  block:
+    - set_fact:
+        include_dashboard_value_file: "{{ role_path }}/templates/bizobs-dashboard.yml.j2"
+
+    - include_role:
+        name: dashboard
+        tasks_from: template-values-file
+
+    - include_role:
+        name: "dashboard"
 
 - name: Verify Kubernetes resources were created
   ansible.builtin.debug:
