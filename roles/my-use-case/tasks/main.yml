@@ -49,6 +49,34 @@
 - include_role:
     name: "dt-oneagent-classic"
 
+# Install BizFlow App for Business Observability
+- name: Install BizFlow App
+  block:
+    - include_role:
+        name: dt-platform
+        tasks_from: ensure-app
+      vars:
+        dt_app_id: "dynatrace.biz.flow"
+        dt_app_version: "1.20.3"
+        dt_environment_url_gen3: "{{ extra_vars.dt_environment_url_gen3 }}"
+        dt_oauth_sso_endpoint: "{{ extra_vars.dt_oauth_sso_endpoint }}"
+        dt_oauth_client_id: "{{ extra_vars.dt_oauth_client_id }}"
+        dt_oauth_client_secret: "{{ extra_vars.dt_oauth_client_secret }}"
+        dt_oauth_account_urn: "{{ extra_vars.dt_oauth_account_urn }}"
+  rescue:
+    - name: Log BizFlow installation failure
+      ansible.builtin.debug:
+        msg: "BizFlow app installation failed, but continuing deployment. Business events can still be configured via Monaco."
+      
+    - name: Set BizFlow installation status
+      set_fact:
+        bizflow_installed: false
+  always:
+    - name: Set BizFlow installation status on success
+      set_fact:
+        bizflow_installed: true
+      when: ansible_failed_result is not defined
+
 # Deploy Monaco configuration BEFORE app starts
 - include_role:
     name: "monaco-v2"
@@ -332,22 +360,25 @@
       
       � Deployment Order Completed:
       1. ✅ Dynatrace OneAgent & Monaco Config
-      2. ✅ BizObs Application (verified healthy)
-      3. ✅ Mattermost Collaboration
-      4. ✅ Kubernetes Service & Ingress
-      5. ✅ Dashboard (with all service links)
+      2. {{ '✅' if bizflow_installed | default(false) else '⚠️' }} BizFlow App ({{ 'installed' if bizflow_installed | default(false) else 'failed - using Monaco events' }})  
+      3. ✅ BizObs Application (verified healthy)
+      4. ✅ Mattermost Collaboration
+      5. ✅ Kubernetes Service & Ingress
+      6. ✅ Dashboard (with all service links)
       
       🔗 Access URLs:
       - Dashboard: http://dashboard.{{ ingress_domain }}/ (📊 Central hub with all links)
       - BizObs App: http://{{ bizobs_domain }}/
       - Mattermost: http://mattermost.{{ ingress_domain }}/
       - Dynatrace: {{ extra_vars.dt_environment_url_gen3.rstrip('/') }}
+      {{ '- BizFlow App: Available in Dynatrace Platform' if bizflow_installed | default(false) else '' }}
       
       🎯 BizObs Features Ready:
       - Customer Journey Simulation: http://{{ bizobs_domain }}/api/journey-simulation/simulate-journey
       - Admin Panel: http://{{ bizobs_domain }}/api/admin/services/status
       - Health Check: http://{{ bizobs_domain }}/health
       - Load Generation: Multi-persona simulation (Karen, Raj, Alex, Sophia)
+      {{ '- BizFlow Workflows: Available via Dynatrace Platform' if bizflow_installed | default(false) else '- Business Events: Available via Monaco configuration' }}
       
       🎭 Demo Scenarios:
       - Insurance: PolicyDiscovery → QuoteGeneration → PaymentProcessing
@@ -359,6 +390,7 @@
       
       ✅ ACE-BOX Deployment Summary:
       - Health Check: {{ health_check.status }}
+      - BizFlow App: {{ 'Installed' if bizflow_installed | default(false) else 'Failed (fallback to Monaco)' }}
       - Service Created: {{ bizobs_service_result is succeeded }}
       - Endpoints Created: {{ bizobs_endpoints_result is succeeded }}
       - Ingress Created: {{ bizobs_ingress_result is succeeded }}
