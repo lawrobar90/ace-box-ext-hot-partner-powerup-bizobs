@@ -57,18 +57,23 @@ This lab will show you how to *create* and *validate* **business rules**.
 
 **At the bottom of the screen, click "Save changes"**
 
-### 1.2 Notebook
+### 1.2 Service Naming Rules
 
-1.	*Open* "**Notebooks**"
-1.	*Create* a **new notebook**
-1.	*Click* on the "**+**" to add a **new section**
-1.	*Click* on "**DQL**"
-1.	Copy and *paste* the *query*:
-
+##### Create a Service Naming Rule for the intelligent traceing to be captured
+1.	*Open* "**Settings Classic**"
+1.	*Open* "**Server-side Service monitoring**" menu group
+1.	*Click* on "**Service naming rules**"
+1.    For Rule name, *copy* and *paste*:
       ```
-      fetch bizevents
-      | filter isNotNull(event.provider)
+      Holistic API Rules
       ```
+1.    For Service name format, *copy* and *paste*:
+      ```
+      {ProcessGroup:DetectedName}
+      ```
+1.    For Conditions name format, *select* **Detected process group name** from the dropdown
+1.    Change matcher to **exists**
+1.    Click *Preview* then **Save changes**
 
 ### 1.3 OpenPipeline Pipeline Configuration
 
@@ -142,6 +147,8 @@ This lab will show you how to *create* and *validate* **business rules**.
 **Just above the table, click "*Save*"**
 **Make sure you change Status to enable the Dynamic Routing**
 
+*RUN SOME MORE TEST SIMULATIONS THROUGH YOUR BIZOBS APPLICATION UI**
+
 ### 1.6 Queries
 
 ##### Validate new attribute
@@ -160,20 +167,3 @@ This lab will show you how to *create* and *validate* **business rules**.
       ```
 Run the simulations as many times as need to get all 12 events. Each svent will have a correlating "** - Exception**" event
 
-### 1.7 Service Naming Rules
-
-##### Create a Service Naming Rule for the intelligent traceing to be captured
-1.	*Open* "**Settings Classic**"
-1.	*Open* "**Server-side Service monitoring**" menu group
-1.	*Click* on "**Service naming rules**"
-1.    For Rule name, *copy* and *paste*:
-      ```
-      Holistic API Rules
-      ```
-1.    For Service name format, *copy* and *paste*:
-      ```
-      {ProcessGroup:DetectedName}
-      ```
-1.    For Conditions name format, *select* **Detected process group name** from the dropdown
-1.    Change matcher to **exists**
-1.    Click *Preview* then **Save changes**
