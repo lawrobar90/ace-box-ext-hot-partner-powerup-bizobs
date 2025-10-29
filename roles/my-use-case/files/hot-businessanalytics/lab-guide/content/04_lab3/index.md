@@ -11,13 +11,13 @@ In this hands-on, we’ll be setting up this process using some existing buildin
 Now that we’ve set when this will run, we can start to add in the rest of the logic!
 
 1.	*Click* the purple “**+**” icon underneath your trigger and you’ll be presented with the options you see on the screen to add new logical “**tasks.**”
-1.	First **“task”** will be to get the **Order IDs** of Customers with an issue getting their Credit Card – so we’ll *choose* the “Execute DQL Query” action which is going to look through the data for these users.
-1.	The DQL query itself will look through the data for the “**CARD_ERROR**” events that get created – it will then return the contextual information that let’s us take some action, for example the **Order ID** and the **type of error**.
+1.	First **“task”** will be to get the **Company** and **StepNames** with issues – so we’ll *choose* the “Execute DQL Query” action which is going to look through the data for these users.
+1.	The DQL query itself will look through the data for the “**Exception**” events that get created – it will then return the contextual information that let’s us take some action, for example the **Error Type** and the **Error Message**.
 
 ```
 fetch bizevents, from:now()-24h
 | filter matchesPhrase(event.type, "Exception")
-| fields json.correlationId, json.errorType, json.errorMessage
+| fields json.companyName, json.stepName, json.correlationId, json.errorType, json.errorMessage
 ```
 
 ### 4.3 Formatting the data to send
@@ -32,7 +32,7 @@ Our previous step will return the **“raw” data** of the errors that users ar
 import { execution } from '@dynatrace-sdk/automation-utils'; 
 
 export default async function ({ execution_id }) { 
-  const yourName = "Lawro";
+  const yourName = "HAL9000";
   const dqlStepName = "execute_dql_query_1"; 
 
   // Fetch DQL result
@@ -45,6 +45,7 @@ export default async function ({ execution_id }) {
 
   events.forEach((event, index) => {
     niceOutput += `\n---\n:hash: **Event #${index + 1}**\n`
+                + ` **Company**: \`${event['json.companyName']}\`\n`
                 + `:gear: **Step**: \`${event['json.stepName']}\`\n`
                 + `:link: **Correlation ID**: \`${event['json.correlationId']}\`\n`
                 + `:boom: **Error Type**: \`${event['json.errorType']}\`\n`
