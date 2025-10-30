@@ -26,8 +26,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 
 ##### Configure metadata (provider)
 
-1.	For "**Event provider data source**", *select* "**Fixed value**"
-1.	For "**Data source**", make sure that "**Request - Body**" is *selected*
+1.	For "**Event provider Data Source**", *click* on "**Fixed value**" and make sure that "**Request - Body**" is *selected*
 1.	For "**Field name**" and "**Path**", *copy* and *paste*:
       ```
       companyName
@@ -35,8 +34,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 
 ##### Configure metadata (type)
 
-1.	For "**Event type data source**", *select* "**Fixed value**"
-1.	For "**Data source**", make sure that "**Request - Body**" is *selected*
+1.	For "**Event type data source**", *click* on "**Fixed value**" and make sure that "**Request - Body**" is *selected*
 1.	For "**Field name**" and "**Path**", *copy* and *paste*:
       ```
       stepName
@@ -157,20 +155,20 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	From the menu, *open* "**Notebooks**"
 1.	*Click* on the "**+**" to add a new section
 1.	*Click* on "**DQL**"
-1.	*Copy* and *paste* the **query** - Change the companyName to the one you are testing with:
+1.	*Copy* and *paste* the **query** - Change the **companyName** to the one you are testing with surrounded by quotation marks:
 
       ```
       Fetch Bizevents
       | filter isNotNull(rqBody)
       | filter isNotNull(json.additionalFields) and isNotNull(json.stepIndex)
-      | filter json.companyName == $Company
+      | filter json.companyName == "**companyName**"
       | summarize count(), by:{event.type,json.stepName, json.stepIndex}
       | sort json.stepIndex asc
       ```
 Run the simulations as many times as need to get all 12 events. Each svent will have a correlating "** - Exception**" event
 
 ### 1.7 Extra Queries ###
-*Change the companyName to the one you are testing with*
+*Change the **companyName** to the one you are testing with*
 1.    See all of your Business Event Data
       ```
       Fetch Bizevents
