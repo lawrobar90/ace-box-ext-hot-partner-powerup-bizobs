@@ -2,7 +2,7 @@
 
 This lab will help you understand what business analytics is trying to achieve for an end goal.
 
-### 3.1 Finding your journey flow
+### 2.1 Finding your journey flow
 
 1.	*Open* "**Notebooks**"
 1.	*Create* a **new notebook**
@@ -11,17 +11,17 @@ This lab will help you understand what business analytics is trying to achieve f
 1.	Copy and *paste* the *query*:
 
       ```
-      Fetch Bizevents
+      fetch bizevents
       | filter isNotNull(rqBody)
       | filter isNotNull(json.additionalFields) and isNotNull(json.stepIndex)
-      | filter json.companyName == "Companyname" //Include your companyName in "" from the BizObs app
+      | filter json.companyName == "**Companyname**" //Include your **companyName** in "" from the BizObs app
       | summarize count(), by:{event.type,json.stepName, json.stepIndex}
       | sort json.stepIndex asc
       ```
 
 1. This DQL will show you the order of your Customer Journey in a simple context. The journey is from StepIndex 1 > 6, and can include exceptions where applicable
 
-### 3.2 Creating your Business Flow
+### 2.2 Creating your Business Flow
 1. *Open* the **Business Flow** app
 1. *Click* '**+ New Flow**'
 1. *Click* on the title to change its name to:
@@ -36,7 +36,7 @@ This lab will help you understand what business analytics is trying to achieve f
       ```
       Name of your event.type with StepIndex of 1
       ```
-1. Click "Add business exception"
+1. Click "Add business exception"  (Only do this if you have an Exception already for the first step!)
 1. For the **Events** dropdown, *select*:
       ```
       Name of your event.type with StepIndex of 1, but also include exception at the end
@@ -45,7 +45,7 @@ This lab will help you understand what business analytics is trying to achieve f
 ***You may not have an exception event yet, keep running the journey until all your steps have completed successfully and failed as well***
 
 
-### 3.3 Adding Subsequent Steps
+### 2.3 Adding Subsequent Steps
 1. At the center of the screen on your first step, hover over the step
 1. A "+" sign should appear just below it, click on it to add a new step
 1.	*Rename* this step to
@@ -63,7 +63,7 @@ This lab will help you understand what business analytics is trying to achieve f
 1. **Now add all the other subsequent 4 steps for your journey**
 
 
-### 3.4 Adding Configuration and KPI’s
+### 2.4 Adding Configuration and KPI’s
 1.	At the top right, in Global Settings change **Correlation ID** to:
       ```
       json.correlationId
@@ -77,4 +77,4 @@ This lab will help you understand what business analytics is trying to achieve f
       For the event you selected, find the price if applicable and select it
       ```
 
-*Click* **Save vhanges** and then **Exit editing**
+*Click* **Save changes** and then **Exit editing**
