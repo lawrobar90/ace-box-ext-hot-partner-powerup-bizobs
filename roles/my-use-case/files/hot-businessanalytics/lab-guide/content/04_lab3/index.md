@@ -1,4 +1,4 @@
-## Lab 4: getting value from automation
+## Lab 3: getting value from automation
 
 In this hands-on, we’ll be setting up this process using some existing building blocks! You will have access to your own **Mattermost channel**, so you will be able to monitor that your messages [...]
 
