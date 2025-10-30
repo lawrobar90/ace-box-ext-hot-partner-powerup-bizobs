@@ -1,4 +1,4 @@
-## Lab 3: how to visualize business insights
+## Lab 2: how to visualize business insights
 
 This lab will help you understand what business analytics is trying to achieve for an end goal.
 
@@ -12,7 +12,7 @@ This lab will help you understand what business analytics is trying to achieve f
 
       ```
       Fetch Bizevents
-      | filter isNotNull(rsBody) and isNotNull(rqBody)
+      | filter isNotNull(rqBody)
       | filter isNotNull(json.additionalFields) and isNotNull(json.stepIndex)
       | filter json.companyName == "Companyname" //Include your companyName in "" from the BizObs app
       | summarize count(), by:{event.type,json.stepName, json.stepIndex}
