@@ -1,18 +1,18 @@
 ## Lab 3: getting value from automation
 
-In this hands-on, we’ll be setting up this process using some existing building blocks! You will have access to your own **Mattermost channel**, so you will be able to monitor that your messages [...]
+In this hands-on, we’ll be setting up this process using some existing building blocks! You will have access to your own **Mattermost channel**, so you will be able to monitor that your messages are being sent correctly.
 
-### 4.1 Choosing when your Workflow will run
+### 3.1 Choosing when your Workflow will run
 1. Using the “**App drawer**” in the top-left of the screen (or the search) – *find* the **“Workflow”** app and *open* it.
 1. *Choose* “**+ Workflow**” in the top-right and you should see the view shown on the screen.
-1. The first thing to do is *choose* **when this Workflow will run** – for the purpose of this exercise we will *choose* the “**On demand**” trigger at the bottom, so it will *only* be execut[...]
+1. The first thing to do is *choose* **when this Workflow will run** – for the purpose of this exercise we will *choose* the “**On demand**” trigger at the bottom, so it will *only* be executed when you hit **“Run"**.
 
-### 4.2 Querying the failed Order IDs
+### 3.2 Querying the failed Order IDs
 Now that we’ve set when this will run, we can start to add in the rest of the logic!
 
 1. *Click* the purple “**+**” icon underneath your trigger and you’ll be presented with the options you see on the screen to add new logical “**tasks.**”
-1. First **“task”** will be to get the **Company** and **StepNames** with issues – so we’ll *choose* the “Execute DQL Query” action which is going to look through the data for these us[...]
-1. The DQL query itself will look through the data for the “**Exception**” events that get created – it will then return the contextual information that let’s us take some action, for exam[...] 
+1. First **“task”** will be to get the **Company** and **StepNames** with issues – so we’ll *choose* the “Execute DQL Query” action which is going to look through the data for these Exceptions within the last 24 hours.
+1. The DQL query itself will look through the data for the “**Exception**” events that get created – it will then return the contextual information that let’s us take some action, for example the **errorType** and **errorMessage** 
 
 ```
 fetch bizevents, from:now()-24h
@@ -20,9 +20,9 @@ fetch bizevents, from:now()-24h
 | fields json.companyName, json.stepName, json.correlationId, json.errorType, json.errorMessage
 ```
 
-### 4.3 Formatting the data to send
+### 3.3 Formatting the data to send
 
-Our previous step will return the **“raw” data** of the errors that users are facing, but because we want to send this in a **Mattermost channel** – we’ll apply some formatting to make it [...]
+Our previous step will return the **“raw” data** of the Exceptions that we are facing, but because we want to send this in a **Mattermost channel** – we’ll apply some formatting to make it look nice!
 
 1. Use the purple “**+**” again to *add* another “**task**” and this time *choose* “**Run Javascript**.”
 1. *Copy* over the **JavaScript** from the lab guide into the “**input**” section that’s opened up on the **right-hand side**. 
@@ -45,7 +45,7 @@ export default async function ({ execution_id }) {
 
   events.forEach((event, index) => {
     niceOutput += `\n---\n:hash: **Event #${index + 1}**\n`
-                + ` **Company**: \`${event['json.companyName']}\`\n`
+                + `&#127970; **Company**: \`${event['json.companyName']}\`\n`
                 + `:gear: **Step**: \`${event['json.stepName']}\`\n`
                 + `:link: **Correlation ID**: \`${event['json.correlationId']}\`\n`
                 + `:boom: **Error Type**: \`${event['json.errorType']}\`\n`
@@ -57,14 +57,14 @@ export default async function ({ execution_id }) {
 ```
 
 3. Near the top is a section titled “**Enter your details here!**” which has 2 values.
-     - Enter “**your name**”. (either your actual name or something slightly humorous) *This will be used at the start of the message we send to Mattermost – in a real scenario, this could b[...]
+     - Enter “**your name**”. (either your actual name or something slightly humorous) *This will be used at the start of the message we send to Mattermost – in a real scenario, this could be a point of contact should anyone have questions about the message.*
      - *Enter* name of the “**task**” (or step) of the DQL we just added.  *If you didn’t change the name of that step leave it as-is, otherwise change it to the name that you have used.*
 
-At a high-level what this **code** is *doing* is firstly *getting* the **results** of the **DQL** from the previous step, then creating a **nicely formatted message for Mattermost** where each Ord[...] 
+At a high-level what this **code** is *doing* is firstly *getting* the **results** of the **DQL** from the previous step, then creating a **nicely formatted message for Mattermost** where each Order is listed out on a new line (and includes emojis!).
 
-### 4.4 Sending the orders to a Mattermost channel
+### 3.4 Sending the orders to a Mattermost channel
 
-The last step now is to *send* the **message** we’ve just created into the Mattermost channel. To make this possible we first need to create a “**URL**” that we can *send* the **messages** t[...] 
+The last step now is to *send* the **message** we’ve just created into the Mattermost channel. To make this possible we first need to create a “**URL**” that we can *send* the **messages** to via **API**.
 
 1. Open up the **ACE-box dashboard** and *select* the “**Links**” tab – there is a “**Mattermost**” row here and this will give you the URL and **credentials** to be able to *login*.
 2. Once you’ve logged in, *click* the **icon** with four square in the **top-left** of the interface and choose **Integrations** > **Incoming Webhooks**. 
@@ -85,8 +85,11 @@ The last step now is to *send* the **message** we’ve just created into the Mat
   "text": "{{result("run_javascript_1") }}"
 }
 ```
-13. "**Save**" your progress at the top of the screen
-14. Under “**Settings**” at the top, *enable* “**Workflow admin**.”
+13. "**Deploy**" your progress at the top of the screen.
+14. *Hit* the "**Save and Deploy**" Button in the Pop-Up.
+15. Under “**Settings**” at the top, *enable* “**Workflow admin**.”
 
 ### 4.5 Run the Workflow
-1. *Hit* the “**Run**” button at the top of the screen and your Workflow should run successfully! Keep an eye on the **Mattermost channel** for the “**name**” that you entered in the JavaS[...]
+1. *Hit* the “**Run**” button at the top of the screen
+2. *Hit* the “**Allow & Run**” button in the Pop-Up and your Workflow should run successfully! If you get an Exception while running the Workflow for the first time simply try to re-run it another time and this time it should finish successfully.
+3. Keep an eye on the **Mattermost channel** for the “**name**” that you entered in the JavaScript step which will indicate that your message was properly received.
