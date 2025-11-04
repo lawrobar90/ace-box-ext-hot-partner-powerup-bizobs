@@ -77,4 +77,4 @@ This lab will help you understand what business analytics is trying to achieve f
       For the event you selected, find the price if applicable and select it
       ```
 
-*Click* **Save vhanges** and then **Exit editing**
+*Click* **Save changes** and then **Exit editing**
