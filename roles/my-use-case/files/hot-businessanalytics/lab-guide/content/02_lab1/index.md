@@ -221,8 +221,8 @@ This lab will show you how to *create* and *validate* **business rules**.
 **Make sure you change Status to enable the Dynamic Routing**
 
 
-### *RUN SOME MORE TEST SIMULATIONS THROUGH YOUR BIZOBS APPLICATION UI* ###
-
+### *PLAY SOME OF THE VEGAS APPLICATIONS IN THE WEBSITE, ACTIVATE CHEATS FOR BIG WINS* ###
+### *CAREFUL, CHEATERS NEVER PROSPER!* ###
 
 ### 1.7 Queries
 
