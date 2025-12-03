@@ -1,6 +1,6 @@
-## Lab 2: basic configuration and exploration 
+## Lab 2: OpenPipeline Configuration
 
-This lab will show you how to "**Process**" your data to help increase revenue and reduce risk in your business.
+This lab will show you how to "**Process**" and "**Extract**" your business data to help increase revenue and reduce risk.
 
 ### 1.1 OpenPipeline Pipeline Configuration
 
