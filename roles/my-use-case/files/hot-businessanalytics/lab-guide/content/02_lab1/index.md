@@ -11,36 +11,36 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	*Click* on "**Add new capture rule**" on the **incoming** tab
 1.	For field "**Rule name**", *copy* and *paste*:
       ```
-      BizObs App
+      Vegas Application
       ```
 
 ##### Configure Trigger
 
 1.	*Click* on "**Add trigger**"
-1.	For "**Data source**", *select* "**Request - Path**"
-1.	For "**Operator**", *select* "**starts with**"
+1.	For "**Data source**", *select* "**Response - Body**"
+1.	For "**Operator**", *select* "**exists**"
 1.	For "**Value**", *copy* and *paste*:
       ```
-      /process
+      json.Game
       ```
 
-##### Configure metadata (provider)
+##### Configure metadata (Event Provider)
 
-1.	For "**Event provider Data Source**", *click* on "**Fixed value**" and make sure that "**Request - Body**" is *selected*
+1.	For "**Event provider Data Source**", *click* on "**Fixed value**" and make sure that "**Response - Body**" is *selected*
 1.	For "**Field name**" and "**Path**", *copy* and *paste*:
       ```
-      companyName
+      Game
       ```
 
-##### Configure metadata (type)
+##### Configure metadata (Event Type)
 
 1.	For "**Event type data source**", *click* on "**Fixed value**" and make sure that "**Request - Body**" is *selected*
 1.	For "**Field name**" and "**Path**", *copy* and *paste*:
       ```
-      stepName
+      Action
       ```
 
-##### Configure additional data (price)
+##### Configure additional data (JSON Payloads)
 
 1.	*Click* on "**Add data field**"
 1.	For "**Data source**", make sure that "**Request - Body**" is *selected*
@@ -53,6 +53,18 @@ This lab will show you how to *create* and *validate* **business rules**.
       *
       ```
 
+1.	*Click* on "**Add data field**"
+1.	For "**Data source**", make sure that "**Response - Body**" is *selected*
+1.	For "**Field name**", *copy* and *paste*:
+      ```
+      rsBody
+      ```
+1.	For "**Path**", *copy* and *paste*:
+      ```
+      *
+      ```
+
+
 **At the bottom of the screen, click "Save changes"**
 
 ### 1.2 Service Naming Rules
@@ -63,14 +75,18 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	*Click* on "**Service naming rules**"
 1.    For Rule name, *copy* and *paste*:
       ```
-      Holistic API Rules
+      Vegas Naming Rules
       ```
 1.    For Service name format, *copy* and *paste*:
       ```
       {ProcessGroup:DetectedName}
       ```
 1.    For Conditions name format, *select* **Detected process group name** from the dropdown
-1.    Change matcher to **exists**
+1.    Change matcher to **begins with**
+1.    For "**value**", *copy* and *paste*:
+      ```
+      vegas
+      ```
 1.    Click *Preview* then **Save changes**
 
 ### 1.3 OpenPipeline Pipeline Configuration
@@ -82,7 +98,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 1. *Rename* the pipeline:
 
       ```
-      BizObs Template Pipeline
+      Vegas Pipeline
       ```
 
 ### 1.4 OpenPipeline Processing Rule Configuration
@@ -92,7 +108,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	*Name* the new processor, *copy* and *paste*:
 
       ```
-      JSON Parser
+      Vegas Gaming Details - rqBody
       ```
 
 1.	For "**Matching condition**", leave set to **true**
@@ -101,8 +117,6 @@ This lab will show you how to *create* and *validate* **business rules**.
       ```
       parse rqBody, "JSON:json"
       | fieldsFlatten json
-      | parse json.additionalFields, "JSON:additionalFields"
-      | fieldsFlatten json.additionalFields, prefix:"additionalfields."
       ```
 
 1.    Add another processor
@@ -110,14 +124,15 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	*Name* the new processor, *copy* and *paste*:
 
       ```
-      Error Field
+      Vegas Gaming Details - rsBody
       ```
 
 1.	For "**Matching condition**", leave set to **true**
 1.	For "**DQL processor definition**", *copy* and *paste*:
 
       ```
-      fieldsAdd  event.type = if(json.hasError == true, concat(event.type, ``, " - Exception"), else:{`event.type`})
+      parse rsBody, "JSON:json"
+      | fieldsFlatten json
       ```
 
 **At the top right of the screen, click "*Save*"**
@@ -130,16 +145,16 @@ This lab will show you how to *create* and *validate* **business rules**.
 1. For "**Name**", *copy* and *paste*: 
 
       ```
-      BizObs App
+      Vegas Pipeline
       ```
 
 1. For "**Matching condition**", *copy* and *paste*:
 
       ```
-      isNotNull(event.provider)
+      matchesPhrase(event.provider, "Vegas ")
       ```
 
-1. For "**Pipeline**", *select* "**BizObs Template Pipeline**"
+1. For "**Pipeline**", *select* "**Vegas Pipeline**"
 1. *Click* "**Add**" 
 
 **Just above the table, click "*Save*"**
@@ -155,55 +170,9 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.	From the menu, *open* "**Notebooks**"
 1.	*Click* on the "**+**" to add a new section
 1.	*Click* on "**DQL**"
-1.	*Copy* and *paste* the **query** - Change the **companyName** to the one you are testing with surrounded by quotation marks:
+1.	*Copy* and *paste* the **query** - Change the **Game** to the one you are testing with surrounded by quotation marks:
 
       ```
       Fetch Bizevents
-      | filter isNotNull(rqBody)
-      | filter isNotNull(json.additionalFields) and isNotNull(json.stepIndex)
-      | filter json.companyName == "**companyName**"
-      | summarize count(), by:{event.type,json.stepName, json.stepIndex}
-      | sort json.stepIndex asc
+      | filter json.Game == "**game Name**"
       ```
-Run the simulations as many times as need to get all 12 events. Each svent will have a correlating "** - Exception**" event
-
-### 1.7 Extra Queries ###
-*Change the **companyName** to the one you are testing with*
-1.    See all of your Business Event Data
-      ```
-      Fetch Bizevents
-      | filter isNotNull(rqBody)
-      | filter isNotNull(json.additionalFields) and isNotNull(json.stepIndex)
-      | filter json.companyName == "**companyName**"
-      ```
-      
-1. Summarize how much time is spent in each Journey Step
-      ```
-      fetch bizevents
-      | filter json.companyName == "**companyName**"
-      | summarize TimeSpent = avg(toLong(json.estimatedDuration)), by:{event.type}
-      | fieldsAdd sla = if(TimeSpent >= 15 , "✅" , else:"❌")
-      ```
-      
-1. Request Count per Service
-    ```
-    timeseries requests = sum(dt.service.request.count),
-           by:{dt.entity.service}
-      | fields  timeframe, 
-          interval, 
-          service = entityName(dt.entity.service),
-          requests
-      | sort arraySum(requests) desc
-    ```
-
-1. Failure vs Success Rate
-   ```
-   timeseries total = sum(dt.service.request.count, default:0),
-           failed = sum(dt.service.request.failure_count,default:0),
-           nonempty: true
-      | fieldsAdd success = total[] -failed[]
-      | fields timeframe,
-               interval,
-               success,
-               failed
-   ```
