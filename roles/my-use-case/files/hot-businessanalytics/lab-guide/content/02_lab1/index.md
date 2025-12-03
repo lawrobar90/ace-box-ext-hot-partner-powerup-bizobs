@@ -134,11 +134,71 @@ This lab will show you how to *create* and *validate* **business rules**.
       parse rsBody, "JSON:json"
       | fieldsFlatten json
       ```
+### 1.5 OpenPipeline Processing Rule Configuration
 
+1.	*Access* the "**Metric Extraction**" tab
+1.	From the processor dropdown menu, *Select* "**Value Metric**" 
+1.	*Name* the new Value metric, *copy* and *paste*:
+
+      ```
+      BetAmount
+      ```
+1.	For "**Matching condition**", *copy* and *paste*:
+
+      ```
+      isnotnull(json.BetAmount)
+      ```
+1.	For "**Field Extraction**", *copy* and *paste*:
+
+      ```
+      json.BetAmount
+      ```      
+1.	For "**Metric key**", *copy* and *paste*:
+
+      ```
+      bizevents.vegas.betAmount
+      ```      
+1.    For "**Dimensions**" select **custom**, *copy* and *paste*:
+1.    Field name on record:
+      ```
+      json.Game
+      ```   
+1.    Dimension name:
+      ```
+      Game
+      ```   
+1.   Click "**Add dimension**" on the right hand side.
+1.   Now, do the same for these other fields:
+      ```
+      CheatType 
+      ``` 
+      ```
+      CustomerName
+      ``` 
+      ```
+      CheatActive
+      ```
+1.   Click the 3 vertical buttons on your "**BetAmount**" metric, and select "**Duplicate**"
+1.   Change the "**Name**", *copy* and *paste*:
+      ```
+      WinAmount
+      ```
+1.   Change the "**Matching Condition**", *copy* and *paste*:
+      ```
+      isNotNull(json.WinningAmount)
+      ```
+1.   Change the "**Field extraction Condition**", *copy* and *paste*:
+      ```
+      json.WinningAmount
+      ```      
+1.   Change the "**Metric key**", *copy* and *paste*:
+      ```
+      bizevents.vegas.winAmount
+      ```         
 **At the top right of the screen, click "*Save*"**
 
 
-### 1.5 OpenPipeline Dynamic Routing
+### 1.6 OpenPipeline Dynamic Routing
 
 1. *Access* the "**Dynamic routing**" tab
 1. *Create* a *new Dynamic route*
@@ -164,7 +224,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 ### *RUN SOME MORE TEST SIMULATIONS THROUGH YOUR BIZOBS APPLICATION UI* ###
 
 
-### 1.6 Queries
+### 1.7 Queries
 
 ##### Validate new attribute
 1.	From the menu, *open* "**Notebooks**"
