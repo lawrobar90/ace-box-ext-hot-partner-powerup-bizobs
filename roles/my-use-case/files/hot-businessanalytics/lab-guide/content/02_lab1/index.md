@@ -170,13 +170,13 @@ This lab will show you how to *create* and *validate* **business rules**.
 1.   Click "**Add dimension**" on the right hand side.
 1.   Now, do the same for these other fields:
       ```
-      CheatType 
+      json.CheatType 
       ``` 
       ```
-      CustomerName
+      json.CustomerName
       ``` 
       ```
-      CheatActive
+      json.CheatActive
       ```
 1.   Click the 3 vertical buttons on your "**BetAmount**" metric, and select "**Duplicate**"
 1.   Change the "**Name**", *copy* and *paste*:
