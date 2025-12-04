@@ -5,8 +5,8 @@
 ---
 - set_fact:
     role_path_abs: "{{ role_path }}"
-    bizobs_repo_url: "https://github.com/lawrobar90/Partner-PowerUp-BizObs-App.git"
-    bizobs_app_dir: "/home/{{ ace_box_user | default('dt_training') }}/Partner-PowerUp-BizObs-App"
+    bizobs_repo_url: "https://github.com/lawrobar90/Business-Observability-Application.git"
+    bizobs_app_dir: "/home/{{ ace_box_user | default('dt_training') }}/Business-Observability-Application"
     bizobs_domain: "bizobs.{{ ingress_domain }}"
 
 - include_role:
