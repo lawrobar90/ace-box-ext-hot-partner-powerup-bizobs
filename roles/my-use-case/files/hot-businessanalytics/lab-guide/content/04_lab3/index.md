@@ -89,7 +89,7 @@ vegas-casino/vegas-cheat-logs/*.log
      ```
 1.   For the "**Metric Key**", then *copy* and *paste*:
      ```
-     log.cheat_winAmount
+     log.cheat_WinAmount
      ```
 1.   For the "**Dimensions**", *select* "**custom**"
 1.   In the *Field name on record*,*copy* and *paste*:
@@ -121,109 +121,92 @@ vegas-casino/vegas-cheat-logs/*.log
      CustomerName
      ```
 ##### *Click* on "**Add Dimension**
+
+1.   Click the 3 vertical buttons on your "**Vegas Cheating - WinAmount**" metric, and select "**Duplicate**"
+1.   Change the *Name*, *copy* and *paste*:
+     ```
+     Vegas Cheating - BetAmount
+     ```
+1.   Change the *Field Extraction*, *copy* and *paste*:
+     ```
+      json.BetAmount
+     ```
+1.   Change the *Metric key*, *copy* and *paste*:
+     ```
+     log.cheat_BetAmount
+     ```
 ##### *Click* "**Save**" so you don't lose this config
 
------
-
-### 3.4 OpenPipeline Metrics Extraction
-
-1.	*Access* the "**Metric Extraction**" tab
-1.	From the processor dropdown menu, *Select* "**Value Metric**" 
-1.	*Name* the new Value metric, *copy* and *paste*:
-
-      ```
-      BetAmount
-      ```
-1.	For "**Matching condition**", *copy* and *paste*:
-
-      ```
-      isnotnull(json.BetAmount)
-      ```
-1.	For "**Field Extraction**", *copy* and *paste*:
-
-      ```
-      json.BetAmount
-      ```      
-1.	For "**Metric key**", *copy* and *paste*:
-
-      ```
-      bizevents.vegas.betAmount
-      ```      
-1.    For "**Dimensions**" select **custom**, *copy* and *paste*:
-1.    Field name on record:
-      ```
-      json.Game
-      ```   
-1.    Dimension name:
-      ```
-      Game
-      ```   
-1.   Click "**Add dimension**" on the right hand side.
-1.   Now, do the same for these other fields:
-      ```
-      json.CheatType 
-      ``` 
-      ```
-      json.CustomerName
-      ``` 
-      ```
-      json.CheatActive
-      ```
-1.   Click the 3 vertical buttons on your "**BetAmount**" metric, and select "**Duplicate**"
-1.   Change the "**Name**", *copy* and *paste*:
-      ```
-      WinAmount
-      ```
-1.   Change the "**Matching Condition**", *copy* and *paste*:
-      ```
-      isNotNull(json.WinningAmount)
-      ```
-1.   Change the "**Field extraction Condition**", *copy* and *paste*:
-      ```
-      json.WinningAmount
-      ```      
-1.   Change the "**Metric key**", *copy* and *paste*:
-      ```
-      bizevents.vegas.winAmount
-      ```         
-**At the top right of the screen, click "*Save*"**
-
-
-### 1.4 OpenPipeline Dynamic Routing
+### 3.6 OpenPipeline Dynamic Routing
 
 1. *Access* the "**Dynamic routing**" tab
 1. *Create* a *new Dynamic route*
 1. For "**Name**", *copy* and *paste*: 
 
       ```
-      Vegas Pipeline
-      ```
+Vegas Security Logs      ```
 
 1. For "**Matching condition**", *copy* and *paste*:
 
       ```
-      matchesPhrase(event.provider, "Vegas ")
+      matchesPhrase(content, "cheat_active\":true")
       ```
 
-1. For "**Pipeline**", *select* "**Vegas Pipeline**"
-1. *Click* "**Add**" 
+1.  For "**Pipeline**", *select* "**Vegas Cheat Logs to BizEvents**"
+ 1. *Click* "**Add**" 
 
-**Just above the table, click "*Save*"**
-**Make sure you change Status to enable the Dynamic Routing**
+### Go back to your Vegas Application, *Enable Cheats*, and play some games ###
 
+1.  Navigate to your Dynatrace Notebook, add a new DQL widget, *copy*, *paste* and *run* the following:
+    ```
+    timeseries { sum(log.cheat_winAmount), value.A = sum(log.cheat_winAmount, scalar: true), sum(log.cheat_BetAmount), value.B = sum(log.cheat_BetAmount, scalar: true) }, union: TRUE
+    ```
+1. Change *Visualization Type* to a "**Bar**"
 
-### *PLAY SOME OF THE VEGAS APPLICATIONS IN THE WEBSITE, ACTIVATE CHEATS FOR BIG WINS* ###
-### *CAREFUL, CHEATERS NEVER PROSPER!* ###
-
-### 1.5 Queries
-
-##### Validate new attribute
-1.	From the menu, *open* "**Notebooks**"
-1.	*Click* on the "**+**" to add a new section
-1.	*Click* on "**DQL**"
-1.	*Copy* and *paste* the **query** - Change the **Game** to the one you are testing with surrounded by quotation marks:
-
-      ```
-      Fetch Bizevents
-      | filter json.Game == "**game Name**"
-      ```
+### 3.6 Locking the users out
+1. Using the “**App drawer**” in the top-left of the screen (or the search) – *find* the **“Workflows”** app and *open* it.
+1. *Click* "**+ Workflow**"
+1. In the first step, select "**On demand trigger**"
+1. Click the *+* underneath the trigger step, and choose "**Execute DQL Query**"
+1. Change the name of this step, *copy* and *paste*:
+   ```
+   get_cheaters
+   ```
+1. In the "**DQL query section**", *copy* and *paste*:
+   ```
+   fetch bizevents, from:now()-5m
+      | filter json.cheat_active == true
+      | filter isNotNull(json.winAmount)
+      | fields timestamp,
+             json.CustomerName, 
+             json.cheatType,
+             json.winAmount,
+             json.Balance,
+             json.CorrelationId,
+             json.DetectionRisk,
+             json.requires_investigation,
+             json.BetAmount,
+             json.multiplier,
+             json.cheat_active,
+             json.result, dt.openpipeline.pipelines
+   ```
+1. Click the *+* underneath the *get_cheaters* step, and choose "**HTTP Request**"
+1. Change the name of this step, *copy* and *paste*:
+   ```
+   lock_user
+   ```
+1. In the "**Method**", Select *POST*
+1. In the "**URL **", *copy* and *paste*:
+   ```
+   http://3.209.41.33:8080/api/admin/lockout-user-cheat
+   ```
+1. In the "**Payload**", *copy* and *paste*:
+   ```
+   {
+        "cheatRecords": {{ result('get_cheaters').records }}
+   }   
+   ```
+1. Click the *+* underneath the *lock_user* step, and choose "**Run JavaScript**"
+1. In the "**Source code **", *copy* and *paste*:
+   ```
+   
