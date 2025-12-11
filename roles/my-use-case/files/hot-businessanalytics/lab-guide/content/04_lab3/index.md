@@ -62,19 +62,60 @@ vegas-casino/vegas-cheat-logs/*.log
       ```
      matchesPhrase(content, "cheat_active\":true")
       ```
-1. For the "**Event Type**" select *Static string*, then *copy* and *paste*:
+1.   For the "**Event Type**" select *Static string*, then *copy* and *paste*:
      ```
      CheatFound
      ```
-1. For the "**Event provider**" select *Field Name*, then *copy* and *paste*:
+1.   For the "**Event provider**" select *Field Name*, then *copy* and *paste*:
      ```
      json.game
      ```
-1. For "** Field extraction**" leave as *Extrace all fields*.
-1. *Click* "**Save**" so you don't lose this config
+1.   For "** Field extraction**" leave as *Extrace all fields*.
+1.   *Click* "**Save**" so you don't lose this config
 
+### 3.5 Adding a Metric Extraction
+1.   Go back into your "**Vegas Cheat Logs to BizEvents**"
+1.   *Access* the "**Metric extraction**" tab
+1.   From the processor dropdown menu, *Select* "**Value Metric**"
+1.	*Name* the new processor, *copy* and *paste*:
 
-
+      ```
+      Vegas Cheating - WinAmount
+      ```
+1.	For "**Matching condition**", leave set to **true**
+1.   For the "**Field extraction**", *copy* and *paste*:
+     ```
+     json.winAmount
+     ```
+1.   For the "**Metric Key**", then *copy* and *paste*:
+     ```
+     log.cheat_winAmount
+     ```
+1.   For the "**Dimensions**", *select* "**custom**"
+1.   In the *Field name on record*,*copy* and *paste*:
+     ```
+     json.cheatType
+     ```
+1.   In the *Dimension name*, *copy* and *paste*:
+     ```
+     cheatType
+     ``` 
+1.   *Click* on "**Add Dimension**"
+1.   Do the same for these other 2 dimensions:
+     ```
+     json.game
+     ``` 
+     ```
+     Game
+     ```
+1.   *Click* on "**Add Dimension**"
+     ```
+     json.CustomerName
+     ```
+     ```
+     CustomerName
+     ```
+1.   *Click* on "**Add Dimension**"
 
 -----
 
