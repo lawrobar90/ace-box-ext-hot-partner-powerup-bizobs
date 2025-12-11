@@ -111,7 +111,7 @@ vegas-casino/vegas-cheat-logs/*.log
      Game
      ```
      
-1.   *Click* on "**Add Dimension**
+##### *Click* on "**Add Dimension**
 ##### Field name on record:
      ```
      json.CustomerName
@@ -120,7 +120,8 @@ vegas-casino/vegas-cheat-logs/*.log
      ```
      CustomerName
      ```
-1.   *Click* on "**Add Dimension**"
+##### *Click* on "**Add Dimension**
+##### *Click* "**Save**" so you don't lose this config
 
 -----
 
