@@ -211,7 +211,7 @@ Vegas Security Logs      ```
    ```
    create_bizevents_for_lockouts
    ```
-1. In the "**Source code **", *copy* and *paste*:
+1. In the "**Source code**", *copy* and *paste*:
    ```
    import { execution } from '@dynatrace-sdk/automation-utils';
       import { businessEventsClient } from '@dynatrace-sdk/client-classic-environment-v2';
