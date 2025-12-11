@@ -20,4 +20,163 @@ vegas-casino/vegas-cheat-logs/*.log
 
 ### Go back to your Vegas Application, *Enable Cheats*, and play some games ###
 
-### 3.2 Capturing the logs
+
+### 3.2 Processing your logs to find the cheaters
+1. 1. *Open* "**OpenPipeline**" 
+1. *Click* on "**Logs**" menu group
+1. *Click* on "**Pipelines**"
+1. *Create* a **+ pipeline**
+1. *Rename* the pipeline:
+
+      ```
+      Vegas Cheat Logs to BizEvents
+      ```
+
+### 3.3 OpenPipeline Processing Rule Configuration
+
+1.	*Access* the "**Processing**" tab
+1.	From the processor dropdown menu, *Select* "**DQL**" 
+1.	*Name* the new processor, *copy* and *paste*:
+
+      ```
+      JSON Log parser
+      ```
+
+1.	For "**Matching condition**", leave set to **true**
+1.	For "**DQL processor definition**", *copy* and *paste*:
+
+      ```
+     parse content, "JSON:json"
+     | fieldsFlatten json
+      ```
+
+### 3.4 Create a Business Event
+1.	*Access* the "**Data extraction**" tab
+1.	From the processor dropdown menu, *Select* "**Business event**" 
+1.	*Name* the new processor, *copy* and *paste*:
+
+      ```
+      Cheating Attempt
+      ```
+1.	For "**Matching condition**", *copy* and *paste*:
+      ```
+     matchesPhrase(content, "cheat_active\":true")
+      ```
+1. For the "**Event Type**" select *Static string*, then *copy* and *paste*:
+     ```
+     CheatFound
+     ```
+1. For the "**Event provider**" select *Field Name*, then *copy* and *paste*:
+     ```
+     json.game
+     ```
+1. For "** Field extraction**" leave as *Extrace all fields*.
+1. *Click* "**Save**" so you don't lose this config
+
+
+
+
+-----
+
+### 3.4 OpenPipeline Metrics Extraction
+
+1.	*Access* the "**Metric Extraction**" tab
+1.	From the processor dropdown menu, *Select* "**Value Metric**" 
+1.	*Name* the new Value metric, *copy* and *paste*:
+
+      ```
+      BetAmount
+      ```
+1.	For "**Matching condition**", *copy* and *paste*:
+
+      ```
+      isnotnull(json.BetAmount)
+      ```
+1.	For "**Field Extraction**", *copy* and *paste*:
+
+      ```
+      json.BetAmount
+      ```      
+1.	For "**Metric key**", *copy* and *paste*:
+
+      ```
+      bizevents.vegas.betAmount
+      ```      
+1.    For "**Dimensions**" select **custom**, *copy* and *paste*:
+1.    Field name on record:
+      ```
+      json.Game
+      ```   
+1.    Dimension name:
+      ```
+      Game
+      ```   
+1.   Click "**Add dimension**" on the right hand side.
+1.   Now, do the same for these other fields:
+      ```
+      json.CheatType 
+      ``` 
+      ```
+      json.CustomerName
+      ``` 
+      ```
+      json.CheatActive
+      ```
+1.   Click the 3 vertical buttons on your "**BetAmount**" metric, and select "**Duplicate**"
+1.   Change the "**Name**", *copy* and *paste*:
+      ```
+      WinAmount
+      ```
+1.   Change the "**Matching Condition**", *copy* and *paste*:
+      ```
+      isNotNull(json.WinningAmount)
+      ```
+1.   Change the "**Field extraction Condition**", *copy* and *paste*:
+      ```
+      json.WinningAmount
+      ```      
+1.   Change the "**Metric key**", *copy* and *paste*:
+      ```
+      bizevents.vegas.winAmount
+      ```         
+**At the top right of the screen, click "*Save*"**
+
+
+### 1.4 OpenPipeline Dynamic Routing
+
+1. *Access* the "**Dynamic routing**" tab
+1. *Create* a *new Dynamic route*
+1. For "**Name**", *copy* and *paste*: 
+
+      ```
+      Vegas Pipeline
+      ```
+
+1. For "**Matching condition**", *copy* and *paste*:
+
+      ```
+      matchesPhrase(event.provider, "Vegas ")
+      ```
+
+1. For "**Pipeline**", *select* "**Vegas Pipeline**"
+1. *Click* "**Add**" 
+
+**Just above the table, click "*Save*"**
+**Make sure you change Status to enable the Dynamic Routing**
+
+
+### *PLAY SOME OF THE VEGAS APPLICATIONS IN THE WEBSITE, ACTIVATE CHEATS FOR BIG WINS* ###
+### *CAREFUL, CHEATERS NEVER PROSPER!* ###
+
+### 1.5 Queries
+
+##### Validate new attribute
+1.	From the menu, *open* "**Notebooks**"
+1.	*Click* on the "**+**" to add a new section
+1.	*Click* on "**DQL**"
+1.	*Copy* and *paste* the **query** - Change the **Game** to the one you are testing with surrounded by quotation marks:
+
+      ```
+      Fetch Bizevents
+      | filter json.Game == "**game Name**"
+      ```
