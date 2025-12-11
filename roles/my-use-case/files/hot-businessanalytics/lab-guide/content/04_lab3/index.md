@@ -77,12 +77,12 @@ vegas-casino/vegas-cheat-logs/*.log
 1.   Go back into your "**Vegas Cheat Logs to BizEvents**"
 1.   *Access* the "**Metric extraction**" tab
 1.   From the processor dropdown menu, *Select* "**Value Metric**"
-1.	*Name* the new processor, *copy* and *paste*:
+1.   *Name* the new processor, *copy* and *paste*:
 
       ```
       Vegas Cheating - WinAmount
       ```
-1.	For "**Matching condition**", leave set to **true**
+1.   For "**Matching condition**", leave set to **true**
 1.   For the "**Field extraction**", *copy* and *paste*:
      ```
      json.winAmount
