@@ -106,7 +106,7 @@ vegas-casino/vegas-cheat-logs/*.log
      ```
      json.game
      ```
-1.  Dimension name
+##### Dimension name
      ```
      Game
      ```
