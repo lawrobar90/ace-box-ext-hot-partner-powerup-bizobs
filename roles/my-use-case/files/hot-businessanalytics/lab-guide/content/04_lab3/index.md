@@ -236,7 +236,7 @@ Vegas Security Logs      ```
           .map((r, i) => ({
             id: `vegas-lock-${r.username}-${Date.now()}-${i}`,
             "event.provider": "vegas-casino-fraud-detection",
-            "event.type": "CheatReinbursed",
+            "event.type": "CheatReimbursed",
             user_locked: true,
             customer_name: r.username,
             cheat_violations: r.cheatViolations,
