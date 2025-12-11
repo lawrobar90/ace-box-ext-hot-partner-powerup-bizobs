@@ -207,6 +207,61 @@ Vegas Security Logs      ```
    }   
    ```
 1. Click the *+* underneath the *lock_user* step, and choose "**Run JavaScript**"
+1. Change the name of this step, *copy* and *paste*:
+   ```
+   create_bizevents_for_lockouts
+   ```
 1. In the "**Source code **", *copy* and *paste*:
    ```
-   
+   import { execution } from '@dynatrace-sdk/automation-utils';
+      import { businessEventsClient } from '@dynatrace-sdk/client-classic-environment-v2';
+
+      export default async function ({ execution_id }) {
+        const stepName = "lock_user";
+
+        // Fetch lock_user result
+        const r = await fetch(`/platform/automation/v1/executions/${execution_id}/tasks/${stepName}/result`);
+        const raw = await r.json();
+
+        const lockResult = raw?.json ? raw.json : (typeof raw === "string" ? JSON.parse(raw) : raw);
+        const results = lockResult?.results || [];
+
+        if (!results.length) {
+    return { success: false, events_created: 0, message: "No lock_user results found", raw_response: lockResult };
+        }
+
+        // Build Dynatrace business events (flat schema)
+        const bizevents = results
+          .filter(r => r.success)
+          .map((r, i) => ({
+            id: `vegas-lock-${r.username}-${Date.now()}-${i}`,
+            "event.provider": "vegas-casino-fraud-detection",
+            "event.type": "CheatReinbursed",
+            user_locked: true,
+            customer_name: r.username,
+            cheat_violations: r.cheatViolations,
+            winnings_confiscated: r.totalWinningsConfiscated,
+            balance_before: r.balanceBefore,
+            balance_after: r.balanceAfter,
+            lock_reason: r.lockReason,
+            detection_method: "lock_user_step_summary",
+            timestamp: new Date().toISOString()
+          }));
+
+        // Log payload before sending
+        console.log("Business events payload:", JSON.stringify(bizevents, null, 2));
+
+        // Ingest into Dynatrace
+        await businessEventsClient.ingest({
+          type: "application/json",
+          body: bizevents
+        });
+
+        return {
+          success: true,
+          events_created: bizevents.length,
+          message: `Created ${bizevents.length} business events from ${results.length} lock_user results`,
+          summary: lockResult?.summary || {}
+        };
+      }
+```
