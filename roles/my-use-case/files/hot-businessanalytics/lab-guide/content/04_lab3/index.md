@@ -1,7 +1,7 @@
 ## Lab 3: getting value from automation
 
 In this hands-on, we’ll be setting up this process using some existing building blocks! You will be capturing cheat logs, then using automation you will reduce the risk and increase revenue for your casino. 
-### 3.1 Capturing th logs
+### 3.1 Capturing the logs
 1. Using the “**App drawer**” in the top-left of the screen (or the search) – *find* the **“Settings”** app and *open* it.
 1. *Choose* “**+ Collect and Capture**” on the left panel, *choose* "**Log monitoring**" and *choose* "**Log Custom log sources**"
 1. The first thing to do is *choose* **when this Workflow will run** – for the purpose of this exercise we will *choose* the “**On demand**” trigger at the bottom, so it will *only* be executed when you hit **“Run"**.
@@ -16,4 +16,8 @@ Vegas Casino Cheat Detection
 ```
 vegas-casino/vegas-cheat-logs/*.log
 ```
+1. *Click* "**Save changes**"
 
+### Go back to your Vegas Application, *Enable Cheats*, and play some games ###
+
+### 3.2 Capturing the logs
