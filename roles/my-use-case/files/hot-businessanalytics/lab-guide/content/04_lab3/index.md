@@ -102,7 +102,7 @@ vegas-casino/vegas-cheat-logs/*.log
      ``` 
 1.   *Click* on "**Add Dimension**"
 1.   Do the same for these other 2 dimensions:
-1.   Field name on record:
+##### Field name on record:
      ```
      json.game
      ```
@@ -111,12 +111,12 @@ vegas-casino/vegas-cheat-logs/*.log
      Game
      ```
      
-1.   *Click* on "**Add Dimension**"
-1.   Field name on record:
+1.   *Click* on "**Add Dimension**
+##### Field name on record:
      ```
      json.CustomerName
      ```
-1.  Dimension name
+##### Dimension name
      ```
      CustomerName
      ```
