@@ -25,7 +25,7 @@ vegas-casino/vegas-cheat-logs/*.log
 1. *Open* "**OpenPipeline**" 
 1. *Click* on "**Logs**" menu group
 1. *Click* on "**Pipelines**"
-1. *Create* a **+ pipeline**
+1. *Create* a "**+ pipeline**"
 1. *Rename* the pipeline:
 
       ```
