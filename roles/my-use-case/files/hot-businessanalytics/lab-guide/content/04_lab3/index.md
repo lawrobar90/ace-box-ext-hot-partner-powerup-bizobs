@@ -70,7 +70,7 @@ vegas-casino/vegas-cheat-logs/*.log
      ```
      json.game
      ```
-1.   For "** Field extraction**" leave as *Extrace all fields*.
+1.   For "**Field extraction**" leave as *Extrace all fields*.
 1.   *Click* "**Save**" so you don't lose this config
 
 ### 3.5 Adding a Metric Extraction
@@ -111,7 +111,7 @@ vegas-casino/vegas-cheat-logs/*.log
      Game
      ```
      
-##### *Click* on "**Add Dimension**
+##### *Click* on "**Add Dimension**"
 ##### Field name on record:
      ```
      json.CustomerName
@@ -120,7 +120,7 @@ vegas-casino/vegas-cheat-logs/*.log
      ```
      CustomerName
      ```
-##### *Click* on "**Add Dimension**
+##### *Click* on "**Add Dimension**"
 
 1.   Click the 3 vertical buttons on your "**Vegas Cheating - WinAmount**" metric, and select "**Duplicate**"
 1.   Change the *Name*, *copy* and *paste*:
@@ -164,7 +164,7 @@ Vegas Security Logs      ```
 1. Change *Visualization Type* to a "**Bar**"
 
 ### 3.6 Locking the users out
-1. Using the “**App drawer**” in the top-left of the screen (or the search) – *find* the **“Workflows”** app and *open* it.
+1. Using the “**App drawer**” in the top-left of the screen (or the search) – *find* the "**Workflows**" app and *open* it.
 1. *Click* "**+ Workflow**"
 1. In the first step, select "**On demand trigger**"
 1. Click the *+* underneath the trigger step, and choose "**Execute DQL Query**"
@@ -264,4 +264,10 @@ Vegas Security Logs      ```
           summary: lockResult?.summary || {}
         };
       }
-```
+      ```
+1. Go back to your notebook
+1. Add a new DQL, *copy* and *paste*:
+      ```
+      fetch bizevents
+      | filter event.provider == "vegas-casino-fraud-detection"
+      ```
