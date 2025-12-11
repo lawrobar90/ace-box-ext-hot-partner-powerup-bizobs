@@ -22,7 +22,7 @@ vegas-casino/vegas-cheat-logs/*.log
 
 
 ### 3.2 Processing your logs to find the cheaters
-1. 1. *Open* "**OpenPipeline**" 
+1. *Open* "**OpenPipeline**" 
 1. *Click* on "**Logs**" menu group
 1. *Click* on "**Pipelines**"
 1. *Create* a **+ pipeline**
