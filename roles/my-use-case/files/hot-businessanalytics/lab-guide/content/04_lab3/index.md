@@ -10,7 +10,7 @@ In this hands-on, we’ll be setting up this process using some existing buildin
 ```
 Vegas Casino Cheat Detection
 ```
-1. Change "**Log source type**" under "**Custom log source pathe**" to "**Log Path**"
+1. Change "**Log source type**" under "**Custom log source path**" to "**Log Path**"
 1. At the bottom, *click* "**Add custom log source path**"
 1. In the path field, *copy* and *paste* the following:
 ```
