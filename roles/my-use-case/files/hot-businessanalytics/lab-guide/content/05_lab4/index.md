@@ -144,9 +144,3 @@ In this hands-on, we’ll be setting up this process using some existing buildin
             user_locked,
             event.type
       ```
-
-### 4.2 Unlock Your User
-1. In your Dynatrace tenant there is also a "**Vegas - Unlock User**" Workflow.
-1. *Open* this and *edit*
-1. *Open* the "**unlock_user**" step, and change the *name* in the "**Payload**" to your Username from the "**Vegas App UI**"
-1. *Click* "**Run**" and *Refresh* your Website session with "**F5**"
