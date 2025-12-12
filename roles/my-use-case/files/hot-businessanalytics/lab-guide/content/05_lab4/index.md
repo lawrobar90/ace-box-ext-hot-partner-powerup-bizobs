@@ -114,6 +114,7 @@ In this hands-on, we’ll be setting up this process using some existing buildin
       ```
       fetch bizevents
       | filter event.type == "CheatFound"
+      | sort timestamp desc
       | fields timestamp,
              json.CustomerName, 
              json.cheatType,
@@ -132,6 +133,7 @@ In this hands-on, we’ll be setting up this process using some existing buildin
       ```
       fetch bizevents
       | filter event.provider == "vegas-casino-fraud-detection"
+      | sort timestamp desc
       | fields timestamp,
             cheat_violations,
             customer_name,
