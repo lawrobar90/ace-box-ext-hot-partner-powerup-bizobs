@@ -1,5 +1,8 @@
+## Lab 4: creating automation for security events
 
-### 3.6 Locking the users out
+In this hands-on, we’ll be setting up this process using some existing building blocks! You will be capturing cheat logs, then using automation you will reduce the risk and increase revenue for your casino. 
+
+### 4.1 Locking the users out
 1. Using the “**App drawer**” in the top-left of the screen (or the search) – *find* the "**Workflows**" app and *open* it.
 1. *Click* "**+ Workflow**"
 1. In the first step, select "**On demand trigger**"
