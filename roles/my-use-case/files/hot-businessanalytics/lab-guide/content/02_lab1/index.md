@@ -72,7 +72,7 @@ This lab will show you how to *create* and *validate* **business rules**.
 ##### Create a Service Naming Rule for the intelligent traceing to be captured
 1.	*Open* "**Settings Classic**"
 1.	*Open* "**Server-side Service monitoring**" menu group
-1.	*Click* on "**Service naming rules**"
+1.	*Click* on "**Service naming rules**" and add a new rule.
 1.    For Rule name, *copy* and *paste*:
       ```
       Vegas Naming Rules
