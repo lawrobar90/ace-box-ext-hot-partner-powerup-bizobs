@@ -10,7 +10,7 @@ Before we begin, let's verify that you can access the application and environmen
 ### 2. **Verify Dynatrace Dashboard**
 - *Verify* **access** to your **Dynatrace Dashboard** from the University Terminal
 - *Verify* **access** to your **Dynatrace Environment**
-- *Verify* **access** to the **Dynatrace Vegas Application**
+- *Verify* **access** to the **BizObs Application**
 
 ## Dynatrace Environment Checks
 - *Verify* Business Flow is installed in the Dynatrace Environment
